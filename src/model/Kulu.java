@@ -2,16 +2,66 @@ package model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="kulut")
 public class Kulu {
+	@Id
+    @GeneratedValue
+	private int kuluID;
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
+    private Kategoria kategoria;
+    private Kayttaja kayttaja;
+    private String kuvaus;
+    @ManyToOne
+    private Kulut kulut;
 
-    public Kulu(String nimi, double summa, LocalDate paivamaara) {
-        this.nimi = nimi;
+    public Kulu(String nimi, double summa, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
+    	this.nimi = nimi;
         this.summa = summa;
         this.paivamaara = paivamaara;
+        this.kategoria = kategoria;
+        this.kayttaja = kayttaja; 	
+        this.kuvaus = kuvaus;
     }
+
+	public String getKuvaus() {
+		return kuvaus;
+	}
+
+	public void setKuvaus(String kuvaus) {
+		this.kuvaus = kuvaus;
+	}
+
+	public Kategoria getKategoria() {
+		return kategoria;
+	}
+
+	public void setKategoria(Kategoria kategoria) {
+		this.kategoria = kategoria;
+	}
+
+	public Kayttaja getKayttaja() {
+		return kayttaja;
+	}
+
+	public void setKayttaja(Kayttaja kayttaja) {
+		this.kayttaja = kayttaja;
+	}
+
+	public int getKuluID() {
+		return kuluID;
+	}
+
+	public void setKuluID(int kuluID) {
+		this.kuluID = kuluID;
+	}
 
 	public String getNimi() {
 		return nimi;
