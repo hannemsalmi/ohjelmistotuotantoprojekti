@@ -2,6 +2,7 @@ package dataAccessObjects;
 
 import jakarta.persistence.EntityManager;
 import model.Kulu;
+import model.Kulut;
 
 public class KuluDao {
 	public void lisaaKulu(Kulu kulu) {
@@ -11,12 +12,12 @@ public class KuluDao {
         em.getTransaction().commit();
 	}
 	
-	public Kulu haeKulu(int id) {
+	public Kulut haeKulut(int kayttajaId) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
-		Kulu kulu = em.find(Kulu.class, id);
+		Kulut kulut = em.find(Kulut.class, kayttajaId);
         em.getTransaction().commit();
-        return kulu;
+        return kulut;
 	}
 	
 	public void muutaKulu(int id, Double summa, String nimi, String kuvaus) {
