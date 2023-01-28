@@ -17,10 +17,17 @@ public class GUI extends Application implements IGUI{
 	Label ostosLabel;
 	Label hintaLabel;
 	Label paivamaaraLabel;
-	Button lisaaButton;
+	Label kategoriaLabel;
+	Label kuvausLabel;
+	
 	TextField ostosField;
 	TextField hintaField;
 	TextField paivamaaraField;
+	TextField kategoriaField;
+	TextField kuvausField;
+	
+	Button lisaaButton;
+	Button kategoriaButton;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -50,12 +57,18 @@ public class GUI extends Application implements IGUI{
 		ostosLabel = new Label("Ostos");
 		hintaLabel = new Label("Hinta");
 		paivamaaraLabel = new Label("Päivämäärä");
-		
-		lisaaButton = new Button("Lisää ostos");
-		
+		kuvausLabel = new Label("Kuvaus");
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
+		kuvausField = new TextField();
+		
+		lisaaButton = new Button("Lisää ostos");
+		
+		kategoriaLabel = new Label("Kategoria");
+		kategoriaField = new TextField();
+		
+		kategoriaButton = new Button("Lisää kategoria");
 		
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
@@ -63,7 +76,21 @@ public class GUI extends Application implements IGUI{
 		grid.add(hintaField, 1, 1);
 		grid.add(paivamaaraLabel, 2, 0);
 		grid.add(paivamaaraField, 2, 1);
+		grid.add(kuvausLabel, 3, 0);
+		grid.add(kuvausField, 3, 1);
 		grid.add(lisaaButton, 0, 2);
+		
+		grid.add(kategoriaLabel, 0, 3);
+		grid.add(kategoriaField, 0, 4);
+		grid.add(kategoriaButton, 0, 5);
+		
+		lisaaButton.setOnAction((event) -> {
+			kontrolleri.lisaaKulu();
+		});
+		
+		kategoriaButton.setOnAction((event) -> {
+			kontrolleri.lisaaKategoria();
+		});
 		
 		hbox.getChildren().add(grid);
 		
