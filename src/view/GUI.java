@@ -44,7 +44,7 @@ public class GUI extends Application implements IGUI{
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle("Valuuttakone");
+			primaryStage.setTitle("Budjettisovellus");
 			HBox root = luoHBox();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
@@ -102,7 +102,7 @@ public class GUI extends Application implements IGUI{
 			String pvm = paivamaaraField.getText();
 			LocalDate paivamaara = LocalDate.parse(pvm); //toimii nyt vain formaatissa YYYY/MM/DD
 			Kategoria kategoria = new Kategoria(kategoriaField.getText()); //muokataan myöhemmin toimimaan valikon kanssa
-			Kayttaja kayttaja = new Kayttaja(1, "testi", 500); //kovakoodattu kehitystyötä varten
+			Kayttaja kayttaja = new Kayttaja("testi", 500); //kovakoodattu kehitystyötä varten
 			String kuvaus = kuvausField.getText();
 			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		});
@@ -119,4 +119,6 @@ public class GUI extends Application implements IGUI{
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
 }
