@@ -1,10 +1,12 @@
 package controller;
 
+import java.time.LocalDate;
+
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;
+import model.Kayttaja;
 import model.Kulu;
-import view.GUI;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
@@ -18,15 +20,15 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	}
 
 	@Override
-	public Kulu lisaaKulu() {
-		// TODO Auto-generated method stub
-		return null;
+	public void lisaaKategoria(String nimi) {
+		kategoria = new Kategoria(nimi);
+		System.out.println(kategoria);
 	}
 
 	@Override
-	public Kategoria lisaaKategoria() {
-		// TODO Auto-generated method stub
-		return null;
+	public void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
+		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+		System.out.println(kulu);
 	}
 	
 }

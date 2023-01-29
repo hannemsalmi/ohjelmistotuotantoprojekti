@@ -1,5 +1,8 @@
 package view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import controller.IKontrolleriVtoM;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -10,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.Kategoria;
+import model.Kayttaja;
 import controller.Kontrolleri;
 
 public class GUI extends Application implements IGUI{
@@ -23,8 +28,11 @@ public class GUI extends Application implements IGUI{
 	TextField ostosField;
 	TextField hintaField;
 	TextField paivamaaraField;
-	TextField kategoriaField;
+	TextField kategoriaField; // muokataan myöhemmin valikoksi, josta saa valita haluamansa kategorian
 	TextField kuvausField;
+	
+	Label uusiKategoriaLabel;
+	TextField uusiKategoriaField;
 	
 	Button lisaaButton;
 	Button kategoriaButton;
@@ -57,16 +65,18 @@ public class GUI extends Application implements IGUI{
 		ostosLabel = new Label("Ostos");
 		hintaLabel = new Label("Hinta");
 		paivamaaraLabel = new Label("Päivämäärä");
+		kategoriaLabel = new Label("Kategoria");
 		kuvausLabel = new Label("Kuvaus");
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
+		kategoriaField = new TextField();
 		kuvausField = new TextField();
 		
 		lisaaButton = new Button("Lisää ostos");
 		
-		kategoriaLabel = new Label("Kategoria");
-		kategoriaField = new TextField();
+		uusiKategoriaLabel = new Label("Uusi kategoria");
+		uusiKategoriaField = new TextField();
 		
 		kategoriaButton = new Button("Lisää kategoria");
 		
@@ -76,20 +86,29 @@ public class GUI extends Application implements IGUI{
 		grid.add(hintaField, 1, 1);
 		grid.add(paivamaaraLabel, 2, 0);
 		grid.add(paivamaaraField, 2, 1);
-		grid.add(kuvausLabel, 3, 0);
-		grid.add(kuvausField, 3, 1);
+		grid.add(kategoriaLabel, 3, 0);
+		grid.add(kategoriaField, 3, 1);
+		grid.add(kuvausLabel, 4, 0);
+		grid.add(kuvausField, 4, 1);
 		grid.add(lisaaButton, 0, 2);
 		
-		grid.add(kategoriaLabel, 0, 3);
-		grid.add(kategoriaField, 0, 4);
+		grid.add(uusiKategoriaLabel, 0, 3);
+		grid.add(uusiKategoriaField, 0, 4);
 		grid.add(kategoriaButton, 0, 5);
 		
 		lisaaButton.setOnAction((event) -> {
-			kontrolleri.lisaaKulu();
+			String nimi = ostosField.getText();
+			double hinta = Double.parseDouble(hintaField.getText());
+			String pvm = paivamaaraField.getText();
+			LocalDate paivamaara = LocalDate.parse(pvm); //toimii nyt vain formaatissa YYYY/MM/DD
+			Kategoria kategoria = new Kategoria(kategoriaField.getText()); //muokataan myöhemmin toimimaan valikon kanssa
+			Kayttaja kayttaja = new Kayttaja(1, "testi", 500); //kovakoodattu kehitystyötä varten
+			String kuvaus = kuvausField.getText();
+			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		});
 		
 		kategoriaButton.setOnAction((event) -> {
-			kontrolleri.lisaaKategoria();
+			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
 		});
 		
 		hbox.getChildren().add(grid);

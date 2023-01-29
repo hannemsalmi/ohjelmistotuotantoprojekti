@@ -44,4 +44,12 @@ public class Kayttaja {
 	public void setMaksimibudjetti(double maksimibudjetti) {
 		this.maksimibudjetti = maksimibudjetti;
 	}
+
+	@Override
+	public String toString() {
+		return "Kayttaja [kayttajaID=" + kayttajaID + ", nimimerkki=" + nimimerkki + ", maksimibudjetti="
+				+ maksimibudjetti + "]";
+	}
+	
+	
 }

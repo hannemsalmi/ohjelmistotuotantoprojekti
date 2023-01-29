@@ -93,6 +93,12 @@ public class Kulu {
 	public void setPaivamaara(LocalDate paivamaara) {
 		this.paivamaara = paivamaara;
 	}
+
+	@Override
+	public String toString() {
+		return "Kulu [kuluID=" + kuluID + ", nimi=" + nimi + ", summa=" + summa + ", paivamaara=" + paivamaara
+				+ ", kategoria=" + kategoria + ", kayttaja=" + kayttaja + ", kuvaus=" + kuvaus + "]";
+	}
     
     
     
