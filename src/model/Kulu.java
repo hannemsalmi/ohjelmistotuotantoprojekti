@@ -20,9 +20,9 @@ public class Kulu {
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
-    @OneToMany
+    @ManyToOne
     private Kategoria kategoria;
-    @OneToMany
+    @ManyToOne
     private Kayttaja kayttaja;
     private String kuvaus;
 

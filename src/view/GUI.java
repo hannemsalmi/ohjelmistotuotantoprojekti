@@ -29,7 +29,7 @@ public class GUI extends Application implements IGUI{
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle("Valuuttakone");
+			primaryStage.setTitle("Budjettisovellus");
 			HBox root = luoHBox();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
@@ -73,4 +73,6 @@ public class GUI extends Application implements IGUI{
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
 }

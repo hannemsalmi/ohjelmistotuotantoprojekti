@@ -17,8 +17,7 @@ public class Kayttaja {
 	private String nimimerkki;
 	private double maksimibudjetti;
 	
-	public Kayttaja(int kayttajaID, String nimimerkki, double maksimibudjetti) {
-		this.kayttajaID = kayttajaID;
+	public Kayttaja(String nimimerkki, double maksimibudjetti) {
 		this.nimimerkki = nimimerkki;
 		this.maksimibudjetti = maksimibudjetti;
 	}
