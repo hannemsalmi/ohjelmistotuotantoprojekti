@@ -2,25 +2,29 @@ package model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name="kulut")
 public class Kulu {
 	@Id
-    @GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int kuluID;
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
+    @OneToMany
     private Kategoria kategoria;
+    @OneToMany
     private Kayttaja kayttaja;
     private String kuvaus;
-    @ManyToOne
-    private Kulut kulut;
 
     public Kulu(String nimi, double summa, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
     	this.nimi = nimi;
@@ -30,6 +34,9 @@ public class Kulu {
         this.kayttaja = kayttaja; 	
         this.kuvaus = kuvaus;
     }
+    
+    public Kulu() {
+	}
 
 	public String getKuvaus() {
 		return kuvaus;

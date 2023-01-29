@@ -13,9 +13,9 @@ public class Kulut {
     private List<Kulu> kulut;
 
     public Kulut() {
-        kulut = new ArrayList<>();
+        this.kulut = new ArrayList<>();
     }
-
+    
     public void lisaaKulu(Kulu kulu) {
         kulut.add(kulu);
     }
