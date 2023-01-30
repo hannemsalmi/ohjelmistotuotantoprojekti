@@ -8,6 +8,7 @@ import dataAccessObjects.KuluDao;
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;
+import model.Kategoriat;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
@@ -20,6 +21,7 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	private KayttajaDao kayttajaDao = new KayttajaDao();
 	private KuluDao kuluDao = new KuluDao();
 	private Kategoria kategoria;
+	private Kategoriat kategoriat;
 	private Kayttaja kayttaja;
 	private Kulu kulu;
 	private Kulut kulut = new Kulut();
