@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,9 +21,9 @@ public class Kulu {
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     private Kategoria kategoria;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     private Kayttaja kayttaja;
     private String kuvaus;
 

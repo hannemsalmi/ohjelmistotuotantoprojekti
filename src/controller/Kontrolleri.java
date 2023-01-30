@@ -31,12 +31,14 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	public void lisaaKategoria(String nimi) {
 		kategoria = new Kategoria(nimi);
 		System.out.println(kategoria);
+		kategoriaDao.lisaaKategoria(kategoria);
 	}
 
 	@Override
 	public void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		System.out.println(kulu);
+		kuluDao.lisaaKulu(kulu);
 	}
 	
 }

@@ -7,11 +7,11 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/budjettisovellus"/>
-      <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value="KirjoitaTähänOmaSalasanasi"></property>
+      <property name="jakarta.persistence.jdbc.user" value="budjetti"/>
+      <property name="jakarta.persistence.jdbc.password" value="TuikiTuikiTulitikku"></property>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
-      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
       <property name="hibernate.show_sql" value="true" />
       <property name="dialect" value ="org.hibernate.dialect.MySQLDialect" />
     </properties>
