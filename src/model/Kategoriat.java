@@ -13,7 +13,7 @@ public class Kategoriat {
 	public Kategoriat() {
 		kategoriat = new ArrayList<>();
 
-		// Esimerkki aloituskategoriat: 
+		// Esimerkki aloituskategoriat:  
 		kategoriat.add(ruoka);
 		kategoriat.add(viihde);
 		kategoriat.add(harrastukset);
