@@ -130,7 +130,7 @@ public class GUI extends Application implements IGUI{
 		});
 		
 		kulutButton.setOnAction((event) -> {
-			kulut = kontrolleri.getKulut(3);
+			kulut = kontrolleri.getKulut(3); //Testausta varten kovakoodattuna sen käyttäjän id, jolla kuluja haetaan.
 			setKulut(kulut);
 		});
 		
