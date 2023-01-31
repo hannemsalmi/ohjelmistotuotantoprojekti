@@ -18,9 +18,17 @@ public class Kulut {
     public void lisaaKulu(Kulu kulu) {
         kulut.add(kulu);
     }
+    
+    public void lisaaKulut(List<Kulu> kulut) {
+    	this.kulut = kulut;
+    }
 
     public List<Kulu> getKulut() {
         return kulut;
+    }
+    
+    public String toString() {
+    	return kulut.toString();
     }
 
 }

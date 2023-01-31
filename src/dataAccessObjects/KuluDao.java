@@ -1,5 +1,7 @@
 package dataAccessObjects;
 
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import model.Kulu;
 import model.Kulut;
@@ -12,11 +14,15 @@ public class KuluDao {
         em.getTransaction().commit();
 	}
 	
-	public Kulut haeKulut(int kayttajaId) {
+	public List<Kulu> haeKulut(int kayttajaId) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
-		Kulut kulut = em.find(Kulut.class, kayttajaId);
+		List<Kulu> kulut = em.createQuery("SELECT k FROM kulut k WHERE k.kayttaja_id = :kayttajaid", Kulu.class)
+                .setParameter("kayttaja_id", kayttajaId)
+                .getResultList();
+
         em.getTransaction().commit();
+        
         return kulut;
 	}
 	
