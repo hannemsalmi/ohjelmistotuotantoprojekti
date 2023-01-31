@@ -7,11 +7,20 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/budjettisovellus"/>
+<<<<<<< HEAD
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value="lovethesend"></property>
+=======
+      <property name="jakarta.persistence.jdbc.user" value="budjetti"/>
+      <property name="jakarta.persistence.jdbc.password" value="TuikiTuikiTulitikku"></property>
+>>>>>>> branch 'master' of https://github.com/hannemsalmi/ohjelmistotuotantoprojekti
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+<<<<<<< HEAD
       <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+=======
+      <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+>>>>>>> branch 'master' of https://github.com/hannemsalmi/ohjelmistotuotantoprojekti
       <property name="hibernate.show_sql" value="true" />
       <property name="dialect" value ="org.hibernate.dialect.MySQLDialect" />
     </properties>
