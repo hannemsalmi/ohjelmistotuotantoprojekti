@@ -9,10 +9,6 @@ public class Budjettilaskuri implements IBudjettilaskuri {
 	public List<Kulu> getKulut() {
 		return kulut.getKulut();
 	}
-	
-	public void lisaaKulu(Kulu kulu) {
-		kulut.lisaaKulu(kulu);
-	}
 
 	@Override
 	public double laskeBudjetti(double budjetti, double kulutettu) {

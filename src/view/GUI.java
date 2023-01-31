@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import controller.IKontrolleriVtoM;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -20,10 +19,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
+import model.Kulut;
 import controller.Kontrolleri;
 
 public class GUI extends Application implements IGUI{
@@ -31,12 +32,20 @@ public class GUI extends Application implements IGUI{
 	Label ostosLabel;
 	Label hintaLabel;
 	Label paivamaaraLabel;
-	Button lisaaButton;
+	Label kategoriaLabel;
+	Label kuvausLabel;
 	TextField ostosField;
 	TextField hintaField;
 	TextField paivamaaraField;
+	TextField kategoriaField; // muokataan myöhemmin valikoksi, josta saa valita haluamansa kategorian
+	TextField kuvausField;
+	Label uusiKategoriaLabel;
+	TextField uusiKategoriaField;
+	Button lisaaButton;
+	Button kategoriaButton;
+	Button kulutButton;
+	Label kulutLabel;
 	List<Kulu> kulut;
-	TextField kulutField;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -64,25 +73,29 @@ public class GUI extends Application implements IGUI{
 		grid.setPadding(new Insets(10, 20, 10, 20));
 		
 		
-		kulutField = new TextField();
-		kulut = kontrolleri.getKulut();
-		setKulut(kulut);
-		
+		kulutLabel = new Label();
+		kulutLabel.setWrapText(true);
+		kulutLabel.setTextAlignment(TextAlignment.JUSTIFY);
+		kulutLabel.setMaxWidth(150);
 		ostosLabel = new Label("Ostos");
 		hintaLabel = new Label("Hinta");
 		paivamaaraLabel = new Label("Päivämäärä");
-		
 		lisaaButton = new Button("Lisää ostos");
-		lisaaButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				kontrolleri.lisaaKulu();
-			}
-		});
-		
+		kulutButton = new Button("Katso kulut");
+
+		kategoriaLabel = new Label("Kategoria");
+		kuvausLabel = new Label("Kuvaus");
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
+		kategoriaField = new TextField();
+		kuvausField = new TextField();
+		
+		lisaaButton = new Button("Lisää ostos");
+		
+		uusiKategoriaLabel = new Label("Uusi kategoria");
+		uusiKategoriaField = new TextField();
+		kategoriaButton = new Button("Lisää kategoria");
 		
 		
 		grid.add(ostosLabel, 0, 0);
@@ -91,31 +104,50 @@ public class GUI extends Application implements IGUI{
 		grid.add(hintaField, 1, 1);
 		grid.add(paivamaaraLabel, 2, 0);
 		grid.add(paivamaaraField, 2, 1);
+		grid.add(kategoriaLabel, 3, 0);
+		grid.add(kategoriaField, 3, 1);
+		grid.add(kuvausLabel, 4, 0);
+		grid.add(kuvausField, 4, 1);
 		grid.add(lisaaButton, 0, 2);
+		
+		grid.add(uusiKategoriaLabel, 0, 3);
+		grid.add(uusiKategoriaField, 0, 4);
+		grid.add(kategoriaButton, 0, 5);
+		grid.add(kulutButton, 0, 6);
+		grid.add(kulutLabel, 0, 7);
+		
+		//Siirsin käyttäjän luonnin tähän kohtaan että voi testata useamman tuotteen luomista samalle käyttäjälle
+		Kayttaja kayttaja = new Kayttaja("testi", 500); //kovakoodattu kehitystyötä varten
+		
+		lisaaButton.setOnAction((event) -> {
+			String nimi = ostosField.getText();
+			double hinta = Double.parseDouble(hintaField.getText());
+			String pvm = paivamaaraField.getText();
+			LocalDate paivamaara = LocalDate.parse(pvm); //toimii nyt vain formaatissa YYYY/MM/DD
+			Kategoria kategoria = new Kategoria(kategoriaField.getText()); //muokataan myöhemmin toimimaan valikon kanssa
+			String kuvaus = kuvausField.getText();
+			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+		});
+		
+		kulutButton.setOnAction((event) -> {
+			kulut = kontrolleri.getKulut(3);
+			setKulut(kulut);
+		});
+		
+		kategoriaButton.setOnAction((event) -> {
+			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
+		});
 		
 		hbox.getChildren().add(grid);
 		
 		return hbox;
 	}
 	
-	public Kulu getKulu( ) {
-		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			return new Kulu(ostosField.getText(), Double.parseDouble(hintaField.getText()), LocalDate.parse(paivamaaraField.getText(), formatter), 
-					new Kategoria("testikategoria"),new Kayttaja("testi", 1000.00), "testikuvaus");
-		} catch (Exception e) {
-			System.out.println(e);
-			return null;
-		}
-	}
-	
 	public void setKulut(List<Kulu> kulut) {
 		String kulutteksti = kulut.stream().map(Object::toString)
                 .collect(Collectors.joining(", "));
-		this.kulutField.setText(kulutteksti);
+		this.kulutLabel.setText(kulutteksti);
 	}
-	
-		
 	
 	
 	public static void main(String[] args) {

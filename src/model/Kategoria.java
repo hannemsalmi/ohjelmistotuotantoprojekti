@@ -35,5 +35,10 @@ public class Kategoria{
 	public void setNimi(String nimi) {
 		this.nimi = nimi;
 	}
+	@Override
+	public String toString() {
+		return "Kategoria [kategoriaID=" + kategoriaID + ", nimi=" + nimi + "]";
+	}
 
+	
 }

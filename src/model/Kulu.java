@@ -2,11 +2,13 @@ package model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -20,9 +22,9 @@ public class Kulu {
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     private Kategoria kategoria;
-    @ManyToOne
+    @ManyToOne (cascade=CascadeType.ALL)
     private Kayttaja kayttaja;
     private String kuvaus;
 
@@ -92,6 +94,12 @@ public class Kulu {
 
 	public void setPaivamaara(LocalDate paivamaara) {
 		this.paivamaara = paivamaara;
+	}
+
+	@Override
+	public String toString() {
+		return "Kulu [kuluID=" + kuluID + ", nimi=" + nimi + ", summa=" + summa + ", paivamaara=" + paivamaara
+				+ ", kategoria=" + kategoria + ", kayttaja=" + kayttaja + ", kuvaus=" + kuvaus + "]";
 	}
     
     
