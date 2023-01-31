@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
@@ -25,8 +26,17 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	private Kayttaja kayttaja;
 	private Kulu kulu;
 	private Kulut kulut = new Kulut();
+	
 	public Kontrolleri(IGUI gui) {
 		this.gui = gui;
+	}
+	
+	public List<Kulu> getKulut(int kayttajaid) {
+		return kuluDao.haeKulut(kayttajaid);
+	}
+	
+	public Kulu getKulu(int kuluId) {
+		return kuluDao.haeKulu(kuluId);
 	}
 
 	@Override

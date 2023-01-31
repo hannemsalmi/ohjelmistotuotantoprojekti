@@ -3,6 +3,7 @@ package dataAccessObjects;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import model.Kulu;
 import model.Kulut;
 
@@ -15,16 +16,22 @@ public class KuluDao {
 	}
 	
 	public List<Kulu> haeKulut(int kayttajaId) {
+	    EntityManager em = datasource.MariaDbJpaConn.getInstance();
+	    em.getTransaction().begin();
+	    TypedQuery<Kulu> query = em.createQuery("SELECT k FROM Kulu k WHERE k.kayttaja.id = :kayttajaId", Kulu.class);
+	    query.setParameter("kayttajaId", kayttajaId);
+	    List<Kulu> kulut = query.getResultList();
+	    em.getTransaction().commit();
+	    return kulut;
+	}
+	
+	public Kulu haeKulu(int kuluId) { 
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
-		List<Kulu> kulut = em.createQuery("SELECT k FROM kulut k WHERE k.kayttaja_id = :kayttajaid", Kulu.class)
-                .setParameter("kayttaja_id", kayttajaId)
-                .getResultList();
-
+		Kulu kulu = em.find(Kulu.class, kuluId);
         em.getTransaction().commit();
-        
-        return kulut;
-	}
+        return kulu;
+	} //Tein testaillessa tällaisen millä voi hakea myös yhden kulun, ehkä tälle on myöhemminkin tarvetta
 	
 	public void muutaKulu(int id, Double summa, String nimi, String kuvaus) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();

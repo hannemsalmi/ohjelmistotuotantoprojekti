@@ -1,11 +1,13 @@
 package model;
 
-public class Budjettilaskuri implements IBudjettilaskuri {
+import java.util.List;
 
+public class Budjettilaskuri implements IBudjettilaskuri {
+	Kulut kulut = new Kulut();
+	
 	@Override
-	public String[] getKulut() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Kulu> getKulut() {
+		return kulut.getKulut();
 	}
 
 	@Override
