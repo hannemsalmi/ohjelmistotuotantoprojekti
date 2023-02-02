@@ -19,8 +19,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
@@ -43,9 +45,10 @@ public class GUI extends Application implements IGUI{
 	TextField uusiKategoriaField;
 	Button lisaaButton;
 	Button kategoriaButton;
-	Button kulutButton;
 	Label kulutLabel;
-	List<Kulu> kulut;
+	List<Kulu> kulut = new ArrayList<>();
+	ListView<Kulu> kulutlista = new ListView<Kulu>();
+	KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -72,16 +75,17 @@ public class GUI extends Application implements IGUI{
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 20, 10, 20));
 		
+		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(1)); // Testausta varten kovakoodattu, että sovellus hakee aina käyttäjän id:llä 1.
+		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
-		kulutLabel = new Label();
-		kulutLabel.setWrapText(true);
-		kulutLabel.setTextAlignment(TextAlignment.JUSTIFY);
-		kulutLabel.setMaxWidth(150);
+		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		setKulut(kulut);
+		
 		ostosLabel = new Label("Ostos");
 		hintaLabel = new Label("Hinta");
 		paivamaaraLabel = new Label("Päivämäärä");
 		lisaaButton = new Button("Lisää ostos");
-		kulutButton = new Button("Katso kulut");
+		kulutlista.setPrefHeight(300);
 
 		kategoriaLabel = new Label("Kategoria");
 		kuvausLabel = new Label("Kuvaus");
@@ -113,11 +117,8 @@ public class GUI extends Application implements IGUI{
 		grid.add(uusiKategoriaLabel, 0, 3);
 		grid.add(uusiKategoriaField, 0, 4);
 		grid.add(kategoriaButton, 0, 5);
-		grid.add(kulutButton, 0, 6);
-		grid.add(kulutLabel, 0, 7);
-		
-		//Siirsin käyttäjän luonnin tähän kohtaan että voi testata useamman tuotteen luomista samalle käyttäjälle
-		Kayttaja kayttaja = new Kayttaja("testi", 500); //kovakoodattu kehitystyötä varten
+		GridPane.setColumnSpan(kulutlista, 5);
+		grid.add(kulutlista, 0, 7);
 		
 		lisaaButton.setOnAction((event) -> {
 			String nimi = ostosField.getText();
@@ -127,12 +128,10 @@ public class GUI extends Application implements IGUI{
 			Kategoria kategoria = new Kategoria(kategoriaField.getText()); //muokataan myöhemmin toimimaan valikon kanssa
 			String kuvaus = kuvausField.getText();
 			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		});
-		
-		kulutButton.setOnAction((event) -> {
-			kulut = kontrolleri.getKulut(3); //Testausta varten kovakoodattuna sen käyttäjän id, jolla kuluja haetaan.
+			kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 			setKulut(kulut);
 		});
+		
 		
 		kategoriaButton.setOnAction((event) -> {
 			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
@@ -144,9 +143,8 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void setKulut(List<Kulu> kulut) {
-		String kulutteksti = kulut.stream().map(Object::toString)
-                .collect(Collectors.joining(", "));
-		this.kulutLabel.setText(kulutteksti);
+		ObservableList<Kulu> observableKulut = FXCollections.observableList(kulut);
+		this.kulutlista.setItems(observableKulut);
 	}
 	
 	

@@ -53,4 +53,8 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		kuluDao.lisaaKulu(kulu);
 	}
 	
+	public Kayttaja getKayttaja(int kayttajaid) {
+		return kayttajaDao.haeKayttajat(kayttajaid);
+	}
+	
 }

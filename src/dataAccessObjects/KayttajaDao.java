@@ -11,10 +11,10 @@ public class KayttajaDao {
         em.getTransaction().commit();
 	}
 	
-	public Kayttaja haeKayttajat(String nimimerkki) {
+	public Kayttaja haeKayttajat(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
-		Kayttaja kayttaja = em.find(Kayttaja.class, nimimerkki);
+		Kayttaja kayttaja = em.find(Kayttaja.class, id);
         em.getTransaction().commit();
         return kayttaja;
 	}

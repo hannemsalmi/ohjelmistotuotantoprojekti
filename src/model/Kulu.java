@@ -98,8 +98,8 @@ public class Kulu {
 
 	@Override
 	public String toString() {
-		return "Kulu [kuluID=" + kuluID + ", nimi=" + nimi + ", summa=" + summa + ", paivamaara=" + paivamaara
-				+ ", kategoria=" + kategoria + ", kayttaja=" + kayttaja + ", kuvaus=" + kuvaus + "]";
+		return  "Kulu: " + nimi + ", Summa: " + summa + " e, Päivämäärä: " + paivamaara
+				+ ", Kategoria: " + kategoria.getNimi() + ", Kuvaus: " + kuvaus;
 	}
     
     
