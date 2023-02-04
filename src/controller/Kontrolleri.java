@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import dataAccessObjects.KategoriaDao;
@@ -60,6 +61,15 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		kayttaja = new Kayttaja(nimi, budjetti);
 		System.out.println(kayttaja);
 		kayttajaDao.lisaaKayttaja(kayttaja);
+	}
+	
+	public List<String> getKayttajat(){
+		List<String> kayttajaNimet = new ArrayList();
+		List<Kayttaja> kayttajaObjektit = kayttajaDao.haeKayttajaLista();
+		for(Kayttaja k : kayttajaObjektit) {
+			kayttajaNimet.add(k.getNimimerkki());
+		}
+		return kayttajaNimet;
 	}
 	
 }

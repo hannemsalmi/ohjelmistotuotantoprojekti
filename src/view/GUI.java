@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -48,8 +49,10 @@ public class GUI extends Application implements IGUI{
 	Button lisaaButton;
 	Button kategoriaButton;
 	Label kulutLabel;
+	Label kayttajaValitsinLabel;
 	List<Kulu> kulut = new ArrayList<>();
 	ListView<Kulu> kulutlista = new ListView<Kulu>();
+	ComboBox<String> userProfileSelector = new ComboBox<>();
 	KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
 	
 	public void init() {
@@ -65,7 +68,7 @@ public class GUI extends Application implements IGUI{
 
 		      Label label = new Label("Luo uusi käyttäjätunnus:");
 		      TextField textField = new TextField();
-		      Label label2 = new Label("Ilmoita kuukausittainen budjettisi:");
+		      Label label2 = new Label("Aseta kuukausittainen budjettisi:");
 		      TextField textField2 = new TextField();
 		      Button button = new Button("Submit");
 
@@ -81,6 +84,7 @@ public class GUI extends Application implements IGUI{
 		          if (!username.isEmpty()) {
 		            // Create the user in the database
 		            kontrolleri.lisaaKayttaja(username, budjetti);
+		            kayttajanhallinta.kirjoitaKayttajaID(1);
 		            // Set the scene to the primary stage
 		            primaryStage.setTitle("Budjettisovellus");
 		            HBox hbox = luoHBox();
@@ -113,11 +117,11 @@ public class GUI extends Application implements IGUI{
 		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 20, 10, 20));
-		
-		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(1)); // Testausta varten kovakoodattu, että sovellus hakee aina käyttäjän id:llä 1.
+		//
+		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
-		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
 		
 		ostosLabel = new Label("Ostos");
@@ -140,7 +144,18 @@ public class GUI extends Application implements IGUI{
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
 		
-		
+		kayttajaValitsinLabel = new Label("Valitse käyttäjä");
+        userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
+        userProfileSelector.setOnAction(event -> {
+           
+            int selectedUser = userProfileSelector.getSelectionModel().getSelectedIndex() +1;
+            kayttajanhallinta.kirjoitaKayttajaID(selectedUser);
+            kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(selectedUser));
+            kulut = kontrolleri.getKulut(selectedUser);
+    		setKulut(kulut);
+            System.out.println("Logging in user: " + selectedUser);
+        });
+	
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
 		grid.add(hintaLabel, 1, 0);
@@ -151,6 +166,8 @@ public class GUI extends Application implements IGUI{
 		grid.add(kategoriaField, 3, 1);
 		grid.add(kuvausLabel, 4, 0);
 		grid.add(kuvausField, 4, 1);
+		grid.add(kayttajaValitsinLabel, 6, 0);
+		grid.add(userProfileSelector, 6, 1);
 		grid.add(lisaaButton, 0, 2);
 		
 		grid.add(uusiKategoriaLabel, 0, 3);
