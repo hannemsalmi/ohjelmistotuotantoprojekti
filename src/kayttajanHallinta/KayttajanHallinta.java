@@ -7,7 +7,7 @@ public class KayttajanHallinta {
 	private Kayttaja kirjautunutKayttaja = null;
 	
 	private KayttajanHallinta() {
-		
+	
 	}
 	
 	public static KayttajanHallinta getInstance()
