@@ -12,5 +12,6 @@ public interface IKontrolleriVtoM {
 	public abstract Kulu getKulu(int kuluid);
 	public abstract void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus);
 	public abstract void lisaaKategoria(String nimi);
-	public Kayttaja getKayttaja(int kayttajaid);
+	public abstract Kayttaja getKayttaja(int kayttajaid);
+	public abstract void lisaaKayttaja(String nimi, double budjetti);
 }

@@ -56,5 +56,10 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	public Kayttaja getKayttaja(int kayttajaid) {
 		return kayttajaDao.haeKayttajat(kayttajaid);
 	}
+	public void lisaaKayttaja(String nimi, double budjetti) {
+		kayttaja = new Kayttaja(nimi, budjetti);
+		System.out.println(kayttaja);
+		kayttajaDao.lisaaKayttaja(kayttaja);
+	}
 	
 }
