@@ -41,6 +41,5 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		System.out.println(kulu);
 		kuluDao.lisaaKulu(kulu);
-	}
-	
+	}	
 }
