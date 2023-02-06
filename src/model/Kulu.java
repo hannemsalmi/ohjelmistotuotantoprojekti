@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -97,8 +98,8 @@ public class Kulu {
 
 	@Override
 	public String toString() {
-		return "Kulu [kuluID=" + kuluID + ", nimi=" + nimi + ", summa=" + summa + ", paivamaara=" + paivamaara
-				+ ", kategoria=" + kategoria + ", kayttaja=" + kayttaja + ", kuvaus=" + kuvaus + "]";
+		return  "Kulu: " + nimi + ", Summa: " + summa + " e, Päivämäärä: " + paivamaara
+				+ ", Kategoria: " + kategoria.getNimi() + ", Kuvaus: " + kuvaus;
 	}
     
     

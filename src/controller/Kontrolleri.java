@@ -1,6 +1,8 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
@@ -25,8 +27,17 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	private Kayttaja kayttaja;
 	private Kulu kulu;
 	private Kulut kulut = new Kulut();
+	
 	public Kontrolleri(IGUI gui) {
 		this.gui = gui;
+	}
+	
+	public List<Kulu> getKulut(int kayttajaid) {
+		return kuluDao.haeKulut(kayttajaid);
+	}
+	
+	public Kulu getKulu(int kuluId) {
+		return kuluDao.haeKulu(kuluId);
 	}
 
 	@Override
@@ -41,5 +52,23 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		System.out.println(kulu);
 		kuluDao.lisaaKulu(kulu);
-	}	
+	}
+	
+	public Kayttaja getKayttaja(int kayttajaid) {
+		return kayttajaDao.haeKayttajat(kayttajaid);
+	}
+	public void lisaaKayttaja(String nimi, double budjetti) {
+		kayttaja = new Kayttaja(nimi, budjetti);
+		System.out.println(kayttaja);
+		kayttajaDao.lisaaKayttaja(kayttaja);
+	}
+	
+	public List<String> getKayttajat(){
+		List<String> kayttajaNimet = new ArrayList<String>();
+		List<Kayttaja> kayttajaObjektit = kayttajaDao.haeKayttajaLista();
+		for(Kayttaja k : kayttajaObjektit) {
+			kayttajaNimet.add(k.getNimimerkki());
+		}
+		return kayttajaNimet;
+	}
 }
