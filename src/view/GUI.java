@@ -47,6 +47,7 @@ public class GUI extends Application implements IGUI{
 	Label uusiKategoriaLabel;
 	TextField uusiKategoriaField;
 	Button lisaaButton;
+	Button lisaaKayttajaButton;
 	Button kategoriaButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
@@ -70,7 +71,7 @@ public class GUI extends Application implements IGUI{
 		      TextField textField = new TextField();
 		      Label label2 = new Label("Aseta kuukausittainen budjettisi:");
 		      TextField textField2 = new TextField();
-		      Button button = new Button("Submit");
+		      Button button = new Button("Luo käyttäjä");
 
 		      VBox vbox = new VBox();
 		      vbox.getChildren().addAll(label, textField, label2, textField2, button);
@@ -82,10 +83,8 @@ public class GUI extends Application implements IGUI{
 		          String username = textField.getText();
 		          double budjetti = Double.parseDouble(textField2.getText());
 		          if (!username.isEmpty()) {
-		            // Create the user in the database
 		            kontrolleri.lisaaKayttaja(username, budjetti);
 		            kayttajanhallinta.kirjoitaKayttajaID(1);
-		            // Set the scene to the primary stage
 		            primaryStage.setTitle("Budjettisovellus");
 		            HBox hbox = luoHBox();
 		            Scene mainScene = new Scene(hbox);
@@ -139,15 +138,15 @@ public class GUI extends Application implements IGUI{
 		kuvausField = new TextField();
 		
 		lisaaButton = new Button("Lisää ostos");
-		
+		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
 		uusiKategoriaLabel = new Label("Uusi kategoria");
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
 		
 		kayttajaValitsinLabel = new Label("Valitse käyttäjä");
         userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
+        userProfileSelector.getSelectionModel().select(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID()-1);
         userProfileSelector.setOnAction(event -> {
-           
             int selectedUser = userProfileSelector.getSelectionModel().getSelectedIndex() +1;
             kayttajanhallinta.kirjoitaKayttajaID(selectedUser);
             kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(selectedUser));
@@ -155,7 +154,7 @@ public class GUI extends Application implements IGUI{
     		setKulut(kulut);
             System.out.println("Logging in user: " + selectedUser);
         });
-	
+        
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
 		grid.add(hintaLabel, 1, 0);
@@ -168,6 +167,7 @@ public class GUI extends Application implements IGUI{
 		grid.add(kuvausField, 4, 1);
 		grid.add(kayttajaValitsinLabel, 6, 0);
 		grid.add(userProfileSelector, 6, 1);
+		grid.add(lisaaKayttajaButton, 7, 1);
 		grid.add(lisaaButton, 0, 2);
 		
 		grid.add(uusiKategoriaLabel, 0, 3);
@@ -192,7 +192,9 @@ public class GUI extends Application implements IGUI{
 		kategoriaButton.setOnAction((event) -> {
 			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
 		});
-		
+		lisaaKayttajaButton.setOnAction((event) -> {
+			luoKayttajaIkkuna();
+		});
 		hbox.getChildren().add(grid);
 		
 		return hbox;
@@ -203,6 +205,37 @@ public class GUI extends Application implements IGUI{
 		this.kulutlista.setItems(observableKulut);
 	}
 	
+	public void luoKayttajaIkkuna() {
+		StackPane root = new StackPane();
+	    Scene scene = new Scene(root, 400, 400);
+	    Stage stage = new Stage();
+	    Label label = new Label("Luo uusi käyttäjätunnus:");
+	    TextField textField = new TextField();
+	    Label label2 = new Label("Aseta kuukausittainen budjettisi:");
+	    TextField textField2 = new TextField();
+	    Button button = new Button("Luo käyttäjä");
+
+	    VBox vbox = new VBox();
+	    vbox.getChildren().addAll(label, textField, label2, textField2, button);
+	    root.getChildren().add(vbox);
+
+	    button.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	      public void handle(ActionEvent event) {
+	        String username = textField.getText();
+	        double budjetti = Double.parseDouble(textField2.getText());
+	        if (!username.isEmpty()) {
+	          kontrolleri.lisaaKayttaja(username, budjetti);
+	          textField.clear();
+	          textField2.clear();
+	          userProfileSelector.getItems().add(username);
+	        }
+	      }
+	    });
+
+	      stage.setScene(scene);
+	      stage.show();
+	}
 	
 	public static void main(String[] args) {
 		launch(args);
