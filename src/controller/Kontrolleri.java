@@ -64,12 +64,11 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	}
 	
 	public List<String> getKayttajat(){
-		List<String> kayttajaNimet = new ArrayList();
+		List<String> kayttajaNimet = new ArrayList<String>();
 		List<Kayttaja> kayttajaObjektit = kayttajaDao.haeKayttajaLista();
 		for(Kayttaja k : kayttajaObjektit) {
 			kayttajaNimet.add(k.getNimimerkki());
 		}
 		return kayttajaNimet;
 	}
-	
 }

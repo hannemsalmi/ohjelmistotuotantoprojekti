@@ -2,9 +2,13 @@ package view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import javax.swing.JComboBox;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import controller.IKontrolleriVtoM;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -27,6 +31,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
+import model.Kategoriat;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
@@ -43,6 +48,7 @@ public class GUI extends Application implements IGUI{
 	TextField hintaField;
 	TextField paivamaaraField;
 	TextField kategoriaField; // muokataan myöhemmin valikoksi, josta saa valita haluamansa kategorian
+	JComboBox kategoriaBox;
 	TextField kuvausField;
 	Label uusiKategoriaLabel;
 	TextField uusiKategoriaField;
@@ -135,8 +141,10 @@ public class GUI extends Application implements IGUI{
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
-		kategoriaField = new TextField();
+		//kategoriaField = new TextField();
 		kuvausField = new TextField();
+		
+		kategoriaBox = new JComboBox();
 		
 		lisaaButton = new Button("Lisää ostos");
 		
