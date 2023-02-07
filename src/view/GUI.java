@@ -140,7 +140,7 @@ public class GUI extends Application implements IGUI{
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
-		//kategoriaField = new TextField();
+		kategoriaField = new TextField();
 		kuvausField = new TextField();
 		
 		kategoriaBox = new JComboBox();
