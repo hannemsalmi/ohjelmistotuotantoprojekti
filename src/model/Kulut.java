@@ -16,7 +16,9 @@ public class Kulut {
     }
     
     public void lisaaKulu(Kulu kulu) {
-        kulut.add(kulu);
+    	if(kulu.getSumma() <= kulu.getKayttaja().getMaksimibudjetti()) {
+    		kulut.add(kulu);
+    	}
     }
     
     public void lisaaKulut(List<Kulu> kulut) {
