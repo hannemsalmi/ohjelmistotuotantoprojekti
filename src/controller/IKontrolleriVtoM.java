@@ -15,4 +15,6 @@ public interface IKontrolleriVtoM {
 	public abstract Kayttaja getKayttaja(int kayttajaid);
 	public abstract void lisaaKayttaja(String nimi, double budjetti);
 	public abstract List<String> getKayttajat();
+	public abstract List<String> getKategorianimet();
+	public abstract Kategoria getKategoria(String nimi);
 }

@@ -3,8 +3,6 @@ package view;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import javax.swing.JComboBox;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -47,8 +46,7 @@ public class GUI extends Application implements IGUI{
 	TextField ostosField;
 	TextField hintaField;
 	TextField paivamaaraField;
-	TextField kategoriaField; // muokataan myöhemmin valikoksi, josta saa valita haluamansa kategorian
-	JComboBox kategoriaBox;
+	ComboBox<String> kategoriaBox;
 	TextField kuvausField;
 	Label uusiKategoriaLabel;
 	TextField uusiKategoriaField;
@@ -140,10 +138,11 @@ public class GUI extends Application implements IGUI{
 		ostosField = new TextField();
 		hintaField = new TextField();
 		paivamaaraField = new TextField();
-		kategoriaField = new TextField();
 		kuvausField = new TextField();
 		
-		kategoriaBox = new JComboBox();
+		kategoriaBox = new ComboBox<>();
+		kategoriaBox.setEditable(true);
+		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
 		
 		lisaaButton = new Button("Lisää ostos");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
@@ -170,7 +169,7 @@ public class GUI extends Application implements IGUI{
 		grid.add(paivamaaraLabel, 2, 0);
 		grid.add(paivamaaraField, 2, 1);
 		grid.add(kategoriaLabel, 3, 0);
-		grid.add(kategoriaField, 3, 1);
+		grid.add(kategoriaBox, 3, 1);
 		grid.add(kuvausLabel, 4, 0);
 		grid.add(kuvausField, 4, 1);
 		grid.add(kayttajaValitsinLabel, 6, 0);
@@ -189,7 +188,8 @@ public class GUI extends Application implements IGUI{
 			double hinta = Double.parseDouble(hintaField.getText());
 			String pvm = paivamaaraField.getText();
 			LocalDate paivamaara = LocalDate.parse(pvm); //toimii nyt vain formaatissa YYYY/MM/DD
-			Kategoria kategoria = new Kategoria(kategoriaField.getText()); //muokataan myöhemmin toimimaan valikon kanssa
+			String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
+			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
 			String kuvaus = kuvausField.getText();
 			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 			kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());

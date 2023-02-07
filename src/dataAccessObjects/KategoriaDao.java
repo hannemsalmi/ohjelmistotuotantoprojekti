@@ -1,7 +1,12 @@
 package dataAccessObjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import model.Kategoria;
+import model.Kayttaja;
 
 public class KategoriaDao {
 	public void lisaaKategoria(Kategoria kategoria) {
@@ -19,6 +24,14 @@ public class KategoriaDao {
         return kategoria;
 	}
 	
+	public List<Kategoria> haeKategoriaLista(){
+		EntityManager em = datasource.MariaDbJpaConn.getInstance();
+		em.getTransaction().begin();
+		TypedQuery<Kategoria> query = em.createQuery("SELECT k FROM Kategoria k ORDER BY k.id ASC", Kategoria.class);
+		List<Kategoria> kategoriaLista = query.getResultList();
+		em.getTransaction().commit();
+		return kategoriaLista;
+	}
 	
 	public void poistaKategoria(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
