@@ -12,8 +12,7 @@ public class Budjettilaskuri implements IBudjettilaskuri {
 
 	@Override
 	public double laskeBudjetti(double budjetti, double kulutettu) {
-		// TODO Auto-generated method stub
-		return 0;
+		return budjetti-kulutettu;
 	}
 	
 
