@@ -197,6 +197,18 @@ public class GUI extends Application implements IGUI{
 			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 			kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 			setKulut(kulut);
+			
+			List<String> kategorianimet = kontrolleri.getKategorianimet();
+			boolean puuttuukoListalta = false;
+			for(String nimiString : kategorianimet) {
+				if(nimiString != kategorianNimi) {
+					puuttuukoListalta = true;
+				}
+			}
+			if(puuttuukoListalta == true) {
+				kategoriaBox.getItems().add(kategorianNimi);
+			}
+			
 			ostosField.clear();
 			hintaField.clear();
 			paivamaaraField.clear();
@@ -222,7 +234,6 @@ public class GUI extends Application implements IGUI{
 		return hbox;
 	}
 	
-
 	public void setKulut(List<Kulu> kulut) {
 		ObservableList<Kulu> observableKulut = FXCollections.observableList(kulut);
 		this.kulutlista.setItems(observableKulut);
