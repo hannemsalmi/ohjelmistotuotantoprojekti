@@ -52,6 +52,7 @@ public class GUI extends Application implements IGUI{
 	TextField uusiKategoriaField;
 	Button lisaaButton;
 	Button lisaaKayttajaButton;
+	Button kayttajaAsetusButton;
 	Button kategoriaButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
@@ -146,6 +147,7 @@ public class GUI extends Application implements IGUI{
 		
 		lisaaButton = new Button("Lisää ostos");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
+		kayttajaAsetusButton = new Button("Käyttäjäasetukset");
 		uusiKategoriaLabel = new Label("Uusi kategoria");
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
@@ -175,6 +177,7 @@ public class GUI extends Application implements IGUI{
 		grid.add(kayttajaValitsinLabel, 6, 0);
 		grid.add(userProfileSelector, 6, 1);
 		grid.add(lisaaKayttajaButton, 7, 1);
+		grid.add(kayttajaAsetusButton, 7, 2);
 		grid.add(lisaaButton, 0, 2);
 		
 		grid.add(uusiKategoriaLabel, 0, 3);
@@ -199,15 +202,22 @@ public class GUI extends Application implements IGUI{
 		
 		kategoriaButton.setOnAction((event) -> {
 			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
+			kategoriaBox.getItems().add(uusiKategoriaField.getText());
+			uusiKategoriaField.clear();
+			
 		});
 		lisaaKayttajaButton.setOnAction((event) -> {
 			luoKayttajaIkkuna();
+		});
+		kayttajaAsetusButton.setOnAction((event) -> {
+			luoAsetusIkkuna();
 		});
 		hbox.getChildren().add(grid);
 		
 		return hbox;
 	}
 	
+
 	public void setKulut(List<Kulu> kulut) {
 		ObservableList<Kulu> observableKulut = FXCollections.observableList(kulut);
 		this.kulutlista.setItems(observableKulut);
@@ -243,6 +253,34 @@ public class GUI extends Application implements IGUI{
 
 	      stage.setScene(scene);
 	      stage.show();
+	}
+	public void luoAsetusIkkuna() {
+		StackPane root = new StackPane();
+	    Scene scene = new Scene(root, 400, 400);
+	    Stage stage = new Stage();
+	    Label label = new Label("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti() );
+	    Label label2 = new Label("Aseta kuukausittainen budjettisi:");
+	    TextField textField = new TextField();
+	    Button button = new Button("Tallenna");
+
+	    VBox vbox = new VBox();
+	    vbox.getChildren().addAll(label, label2, textField, button);
+	    root.getChildren().add(vbox);
+
+	    button.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	      public void handle(ActionEvent event) {
+	        double budjetti = Double.parseDouble(textField.getText());
+	        kontrolleri.paivitaBudjetti(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID(), budjetti);
+	        kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
+	        label.setText("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti());
+	        textField.clear();
+	      }
+	    });
+
+	      stage.setScene(scene);
+	      stage.show();
+		
 	}
 	
 	public static void main(String[] args) {

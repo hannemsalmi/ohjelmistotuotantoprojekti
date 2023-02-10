@@ -23,6 +23,17 @@ public class KayttajaDao {
         return kayttaja;
 	}
 	
+	public void paivitaBudjetti(int id, double budjetti) {
+		EntityManager em = datasource.MariaDbJpaConn.getInstance();
+		em.getTransaction().begin();
+		Kayttaja kayttaja = em.find(Kayttaja.class, id);
+		if (kayttaja != null) {
+			kayttaja.setMaksimibudjetti(budjetti);
+			em.merge(kayttaja);
+		}
+		em.getTransaction().commit();
+	}
+	
 	public List<Kayttaja> haeKayttajaLista() {
 	    EntityManager em = datasource.MariaDbJpaConn.getInstance();
 	    em.getTransaction().begin();

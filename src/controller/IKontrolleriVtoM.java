@@ -17,4 +17,5 @@ public interface IKontrolleriVtoM {
 	public abstract List<String> getKayttajat();
 	public abstract List<String> getKategorianimet();
 	public abstract Kategoria getKategoria(String nimi);
+	public abstract void paivitaBudjetti(int kayttajaID, double budjetti);
 }

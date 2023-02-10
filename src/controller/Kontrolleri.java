@@ -93,4 +93,9 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		}
 		return etsitty;
 	}
+
+	@Override
+	public void paivitaBudjetti(int kayttajaID, double budjetti) {
+		kayttajaDao.paivitaBudjetti(kayttajaID, budjetti);
+	}
 }
