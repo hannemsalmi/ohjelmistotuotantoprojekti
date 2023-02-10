@@ -197,6 +197,11 @@ public class GUI extends Application implements IGUI{
 			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 			kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 			setKulut(kulut);
+			ostosField.clear();
+			hintaField.clear();
+			paivamaaraField.clear();
+			kategoriaBox.getSelectionModel().clearSelection();
+			kuvausField.clear();
 		});
 		
 		
