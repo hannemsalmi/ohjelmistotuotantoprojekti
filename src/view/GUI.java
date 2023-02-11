@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -47,6 +48,7 @@ public class GUI extends Application implements IGUI{
 	TextField hintaField;
 	TextField paivamaaraField;
 	ComboBox<String> kategoriaBox;
+	ComboBox<String> kategoriaBox2;
 	TextField kuvausField;
 	Label uusiKategoriaLabel;
 	TextField uusiKategoriaField;
@@ -60,6 +62,9 @@ public class GUI extends Application implements IGUI{
 	ListView<Kulu> kulutlista = new ListView<Kulu>();
 	ComboBox<String> userProfileSelector = new ComboBox<>();
 	KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
+	List<Kulu> suodatetutKulut = new ArrayList<>();
+	DatePicker pvmValitsin = new DatePicker();
+	LocalDate paivamaara;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -145,6 +150,31 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox.setEditable(true);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
 		
+		kategoriaBox2 = new ComboBox<>();
+		kategoriaBox2.setEditable(false);
+
+		kategoriaBox2.getItems().addAll(kontrolleri.getKategorianimet());
+		kategoriaBox2.getItems().add("Kaikki");
+		kategoriaBox2.getSelectionModel().select("Kaikki");
+
+		ObservableList<Kulu> alkuperainenList = FXCollections.observableList(kulut);
+
+		kategoriaBox2.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        String valittuKategoria = kategoriaBox2.getSelectionModel().getSelectedItem();
+		        if (valittuKategoria.equals("Kaikki")) {
+		            kulutlista.setItems(alkuperainenList);
+		        } else {
+		            List<Kulu> suodatetutKulut = kulut.stream()
+		                .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+		                .collect(Collectors.toList());
+		            ObservableList<Kulu> suodatetutKulutList = FXCollections.observableList(suodatetutKulut);
+		            kulutlista.setItems(suodatetutKulutList);
+		        }
+		    }
+		});
+		
 		lisaaButton = new Button("Lisää ostos");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
 		kayttajaAsetusButton = new Button("Käyttäjäasetukset");
@@ -164,12 +194,13 @@ public class GUI extends Application implements IGUI{
             System.out.println("Logging in user: " + selectedUser);
         });
         
+        
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
 		grid.add(hintaLabel, 1, 0);
 		grid.add(hintaField, 1, 1);
 		grid.add(paivamaaraLabel, 2, 0);
-		grid.add(paivamaaraField, 2, 1);
+		grid.add(pvmValitsin, 2, 1);
 		grid.add(kategoriaLabel, 3, 0);
 		grid.add(kategoriaBox, 3, 1);
 		grid.add(kuvausLabel, 4, 0);
@@ -184,13 +215,22 @@ public class GUI extends Application implements IGUI{
 		grid.add(uusiKategoriaField, 0, 4);
 		grid.add(kategoriaButton, 0, 5);
 		GridPane.setColumnSpan(kulutlista, 5);
-		grid.add(kulutlista, 0, 7);
+		grid.add(kategoriaBox2, 4, 7);
+		grid.add(kulutlista, 0, 8);
+		
+		
+		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        setPaivamaara(pvmValitsin.getValue());
+		    }
+		});
 		
 		lisaaButton.setOnAction((event) -> {
 			String nimi = ostosField.getText();
 			double hinta = Double.parseDouble(hintaField.getText());
-			String pvm = paivamaaraField.getText();
-			LocalDate paivamaara = LocalDate.parse(pvm); //toimii nyt vain formaatissa YYYY/MM/DD
+		
+			
 			String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
 			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
 			String kuvaus = kuvausField.getText();
@@ -296,6 +336,11 @@ public class GUI extends Application implements IGUI{
 
 	      stage.setScene(scene);
 	      stage.show();
+		
+	}
+	
+	private void setPaivamaara(LocalDate valittupaiva) {
+		paivamaara = valittupaiva;
 		
 	}
 	
