@@ -12,6 +12,10 @@ public class Kategoriat {
 	
 	public Kategoriat() {
 		kategoriat = new ArrayList<>();
+		ruoka = new Kategoria("Ruoka");
+		viihde = new Kategoria("Viihde");
+		harrastukset = new Kategoria("Harrastukset");
+		talouslaskut = new Kategoria("Talouslaskut");
 
 		// Esimerkki aloituskategoriat:  
 		kategoriat.add(ruoka);

@@ -98,7 +98,7 @@ public class Kulu {
 
 	@Override
 	public String toString() {
-		return  "Kulu: " + nimi + ", Summa: " + summa + " e, Päivämäärä: " + paivamaara
+		return  "Kulu: " + nimi + ", Summa: " + String.format("%.2f",summa) + " e, Päivämäärä: " + paivamaara
 				+ ", Kategoria: " + kategoria.getNimi() + ", Kuvaus: " + kuvaus;
 	}
     

@@ -11,11 +11,11 @@ public class Testi {
 		Budjettilaskuri laskuri = new Budjettilaskuri();
 		Kayttaja kayttaja = new Kayttaja("Maija",2.50);
 		Kategoriat kategoriat = new Kategoriat();
-		List<Kategoria> kategorialista= new ArrayList<>();
+		List<Kategoria> kategorialista = new ArrayList<>();
 		kategorialista = kategoriat.getKategoriat();
 		LocalDate tanaan = LocalDate.now();
 		Kulut kulut = new Kulut();
-		Kulu laku = new Kulu("Lakritsi",2.50,tanaan,kategorialista.get(0),kayttaja,"makeanhimo");
+		Kulu laku = new Kulu("Lakritsi",2.40,tanaan,kategorialista.get(0),kayttaja,"makeanhimo");
 		kulut.lisaaKulu(laku);
 		//kayttaja.setMaksimibudjetti(800);
 		//System.out.println(String.format("%.2f",laskuri.laskeBudjetti(kayttaja.getMaksimibudjetti(), laku.getSumma())));
