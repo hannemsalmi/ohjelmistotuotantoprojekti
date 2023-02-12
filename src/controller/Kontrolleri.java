@@ -23,7 +23,6 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	private KayttajaDao kayttajaDao = new KayttajaDao();
 	private KuluDao kuluDao = new KuluDao();
 	private Kategoria kategoria;
-	private Kategoriat kategoriat;
 	private Kayttaja kayttaja;
 	private Kulu kulu;
 	private Kulut kulut = new Kulut();
@@ -70,5 +69,33 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 			kayttajaNimet.add(k.getNimimerkki());
 		}
 		return kayttajaNimet;
+	}
+	
+	public List<String> getKategorianimet() {
+		List<String> kategoriaNimet = new ArrayList<String>();
+		List<Kategoria> kategoriaObjektit = kategoriaDao.haeKategoriaLista();
+		for(Kategoria k : kategoriaObjektit) {
+			kategoriaNimet.add(k.getNimi());
+		}
+		return kategoriaNimet;
+	}
+	
+	public Kategoria getKategoria(String nimi) {
+		List<Kategoria> kategoriaObjektit2 = kategoriaDao.haeKategoriaLista();
+		Kategoria etsitty = null;
+		for(Kategoria k : kategoriaObjektit2) {
+			if(k.getNimi() == nimi) {
+				etsitty = k;
+			}
+		}
+		if (etsitty == null) {
+			etsitty = new Kategoria(nimi);
+		}
+		return etsitty;
+	}
+
+	@Override
+	public void paivitaBudjetti(int kayttajaID, double budjetti) {
+		kayttajaDao.paivitaBudjetti(kayttajaID, budjetti);
 	}
 }
