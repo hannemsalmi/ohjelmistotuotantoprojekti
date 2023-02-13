@@ -16,6 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -54,6 +57,7 @@ public class GUI extends Application implements IGUI{
 	Button lisaaKayttajaButton;
 	Button kayttajaAsetusButton;
 	Button kategoriaButton;
+	Button kulutusTrendiButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
 	List<Kulu> kulut = new ArrayList<>();
@@ -151,6 +155,7 @@ public class GUI extends Application implements IGUI{
 		uusiKategoriaLabel = new Label("Uusi kategoria");
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
+		kulutusTrendiButton = new Button("Näytä kulutus graafi");
 		
 		kayttajaValitsinLabel = new Label("Valitse käyttäjä");
         userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
@@ -179,6 +184,7 @@ public class GUI extends Application implements IGUI{
 		grid.add(lisaaKayttajaButton, 7, 1);
 		grid.add(kayttajaAsetusButton, 7, 2);
 		grid.add(lisaaButton, 0, 2);
+		grid.add(kulutusTrendiButton, 7, 4);
 		
 		grid.add(uusiKategoriaLabel, 0, 3);
 		grid.add(uusiKategoriaField, 0, 4);
@@ -212,6 +218,10 @@ public class GUI extends Application implements IGUI{
 		kayttajaAsetusButton.setOnAction((event) -> {
 			luoAsetusIkkuna();
 		});
+		kulutusTrendiButton.setOnAction((event) -> {
+			luoKuluGraph();
+		});
+		
 		hbox.getChildren().add(grid);
 		
 		return hbox;
@@ -281,6 +291,25 @@ public class GUI extends Application implements IGUI{
 	      stage.setScene(scene);
 	      stage.show();
 		
+	}
+	
+	public void luoKuluGraph() {
+		LineChart<Number, Number> lineChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+		lineChart.setTitle("Kulutus trendi");
+
+		XYChart.Series<Number, Number> series = new XYChart.Series<>();
+		series.setName("Kuukauden nimi");
+		List<Kulu> data = kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		for (int i = 0; i < data .size(); i++) {
+		  series.getData().add(new XYChart.Data<>(i, data.get(i).getSumma()));
+		}
+		lineChart.getData().add(series);
+
+		Scene scene = new Scene(lineChart, 800, 600);
+
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	public static void main(String[] args) {
