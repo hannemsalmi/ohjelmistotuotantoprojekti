@@ -14,12 +14,15 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -41,6 +44,7 @@ import model.Kulut;
 import controller.Kontrolleri;
 
 public class GUI extends Application implements IGUI{
+	private static final int List = 0;
 	private IKontrolleriVtoM kontrolleri;
 	Label ostosLabel;
 	Label hintaLabel;
@@ -60,6 +64,7 @@ public class GUI extends Application implements IGUI{
 	Button kayttajaAsetusButton;
 	Button kategoriaButton;
 	Button kulutusTrendiButton;
+	Button kuluDiagrammiButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
 	List<Kulu> kulut = new ArrayList<>();
@@ -186,6 +191,7 @@ public class GUI extends Application implements IGUI{
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
 		kulutusTrendiButton = new Button("Näytä kulutus graafi");
+		kuluDiagrammiButton = new Button("Näytä kuludiagrammi");
 		
 		kayttajaValitsinLabel = new Label("Valitse käyttäjä");
         userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
@@ -223,6 +229,7 @@ public class GUI extends Application implements IGUI{
 		GridPane.setColumnSpan(kulutlista, 5);
 		grid.add(kategoriaBox2, 4, 7);
 		grid.add(kulutlista, 0, 8);
+		grid.add(kuluDiagrammiButton, 0, 9);
 		
 		
 		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
@@ -277,6 +284,11 @@ public class GUI extends Application implements IGUI{
 		});
 		kulutusTrendiButton.setOnAction((event) -> {
 			luoKuluGraph();
+		});
+		
+		
+		kuluDiagrammiButton.setOnAction((event) -> {
+			luoKuluDiagrammi();
 		});
 		
 		hbox.getChildren().add(grid);
@@ -369,6 +381,28 @@ public class GUI extends Application implements IGUI{
 		Stage stage = new Stage();
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	public void luoKuluDiagrammi() {
+	    List<String> kategoriat = kontrolleri.getKategorianimet();
+	    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+	    PieChart.Data firstData = new PieChart.Data(kategoriat.get(0), 0);
+	    pieChartData.add(firstData);
+
+	    for (int i = 1; i < kategoriat.size(); i++) {
+	        PieChart.Data data = new PieChart.Data(kategoriat.get(i), i);
+	        pieChartData.add(data);
+	    }
+
+	    PieChart pieChart = new PieChart(pieChartData);
+	    pieChart.setTitle("Kulut kategorioittain");
+
+	    Scene scene = new Scene(new Group(pieChart), 500, 400);
+
+	    Stage stage = new Stage();
+	    stage.setScene(scene);
+	    stage.show();
 	}
 	
 	public static void main(String[] args) {
