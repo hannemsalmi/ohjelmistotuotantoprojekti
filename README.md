@@ -9,6 +9,6 @@ Desktop application that allows user to add expenses and track their spending. S
 * Choosing who is using the app
 * Viewing expenses in list and filtering expenses by cathegory
 
-##Technologies used:
+## Technologies used:
 * Java
 * JavaFX
