@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
@@ -365,14 +366,19 @@ public class GUI extends Application implements IGUI{
 		paivamaara = valittupaiva;
 }
 	public void luoKuluGraph() {
-		LineChart<Number, Number> lineChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+		LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
 		lineChart.setTitle("Kulutus trendi");
-
-		XYChart.Series<Number, Number> series = new XYChart.Series<>();
-		series.setName("Kuukauden nimi");
-		List<Kulu> data = kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		int kulutSumma = 0;
+		XYChart.Series<String, Number> series = new XYChart.Series<>();
+		series.setName(LocalDate.now().getMonth().toString());
+		List<Kulu> data = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 		for (int i = 0; i < data .size(); i++) {
-		  series.getData().add(new XYChart.Data<>(i, data.get(i).getSumma()));
+			LocalDate date = data.get(i).getPaivamaara();
+			if (date.getMonth() == LocalDate.now().getMonth()) {
+				kulutSumma += data.get(i).getSumma();
+				String dayOfMonth = String.format("%02d.", date.getDayOfMonth());
+				series.getData().add(new XYChart.Data<>(dayOfMonth, kulutSumma));
+			}
 		}
 		lineChart.getData().add(series);
 
