@@ -4,8 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 import controller.IKontrolleriVtoM;
 import javafx.application.Application;
@@ -366,28 +370,124 @@ public class GUI extends Application implements IGUI{
 		paivamaara = valittupaiva;
 }
 	public void luoKuluGraph() {
+		
 		LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
 		lineChart.setTitle("Kulutus trendi");
+
+		// Initialize a variable to keep track of the total expenditure
 		int kulutSumma = 0;
+		int lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).getDayOfMonth();
+		// Create a series for the chart data
 		XYChart.Series<String, Number> series = new XYChart.Series<>();
 		series.setName(LocalDate.now().getMonth().toString());
+
+		// Get a list of expenditures for the logged in user
 		List<Kulu> data = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+
+		
+		int currentMonth = LocalDate.now().getMonthValue();
+
+		// Sort the list of expenditures based on their date
+		Collections.sort(data, new Comparator<Kulu>() {
+		  public int compare(Kulu k1, Kulu k2) {
+		    return k1.getPaivamaara().compareTo(k2.getPaivamaara());
+		  }
+		});
+
+		// Initialize two arrays to store the x and y values of the chart data
+		double[] xValues = new double[data.size()];
+		double[] yValues = new double[data.size()];
+
+		// Initialize a variable to keep track of the number of data points
+		int count = 0;
+
+		// Loop through the list of expenditures
 		for (int i = 0; i < data .size(); i++) {
-			LocalDate date = data.get(i).getPaivamaara();
-			if (date.getMonth() == LocalDate.now().getMonth()) {
-				kulutSumma += data.get(i).getSumma();
-				String dayOfMonth = String.format("%02d.", date.getDayOfMonth());
-				series.getData().add(new XYChart.Data<>(dayOfMonth, kulutSumma));
-			}
+		  // Get the date object of the current expenditure
+		  LocalDate date = data.get(i).getPaivamaara();
+
+		  // If the date is in the current month, add the data to the x and y arrays
+		  if (date.getMonthValue() == currentMonth) {
+		    xValues[count] = date.getDayOfMonth();
+		    kulutSumma += data.get(i).getSumma();
+		    yValues[count] = kulutSumma;
+		    count++;
+		  }
 		}
+
+		// Create a new instance of SimpleRegression class which is a class in Apache Commons Math library 
+		// that implements simple linear regression.
+		SimpleRegression regression = new SimpleRegression();
+
+		// For each data point, add the x and y values to the regression model.
+		for (int i = 0; i < xValues.length; i++) {
+		    regression.addData(xValues[i], yValues[i]);
+		}
+
+		// This code block generates a series of data points to be displayed on the x-axis and y-axis of the line chart.
+		// The purpose of this code is to display the expenditures on every day of the current month, not just on the days where there are expenditures.
+		// It does this by looping through every day of the current month and checking if there is a corresponding expenditure for that day.
+		// If there is an expenditure for that day, it adds that day's date and the cumulative expenditure up to that day to the series.
+		// If there is no expenditure for that day, it adds that day's date and a value of 0 to the series.
+
+		for (int i = 1; i <= lastDayOfMonth; i++) {
+		    boolean found = false;
+		    // loop through all the expenditures so far in the current month
+		    for (int j = 0; j < count; j++) {
+		        // if there is an expenditure on the current day of the loop
+		        if ((int) xValues[j] == i) {
+		            // format the day of the month as a two digit string (e.g. "01", "02", ..., "31")
+		            String dayOfMonth = String.format("%02d.", (int) xValues[j]);
+		            // add the day of the month and the cumulative expenditure up to that day to the series
+		            series.getData().add(new XYChart.Data<>(dayOfMonth, yValues[j]));
+		            found = true;
+		            break;
+		        }
+		    }
+		    // if there is no expenditure on the current day of the loop
+		    if (!found) {
+		        // format the day of the month as a two digit string (e.g. "01", "02", ..., "31")
+		        String dayOfMonth = String.format("%02d.", i);
+		        // add the day of the month and a value of 0 to the series
+		        series.getData().add(new XYChart.Data<>(dayOfMonth, 0));
+		    }
+		}
+
+
+		// Add the series to the line chart.
 		lineChart.getData().add(series);
 
+		// Calculate the slope and intercept of the regression line.
+		double slope = regression.getSlope();
+		double intercept = regression.getIntercept();
+
+		// Create a new series for the extrapolated data.
+		XYChart.Series<String, Number> extrapolationSeries = new XYChart.Series<>();
+		extrapolationSeries.setName("Ennuste loppukuun kuluista");
+
+		// Add extrapolated data points to the series, using the slope and intercept of the regression line so that the trend is clearly visible in to the future.
+		for (int i = 1; i <= lastDayOfMonth + 3; i++) {
+		    String dayOfMonth = String.format("%02d.", i);
+		    extrapolationSeries.getData().add(new XYChart.Data<>(dayOfMonth, slope * i + intercept));
+		}
+
+		// Add the extrapolated series to the line chart.
+		lineChart.getData().add(extrapolationSeries);
+		
+		// New series is created to display the max budget line
+		double maxBudget = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
+		XYChart.Series<String, Number> maxBudgetSeries = new XYChart.Series<>();
+		maxBudgetSeries.setName("Max budjetti");
+		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", 1), maxBudget));
+		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", lastDayOfMonth), maxBudget));
+		lineChart.getData().add(maxBudgetSeries);
 		Scene scene = new Scene(lineChart, 800, 600);
 
 		Stage stage = new Stage();
 		stage.setScene(scene);
 		stage.show();
 	}
+
 	
 	public void luoKuluDiagrammi() {
 	    List<String> kategoriat = kontrolleri.getKategorianimet();
