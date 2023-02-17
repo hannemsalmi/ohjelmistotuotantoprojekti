@@ -349,11 +349,10 @@ public class GUI extends Application implements IGUI{
 		
 	}
 	
-<<<<<<< HEAD
 	private void setPaivamaara(LocalDate valittupaiva) {
 		paivamaara = valittupaiva;
 }
-=======
+
 	public void luoKuluGraph() {
 		LineChart<Number, Number> lineChart = new LineChart<>(new NumberAxis(), new NumberAxis());
 		lineChart.setTitle("Kulutus trendi");
@@ -371,12 +370,9 @@ public class GUI extends Application implements IGUI{
 		Stage stage = new Stage();
 		stage.setScene(scene);
 		stage.show();
->>>>>>> refs/heads/WillenBranch
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	
 }
