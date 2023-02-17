@@ -258,6 +258,7 @@ public class GUI extends Application implements IGUI{
 	public void lisaaKulu() {
 		String nimi = ostosField.getText();
 		double hinta = Double.parseDouble(hintaField.getText());
+		List<String> kategorianimet = kontrolleri.getKategorianimet();
 	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
@@ -266,16 +267,14 @@ public class GUI extends Application implements IGUI{
 		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 		setKulut(kulut);
 		
-		List<String> kategorianimet = kontrolleri.getKategorianimet();
-		boolean puuttuukoListalta = false;
-		for(String nimiString : kategorianimet) {
-			if(nimiString != kategorianNimi) {
-				puuttuukoListalta = true;
-			}
+		boolean onkoListalla = false;
+		if(kategorianimet.contains(kategorianNimi)) {
+			onkoListalla = true;
 		}
-		if(puuttuukoListalta == true) {
+		if(onkoListalla == false) {
 			kategoriaBox.getItems().add(kategorianNimi);
 		}
+		System.out.println(onkoListalla);
 		
 		ostosField.clear();
 		hintaField.clear();
@@ -362,6 +361,8 @@ public class GUI extends Application implements IGUI{
 		    		kontrolleri.poistaKulu(id);
 		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 		    		setKulut(kulut);
+		    		kategoriaBox.getItems().clear();
+		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
 		    		stage.close();
 	    		}
 	    		stage.close();
