@@ -98,4 +98,12 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	public void paivitaBudjetti(int kayttajaID, double budjetti) {
 		kayttajaDao.paivitaBudjetti(kayttajaID, budjetti);
 	}
+	
+	public void muokkaaKulua(int id, Double summa, String nimi, String kuvaus) {
+		kuluDao.muutaKulu(id, summa, nimi, kuvaus);
+	}
+	
+	public void poistaKulu(int id) {
+		kuluDao.poistaKulu(id);
+	}
 }

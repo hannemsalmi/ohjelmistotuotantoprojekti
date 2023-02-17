@@ -18,4 +18,6 @@ public interface IKontrolleriVtoM {
 	public abstract List<String> getKategorianimet();
 	public abstract Kategoria getKategoria(String nimi);
 	public abstract void paivitaBudjetti(int kayttajaID, double budjetti);
+	public abstract void muokkaaKulua(int id, Double summa, String nimi, String kuvaus);
+	public abstract void poistaKulu(int id);
 }
