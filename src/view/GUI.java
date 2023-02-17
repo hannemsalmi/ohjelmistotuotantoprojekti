@@ -1,7 +1,6 @@
 package view;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +18,6 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -27,7 +25,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -35,17 +32,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
-import model.Kategoriat;
 import model.Kayttaja;
 import model.Kulu;
-import model.Kulut;
 import controller.Kontrolleri;
 
 public class GUI extends Application implements IGUI{
@@ -60,7 +53,7 @@ public class GUI extends Application implements IGUI{
 	TextField hintaField;
 	TextField paivamaaraField;
 	ComboBox<String> kategoriaBox;
-	ComboBox<String> kategoriaBox2;
+	ComboBox<String> kategoriaBoxSuodatus;
 	TextField kuvausField;
 	Label uusiKategoriaLabel;
 	TextField uusiKategoriaField;
@@ -70,6 +63,7 @@ public class GUI extends Application implements IGUI{
 	Button kategoriaButton;
 	Button kulutusTrendiButton;
 	Button kuluDiagrammiButton;
+	Button muokkaaOstostaButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
 	List<Kulu> kulut = new ArrayList<>();
@@ -79,6 +73,7 @@ public class GUI extends Application implements IGUI{
 	List<Kulu> suodatetutKulut = new ArrayList<>();
 	DatePicker pvmValitsin = new DatePicker();
 	LocalDate paivamaara;
+	Kayttaja kayttaja;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -140,9 +135,9 @@ public class GUI extends Application implements IGUI{
 		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 20, 10, 20));
-		//
+		
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
-		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
@@ -164,32 +159,22 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox.setEditable(true);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
 		
-		kategoriaBox2 = new ComboBox<>();
-		kategoriaBox2.setEditable(false);
+		kategoriaBoxSuodatus = new ComboBox<>();
+		kategoriaBoxSuodatus.setEditable(false);
 
-		kategoriaBox2.getItems().addAll(kontrolleri.getKategorianimet());
-		kategoriaBox2.getItems().add("Kaikki");
-		kategoriaBox2.getSelectionModel().select("Kaikki");
+		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet());
+		kategoriaBoxSuodatus.getItems().add("Kaikki");
+		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
 
-		ObservableList<Kulu> alkuperainenList = FXCollections.observableList(kulut);
-
-		kategoriaBox2.setOnAction(new EventHandler<ActionEvent>() {
+		kategoriaBoxSuodatus.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent event) {
-		        String valittuKategoria = kategoriaBox2.getSelectionModel().getSelectedItem();
-		        if (valittuKategoria.equals("Kaikki")) {
-		            kulutlista.setItems(alkuperainenList);
-		        } else {
-		            List<Kulu> suodatetutKulut = kulut.stream()
-		                .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-		                .collect(Collectors.toList());
-		            ObservableList<Kulu> suodatetutKulutList = FXCollections.observableList(suodatetutKulut);
-		            kulutlista.setItems(suodatetutKulutList);
-		        }
+		        suodata();
 		    }
 		});
 		
 		lisaaButton = new Button("Lisää ostos");
+		muokkaaOstostaButton = new Button("Muokkaa ostosta");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
 		kayttajaAsetusButton = new Button("Käyttäjäasetukset");
 		uusiKategoriaLabel = new Label("Uusi kategoria");
@@ -202,14 +187,8 @@ public class GUI extends Application implements IGUI{
         userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
         userProfileSelector.getSelectionModel().select(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID()-1);
         userProfileSelector.setOnAction(event -> {
-            int selectedUser = userProfileSelector.getSelectionModel().getSelectedIndex() +1;
-            kayttajanhallinta.kirjoitaKayttajaID(selectedUser);
-            kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(selectedUser));
-            kulut = kontrolleri.getKulut(selectedUser);
-    		setKulut(kulut);
-            System.out.println("Logging in user: " + selectedUser);
+            valitseKayttaja();
         });
-        
         
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
@@ -232,10 +211,10 @@ public class GUI extends Application implements IGUI{
 		grid.add(uusiKategoriaField, 0, 4);
 		grid.add(kategoriaButton, 0, 5);
 		GridPane.setColumnSpan(kulutlista, 5);
-		grid.add(kategoriaBox2, 4, 7);
+		grid.add(kategoriaBoxSuodatus, 4, 7);
 		grid.add(kulutlista, 0, 8);
 		grid.add(kuluDiagrammiButton, 0, 9);
-		
+		grid.add(muokkaaOstostaButton, 1, 9);
 		
 		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
@@ -245,41 +224,11 @@ public class GUI extends Application implements IGUI{
 		});
 		
 		lisaaButton.setOnAction((event) -> {
-			String nimi = ostosField.getText();
-			double hinta = Double.parseDouble(hintaField.getText());
-		
-			
-			String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
-			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
-			String kuvaus = kuvausField.getText();
-			kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-			kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
-			setKulut(kulut);
-			
-			List<String> kategorianimet = kontrolleri.getKategorianimet();
-			boolean puuttuukoListalta = false;
-			for(String nimiString : kategorianimet) {
-				if(nimiString != kategorianNimi) {
-					puuttuukoListalta = true;
-				}
-			}
-			if(puuttuukoListalta == true) {
-				kategoriaBox.getItems().add(kategorianNimi);
-			}
-			
-			ostosField.clear();
-			hintaField.clear();
-			paivamaaraField.clear();
-			kategoriaBox.getSelectionModel().clearSelection();
-			kuvausField.clear();
+			lisaaKulu();
 		});
 		
-		
 		kategoriaButton.setOnAction((event) -> {
-			kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
-			kategoriaBox.getItems().add(uusiKategoriaField.getText());
-			uusiKategoriaField.clear();
-			
+			lisaaUusiKategoria();
 		});
 		lisaaKayttajaButton.setOnAction((event) -> {
 			luoKayttajaIkkuna();
@@ -291,7 +240,6 @@ public class GUI extends Application implements IGUI{
 			luoKuluGraph();
 		});
 		
-		
 		kuluDiagrammiButton.setOnAction((event) -> {
 			luoKuluDiagrammi();
 		});
@@ -299,6 +247,65 @@ public class GUI extends Application implements IGUI{
 		hbox.getChildren().add(grid);
 		
 		return hbox;
+	}
+	
+	public void lisaaKulu() {
+		String nimi = ostosField.getText();
+		double hinta = Double.parseDouble(hintaField.getText());
+	
+		
+		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
+		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
+		String kuvaus = kuvausField.getText();
+		kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		setKulut(kulut);
+		
+		List<String> kategorianimet = kontrolleri.getKategorianimet();
+		boolean puuttuukoListalta = false;
+		for(String nimiString : kategorianimet) {
+			if(nimiString != kategorianNimi) {
+				puuttuukoListalta = true;
+			}
+		}
+		if(puuttuukoListalta == true) {
+			kategoriaBox.getItems().add(kategorianNimi);
+		}
+		
+		ostosField.clear();
+		hintaField.clear();
+		paivamaaraField.clear();
+		kategoriaBox.getSelectionModel().clearSelection();
+		kuvausField.clear();
+	}
+	
+	public void lisaaUusiKategoria() {
+		kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
+		kategoriaBox.getItems().add(uusiKategoriaField.getText());
+		uusiKategoriaField.clear();
+	}
+	
+	public void valitseKayttaja() {
+		int selectedUser = userProfileSelector.getSelectionModel().getSelectedIndex() +1;
+        kayttajanhallinta.kirjoitaKayttajaID(selectedUser);
+        kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(selectedUser));
+        kulut = kontrolleri.getKulut(selectedUser);
+		setKulut(kulut);
+        System.out.println("Logging in user: " + selectedUser);
+	}
+	
+	public void suodata() {
+		ObservableList<Kulu> alkuperainenList = FXCollections.observableList(kulut);
+		String valittuKategoria = kategoriaBoxSuodatus.getSelectionModel().getSelectedItem();
+        if (valittuKategoria.equals("Kaikki")) {
+            kulutlista.setItems(alkuperainenList);
+        } else {
+            List<Kulu> suodatetutKulut = kulut.stream()
+                .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+                .collect(Collectors.toList());
+            ObservableList<Kulu> suodatetutKulutList = FXCollections.observableList(suodatetutKulut);
+            kulutlista.setItems(suodatetutKulutList);
+        }
 	}
 	
 	public void setKulut(List<Kulu> kulut) {
@@ -362,13 +369,12 @@ public class GUI extends Application implements IGUI{
 	    });
 
 	      stage.setScene(scene);
-	      stage.show();
-		
+	      stage.show();	
 	}
 	
 	private void setPaivamaara(LocalDate valittupaiva) {
 		paivamaara = valittupaiva;
-}
+	}
 
 	public void luoKuluGraph() {
 		
@@ -489,7 +495,6 @@ public class GUI extends Application implements IGUI{
 		stage.show();
 	}
 
-	
 	public void luoKuluDiagrammi() {
 	    List<String> kategoriat = kontrolleri.getKategorianimet();
 	    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
