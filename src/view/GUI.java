@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
-import controller.IKontrolleriVtoM;
+import controller.IKontrolleri;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,7 +45,7 @@ import controller.Kontrolleri;
 
 public class GUI extends Application implements IGUI{
 	private static final int List = 0;
-	private IKontrolleriVtoM kontrolleri;
+	private IKontrolleri kontrolleri;
 	Label ostosLabel;
 	Label hintaLabel;
 	Label paivamaaraLabel;
@@ -75,7 +75,6 @@ public class GUI extends Application implements IGUI{
 	List<Kulu> suodatetutKulut = new ArrayList<>();
 	DatePicker pvmValitsin = new DatePicker();
 	LocalDate paivamaara;
-	Kayttaja kayttaja;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -139,7 +138,7 @@ public class GUI extends Application implements IGUI{
 		grid.setPadding(new Insets(10, 20, 10, 20));
 		
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
-		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
@@ -159,12 +158,12 @@ public class GUI extends Application implements IGUI{
 		
 		kategoriaBox = new ComboBox<>();
 		kategoriaBox.setEditable(true);
-		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
+		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 		
 		kategoriaBoxSuodatus = new ComboBox<>();
 		kategoriaBoxSuodatus.setEditable(false);
 
-		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet());
+		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 		kategoriaBoxSuodatus.getItems().add("Kaikki");
 		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
 
@@ -258,10 +257,11 @@ public class GUI extends Application implements IGUI{
 	public void lisaaKulu() {
 		String nimi = ostosField.getText();
 		double hinta = Double.parseDouble(hintaField.getText());
-		List<String> kategorianimet = kontrolleri.getKategorianimet();
+		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+		List<String> kategorianimet = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
 	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
-		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi);
+		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
 		String kuvaus = kuvausField.getText();
 		kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
@@ -278,13 +278,13 @@ public class GUI extends Application implements IGUI{
 		
 		ostosField.clear();
 		hintaField.clear();
-		paivamaaraField.clear();
 		kategoriaBox.getSelectionModel().clearSelection();
 		kuvausField.clear();
 	}
 	
 	public void lisaaUusiKategoria() {
-		kontrolleri.lisaaKategoria(uusiKategoriaField.getText());
+		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+		kontrolleri.lisaaKategoria(uusiKategoriaField.getText(), kayttaja.getNimimerkki());
 		kategoriaBox.getItems().add(uusiKategoriaField.getText());
 		uusiKategoriaField.clear();
 	}
@@ -295,6 +295,8 @@ public class GUI extends Application implements IGUI{
         kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(selectedUser));
         kulut = kontrolleri.getKulut(selectedUser);
 		setKulut(kulut);
+		kategoriaBox.getItems().clear();
+		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
         System.out.println("Logging in user: " + selectedUser);
 	}
 	
@@ -355,6 +357,7 @@ public class GUI extends Application implements IGUI{
 	    	@Override
 		    public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
+	    		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
@@ -362,7 +365,7 @@ public class GUI extends Application implements IGUI{
 		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 		    		setKulut(kulut);
 		    		kategoriaBox.getItems().clear();
-		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet());
+		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 		    		stage.close();
 	    		}
 	    		stage.close();
@@ -402,6 +405,7 @@ public class GUI extends Application implements IGUI{
 	          textField.clear();
 	          textField2.clear();
 	          userProfileSelector.getItems().add(username);
+	          stage.close();
 	        }
 	      }
 	    });
@@ -562,7 +566,8 @@ public class GUI extends Application implements IGUI{
 	}
 
 	public void luoKuluDiagrammi() {
-	    List<String> kategoriat = kontrolleri.getKategorianimet();
+		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    List<String> kategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
 	    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
 	    PieChart.Data firstData = new PieChart.Data(kategoriat.get(0), 0);

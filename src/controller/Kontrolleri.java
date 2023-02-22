@@ -10,13 +10,12 @@ import dataAccessObjects.KuluDao;
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;
-import model.Kategoriat;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
 import view.IGUI;
 
-public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
+public class Kontrolleri implements IKontrolleri {
 	private IGUI gui;
 	private IBudjettilaskuri model = new Budjettilaskuri();
 	private KategoriaDao kategoriaDao = new KategoriaDao();
@@ -40,8 +39,8 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	}
 
 	@Override
-	public void lisaaKategoria(String nimi) {
-		kategoria = new Kategoria(nimi);
+	public void lisaaKategoria(String nimi, String omistaja) {
+		kategoria = new Kategoria(nimi, omistaja);
 		System.out.println(kategoria);
 		kategoriaDao.lisaaKategoria(kategoria);
 	}
@@ -71,25 +70,27 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		return kayttajaNimet;
 	}
 	
-	public List<String> getKategorianimet() {
+	public List<String> getKategorianimet(String omistaja) {
 		List<String> kategoriaNimet = new ArrayList<String>();
 		List<Kategoria> kategoriaObjektit = kategoriaDao.haeKategoriaLista();
 		for(Kategoria k : kategoriaObjektit) {
-			kategoriaNimet.add(k.getNimi());
+			if(k.getOmistaja().equals(omistaja)) {
+				kategoriaNimet.add(k.getNimi());
+			}
 		}
 		return kategoriaNimet;
 	}
 	
-	public Kategoria getKategoria(String nimi) {
+	public Kategoria getKategoria(String nimi, String omistaja) {
 		List<Kategoria> kategoriaObjektit2 = kategoriaDao.haeKategoriaLista();
 		Kategoria etsitty = null;
 		for(Kategoria k : kategoriaObjektit2) {
-			if(k.getNimi() == nimi) {
+			if(k.getNimi() == nimi && k.getOmistaja() == omistaja) {
 				etsitty = k;
 			}
 		}
 		if (etsitty == null) {
-			etsitty = new Kategoria(nimi);
+			etsitty = new Kategoria(nimi, omistaja);
 		}
 		return etsitty;
 	}
