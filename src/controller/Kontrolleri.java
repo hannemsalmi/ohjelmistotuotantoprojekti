@@ -45,12 +45,23 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		System.out.println(kategoria);
 		kategoriaDao.lisaaKategoria(kategoria);
 	}
+	
+	@Override
+	public void paivitaBudjetti(int kayttajaID, double budjetti) {
+		kayttajaDao.paivitaBudjetti(kayttajaID, budjetti);
+	}
 
 	@Override
 	public void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		System.out.println(kulu);
-		kuluDao.lisaaKulu(kulu);
+		kulut.lisaaKulu(kulu);
+		if(kayttaja.getMaksimibudjetti() >= kulu.getSumma()) {
+			System.out.println(kulu);
+			kuluDao.lisaaKulu(kulu);
+			paivitaBudjetti(kayttaja.getKayttajaID(),model.laskeBudjetti(kayttaja.getMaksimibudjetti(), hinta));
+		} else {
+    		System.out.println("Kulun summa on liian suuri budjettiin nähden.");
+    	}
 	}
 	
 	public Kayttaja getKayttaja(int kayttajaid) {
@@ -93,9 +104,12 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		}
 		return etsitty;
 	}
-
-	@Override
-	public void paivitaBudjetti(int kayttajaID, double budjetti) {
-		kayttajaDao.paivitaBudjetti(kayttajaID, budjetti);
+	
+	public void muokkaaKulua(int id, Double summa, String nimi, String kuvaus) {
+		kuluDao.muutaKulu(id, summa, nimi, kuvaus);
+	}
+	
+	public void poistaKulu(int id) {
+		kuluDao.poistaKulu(id);
 	}
 }
