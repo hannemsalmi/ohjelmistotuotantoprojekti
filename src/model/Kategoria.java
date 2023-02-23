@@ -14,9 +14,11 @@ public class Kategoria{
 	@Column(name="id")
 	private int kategoriaID;
 	private String nimi;
+	private String omistaja;
 	
-	public Kategoria(String nimi) {
+	public Kategoria(String nimi, String omistaja) {
 		this.nimi = nimi;
+		this.omistaja = omistaja;
 	}
 	public Kategoria() {
 	}
@@ -34,6 +36,10 @@ public class Kategoria{
 
 	public void setNimi(String nimi) {
 		this.nimi = nimi;
+	}
+	
+	public String getOmistaja() {
+		return omistaja;
 	}
 	@Override
 	public String toString() {
