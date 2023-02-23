@@ -161,7 +161,7 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox = new ComboBox<>();
 		kategoriaBox.setEditable(true);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
-		
+	    
 		kategoriaBoxSuodatus = new ComboBox<>();
 		kategoriaBoxSuodatus.setEditable(false);
 
