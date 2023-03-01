@@ -1,12 +1,10 @@
 package dataAccessObjects;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import model.Kategoria;
-import model.Kayttaja;
 
 public class KategoriaDao {
 	public void lisaaKategoria(Kategoria kategoria) {
@@ -37,7 +35,7 @@ public class KategoriaDao {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kategoria kategoria = em.find(Kategoria.class, id);
-		if (kategoria!=null) {
+		if (kategoria!=null && kategoria.getNimi() != "Yleinen") {
 			em.remove(kategoria);
 		}
         em.getTransaction().commit();

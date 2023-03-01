@@ -38,7 +38,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
-import model.Budjettilaskuri;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
@@ -106,6 +105,7 @@ public class GUI extends Application implements IGUI{
 		          double budjetti = Double.parseDouble(textField2.getText());
 		          if (!username.isEmpty()) {
 		            kontrolleri.lisaaKayttaja(username, budjetti);
+		            kontrolleri.lisaaKategoria("Yleinen", username);
 		            kayttajanhallinta.kirjoitaKayttajaID(1);
 		            primaryStage.setTitle("Budjettisovellus");
 		            HBox hbox = luoHBox();
@@ -161,6 +161,8 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox = new ComboBox<>();
 		kategoriaBox.setEditable(false);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
+		kategoriaBox.getSelectionModel().select("Yleinen");
+		
 	    
 		kategoriaBoxSuodatus = new ComboBox<>();
 		kategoriaBoxSuodatus.setEditable(false);
@@ -263,7 +265,6 @@ public class GUI extends Application implements IGUI{
 		String nimi = ostosField.getText();
 		double hinta = Double.parseDouble(hintaField.getText());
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-		List<String> kategorianimet = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
 	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
@@ -274,18 +275,9 @@ public class GUI extends Application implements IGUI{
 		setKulut(kulut);
 		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
 		
-		boolean onkoListalla = false;
-		if(kategorianimet.contains(kategorianNimi)) {
-			onkoListalla = true;
-		}
-		if(onkoListalla == false) {
-			kategoriaBox.getItems().add(kategorianNimi);
-		}
-		System.out.println(onkoListalla);
-		
 		ostosField.clear();
 		hintaField.clear();
-		kategoriaBox.getSelectionModel().clearSelection();
+		kategoriaBox.getSelectionModel().select("Yleinen");
 		kuvausField.clear();
 	}
 	
@@ -304,6 +296,7 @@ public class GUI extends Application implements IGUI{
 		setKulut(kulut);
 		kategoriaBox.getItems().clear();
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
+		kategoriaBox.getSelectionModel().select("Yleinen");
         System.out.println("Logging in user: " + selectedUser);
 	}
 	
@@ -411,6 +404,7 @@ public class GUI extends Application implements IGUI{
 	        double budjetti = Double.parseDouble(textField2.getText());
 	        if (!username.isEmpty()) {
 	          kontrolleri.lisaaKayttaja(username, budjetti);
+	          kontrolleri.lisaaKategoria("Yleinen", username);
 	          textField.clear();
 	          textField2.clear();
 	          userProfileSelector.getItems().add(username);
