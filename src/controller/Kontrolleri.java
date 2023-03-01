@@ -118,7 +118,36 @@ public class Kontrolleri implements IKontrolleri {
 		kuluDao.muutaKulu(id, summa, nimi, kuvaus);
 	}
 	
+	public void muokkaaKategoriaa(int id, String nimi) {
+		kategoriaDao.muutaKategoria(id, nimi);
+	}
+	
+	public void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
+		kuluDao.muutaKulunKategoria(kuluId, uusiKategoria);
+	}
+	
 	public void poistaKulu(int id) {
 		kuluDao.poistaKulu(id);
+	}
+	
+	public void poistaKategoria(int id, Kayttaja kayttaja) {
+		Kategoria poistettava = kategoriaDao.haeKategoriat(id);
+		Kategoria yleinen = null;
+		List<Kulu> kulut = kuluDao.haeKulut(kayttaja.getKayttajaID());
+		List<Kategoria> kategoriat = kategoriaDao.haeKategoriaLista();
+		
+		for(Kategoria kategoria : kategoriat) {
+			if(kategoria.getNimi().equals("Yleinen")) {
+				yleinen = kategoria;
+			}
+		}
+				
+		for(Kulu kulu : kulut) {
+			if(kulu.getKategoria().equals(poistettava)) {
+				kuluDao.muutaKulunKategoria(kulu.getKuluID(), yleinen);
+			}
+		}
+		
+		kategoriaDao.poistaKategoria(id);
 	}
 }

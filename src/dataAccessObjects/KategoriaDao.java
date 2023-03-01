@@ -31,11 +31,19 @@ public class KategoriaDao {
 		return kategoriaLista;
 	}
 	
+	public void muutaKategoria(int id, String nimi) {
+		EntityManager em = datasource.MariaDbJpaConn.getInstance();
+		em.getTransaction().begin();
+		Kategoria kategoria = em.find(Kategoria.class, id);
+		kategoria.setNimi(nimi);
+		em.getTransaction().commit();
+	}
+	
 	public void poistaKategoria(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kategoria kategoria = em.find(Kategoria.class, id);
-		if (kategoria!=null && kategoria.getNimi() != "Yleinen") {
+		if (kategoria!=null) {
 			em.remove(kategoria);
 		}
         em.getTransaction().commit();
