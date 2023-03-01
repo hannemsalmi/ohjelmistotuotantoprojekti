@@ -1,7 +1,7 @@
 package view;
 
 import java.time.LocalDate;
-
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,6 +78,8 @@ public class GUI extends Application implements IGUI{
 	List<Kulu> suodatetutKulut = new ArrayList<>();
 	DatePicker pvmValitsin = new DatePicker();
 	LocalDate paivamaara;
+	ComboBox<String> kuukausiValitsin;
+	ComboBox<String> vuosiValitsin;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -180,6 +182,37 @@ public class GUI extends Application implements IGUI{
 		    }
 		});
 		
+		kuukausiValitsin = new ComboBox<>();
+		//kuukausiValitsin.setEditable(false);
+
+		kuukausiValitsin.getItems().add("Kaikki");
+		for (int i = 1; i <= 12; i++) {
+			kuukausiValitsin.getItems().add(Month.of(i).toString());
+		}
+		kuukausiValitsin.getSelectionModel().select("Kaikki");
+
+		kuukausiValitsin.setOnAction(new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent event) {
+		    suodataAika();
+		  }
+		});
+		
+		vuosiValitsin = new ComboBox<>();
+		//vuosiValitsin.setEditable(false);
+		vuosiValitsin.getItems().add("Kaikki");
+		for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+	        vuosiValitsin.getItems().add(Integer.toString(i));
+	    }
+	    vuosiValitsin.getSelectionModel().select("Kaikki");
+
+	    vuosiValitsin.setOnAction(new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent event) {
+		    suodataAika();
+		  }
+		});
+		
 		lisaaButton = new Button("Lisää ostos");
 		muokkaaOstostaButton = new Button("Muokkaa ostosta");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
@@ -222,6 +255,8 @@ public class GUI extends Application implements IGUI{
 		grid.add(kategoriaButton, 0, 5);
 		GridPane.setColumnSpan(kulutlista, 5);
 		grid.add(kategoriaBoxSuodatus, 4, 7);
+		grid.add(kuukausiValitsin, 5, 7);
+		grid.add(vuosiValitsin, 6, 7);
 		grid.add(kulutlista, 0, 8);
 		grid.add(kuluDiagrammiButton, 0, 9);
 		grid.add(muokkaaOstostaButton, 1, 9);
@@ -604,6 +639,27 @@ public class GUI extends Application implements IGUI{
 	    Stage stage = new Stage();
 	    stage.setScene(scene);
 	    stage.show();
+	}
+	
+	private void suodataAika() {
+	    int selectedMonth = kuukausiValitsin.getSelectionModel().getSelectedIndex();
+	    int selectedYearIndex = vuosiValitsin.getSelectionModel().getSelectedIndex();
+	    int selectedYear = LocalDate.now().getYear() - selectedYearIndex + 1;
+	    List<Kulu> suodatetutKulut = new ArrayList<>();
+	    kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+	    if (selectedMonth == 0 && selectedYearIndex == 0){
+	        setKulut(kulut);
+	      }
+	    else {
+	    	  for (Kulu kulu : kulut) {
+	    		  if ((kulu.getPaivamaara().getMonthValue() == selectedMonth || selectedMonth == 0 )&& (kulu.getPaivamaara().getYear() == selectedYear || selectedYearIndex == 0) ) {
+	    			  suodatetutKulut.add(kulu);
+	        }
+	    }
+	    	setKulut(suodatetutKulut);
+	  	    kulut = suodatetutKulut;
+	      }
+	    
 	}
 	
 	public static void main(String[] args) {
