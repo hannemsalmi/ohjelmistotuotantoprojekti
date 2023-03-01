@@ -41,9 +41,12 @@ public class Kategoria{
 	public String getOmistaja() {
 		return omistaja;
 	}
+	public void setOmistaja(String omistaja) {
+		this.omistaja = omistaja;
+	}
 	@Override
 	public String toString() {
-		return "Kategoria [kategoriaID=" + kategoriaID + ", nimi=" + nimi + "]";
+		return "Kategoria [kategoriaID=" + kategoriaID + ", nimi=" + nimi + "omistaja=" + omistaja + "]";
 	}
 
 	

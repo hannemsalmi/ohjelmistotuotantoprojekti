@@ -159,7 +159,7 @@ public class GUI extends Application implements IGUI{
 		kuvausField = new TextField();
 		
 		kategoriaBox = new ComboBox<>();
-		kategoriaBox.setEditable(true);
+		kategoriaBox.setEditable(false);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 	    
 		kategoriaBoxSuodatus = new ComboBox<>();

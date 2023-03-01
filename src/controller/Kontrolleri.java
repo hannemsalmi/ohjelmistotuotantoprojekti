@@ -41,7 +41,7 @@ public class Kontrolleri implements IKontrolleri {
 	@Override
 	public void lisaaKategoria(String nimi, String omistaja) {
 		kategoria = new Kategoria(nimi, omistaja);
-		System.out.println(kategoria);
+		System.out.println(kategoria.getNimi());
 		kategoriaDao.lisaaKategoria(kategoria);
 	}
 	
@@ -96,12 +96,9 @@ public class Kontrolleri implements IKontrolleri {
 		List<Kategoria> kategoriaObjektit2 = kategoriaDao.haeKategoriaLista();
 		Kategoria etsitty = null;
 		for(Kategoria k : kategoriaObjektit2) {
-			if(k.getNimi() == nimi && k.getOmistaja() == omistaja) {
+			if(k.getNimi().equals(nimi) && k.getOmistaja().equals(omistaja)) {
 				etsitty = k;
 			}
-		}
-		if (etsitty == null) {
-			etsitty = new Kategoria(nimi, omistaja);
 		}
 		return etsitty;
 	}
