@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -576,20 +578,32 @@ public class GUI extends Application implements IGUI{
 	}
 
 	public void luoKuluDiagrammi() {
-		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	    List<String> kategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    List<Kulu> kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
+	    List<Kategoria> kategoriat = kontrolleri.getKategoriat(kayttaja.getNimimerkki());
 	    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
-	    PieChart.Data firstData = new PieChart.Data(kategoriat.get(0), 0);
-	    pieChartData.add(firstData);
+	    Map<Kategoria, Double> kuluSums = new HashMap<>();
+	    for (Kulu kulu : kulut) {
+	        Kategoria kategoria = kulu.getKategoria();
+	        double sum = kuluSums.getOrDefault(kategoria, 0.0);
+	        kuluSums.put(kategoria, sum + kulu.getSumma());
+	    }
 
-	    for (int i = 1; i < kategoriat.size(); i++) {
-	        PieChart.Data data = new PieChart.Data(kategoriat.get(i), i);
+	    for (Kategoria kategoria : kategoriat) {
+	        double sum = kuluSums.getOrDefault(kategoria, 0.0);
+	        PieChart.Data data = new PieChart.Data(kategoria.getNimi(), sum);
 	        pieChartData.add(data);
 	    }
 
+	    pieChartData.forEach(data -> data.setName(data.getName() + " " + data.getPieValue() + " €"));
+	    
+
 	    PieChart pieChart = new PieChart(pieChartData);
 	    pieChart.setTitle("Kulut kategorioittain");
+	    pieChart.setLabelLineLength(50);
+	    pieChart.setLabelsVisible(true);
+	    pieChart.setLegendVisible(false);
 
 	    Scene scene = new Scene(new Group(pieChart), 500, 400);
 
