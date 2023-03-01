@@ -41,7 +41,7 @@ public class KuluTest {
 		KategoriaDao kategoriaDao = new KategoriaDao();
 		kategoriaDao.lisaaKategoria(kategoria);
 	
-		Kulu kulu = new Kulu("Pizza", 10.0, LocalDate.now(), kategoria, kayttaja, "testikulu");
+		Kulu kulu = new Kulu("Pizza", 10.0, LocalDate.now(), kategoria, kayttaja, "testi kulu");
 		kuluDao.lisaaKulu(kulu);
 		
 		List<Kulu> kulut = kuluDao.haeKulut(kayttaja.getKayttajaID());

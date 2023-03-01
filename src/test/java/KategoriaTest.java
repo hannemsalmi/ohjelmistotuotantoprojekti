@@ -40,7 +40,6 @@ public class KategoriaTest {
                 break;
             }
         }
-        assertTrue("Kategorialistasta ei löydy yleiskategoriaa 'Yleinen'", loytyiYleinen);
+        assertTrue("Kategoria listasta ei löydy yleiskategoriaa 'Yleinen'", loytyiYleinen);
     }
-
 }

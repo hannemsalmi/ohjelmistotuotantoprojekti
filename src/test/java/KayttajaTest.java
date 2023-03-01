@@ -17,7 +17,7 @@ public class KayttajaTest {
     public void setUp() {
         dao = new KayttajaDao();
         kayttaja = new Kayttaja();
-        kayttaja.setNimimerkki("Testi Kayttaja");
+        kayttaja.setNimimerkki("Testikayttaja");
         kayttaja.setMaksimibudjetti(1000.0);
     }
 
@@ -30,7 +30,7 @@ public class KayttajaTest {
     public void testLisaaKayttaja() {
         dao.lisaaKayttaja(kayttaja);
         Kayttaja haettuKayttaja = dao.haeKayttajat(kayttaja.getKayttajaID());
-        assertEquals("Testi Kayttaja", haettuKayttaja.getNimimerkki());
+        assertEquals("Testikayttaja", haettuKayttaja.getNimimerkki());
         assertEquals(1000.0, haettuKayttaja.getMaksimibudjetti(), 0.01);
     }
 }
