@@ -29,8 +29,8 @@ public class KayttajaTest {
     @Test
     public void testLisaaKayttaja() {
         dao.lisaaKayttaja(kayttaja);
-        Kayttaja retrievedKayttaja = dao.haeKayttajat(kayttaja.getKayttajaID());
-        assertEquals("Testi Kayttaja", retrievedKayttaja.getNimimerkki());
-        assertEquals(1000.0, retrievedKayttaja.getMaksimibudjetti(), 0.01);
+        Kayttaja haettuKayttaja = dao.haeKayttajat(kayttaja.getKayttajaID());
+        assertEquals("Testi Kayttaja", haettuKayttaja.getNimimerkki());
+        assertEquals(1000.0, haettuKayttaja.getMaksimibudjetti(), 0.01);
     }
 }
