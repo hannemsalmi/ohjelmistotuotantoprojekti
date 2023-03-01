@@ -328,6 +328,8 @@ public class GUI extends Application implements IGUI{
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
 	    
+	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    
 	    Button tallennaButton = new Button("Tallenna muutos");
 	    Button poistaButton = new Button("Poista kulu");
 	    
@@ -339,8 +341,16 @@ public class GUI extends Application implements IGUI{
 		TextField uusiHintaField = new TextField();
 		TextField uusiKuvausField = new TextField();
 		
+		Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
+		ComboBox<String> muokkausBox = new ComboBox<>();
+		muokkausBox.setEditable(false);
+		List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+		muokkausBox.getItems().addAll(kaikkiKategoriat);
+		Button tallennaKategoriaButton = new Button("Tallenna kategoria");
+		
+		
 	    VBox vbox = new VBox();
-	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, poistaButton);
+	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, uusiKategoriaLabel, muokkausBox, tallennaKategoriaButton, poistaButton);
 	    root.getChildren().add(vbox);
 
 	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -353,9 +363,20 @@ public class GUI extends Application implements IGUI{
 		        String kuvaus = uusiKuvausField.getText();
 	    		
 	    		kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
-		        uusiNimiField.clear();
-		        uusiHintaField.clear();
-		        uusiKuvausField.clear();
+		        setKulut(kulut);
+		        stage.close();
+	      }
+	    });
+	    
+	    tallennaKategoriaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent event) {
+	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
+	    		int id = kulu.getKuluID();
+	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
+	    		Kategoria uusiKategoria = kontrolleri.getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
+	    		
+	    		kontrolleri.muutaKulunKategoria(id, uusiKategoria);
 		        setKulut(kulut);
 		        stage.close();
 	      }
@@ -365,7 +386,7 @@ public class GUI extends Application implements IGUI{
 	    	@Override
 		    public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
-	    		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    		
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
@@ -382,8 +403,8 @@ public class GUI extends Application implements IGUI{
 	    	}
 	    });
 
-	      stage.setScene(scene);
-	      stage.show();
+	    stage.setScene(scene);
+	    stage.show();
 	}
 	
 	public void avaaMuokkausnakymaKategoria() {

@@ -111,6 +111,10 @@ public class Kontrolleri implements IKontrolleri {
 		kategoriaDao.muutaKategoria(id, nimi);
 	}
 	
+	public void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
+		kuluDao.muutaKulunKategoria(kuluId, uusiKategoria);
+	}
+	
 	public void poistaKulu(int id) {
 		kuluDao.poistaKulu(id);
 	}

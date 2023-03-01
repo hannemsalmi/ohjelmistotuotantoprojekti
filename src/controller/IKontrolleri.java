@@ -19,6 +19,7 @@ public interface IKontrolleri {
 	public abstract void paivitaBudjetti(int kayttajaID, double budjetti);
 	public abstract void muokkaaKulua(int id, Double summa, String nimi, String kuvaus);
 	public abstract void muokkaaKategoriaa(int id, String nimi);
+	public abstract void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria);
 	public abstract void poistaKulu(int id);
 	public abstract void poistaKategoria(int id, Kayttaja kayttaja);
 	public abstract void lisaaKategoria(String nimi, String omistaja);
