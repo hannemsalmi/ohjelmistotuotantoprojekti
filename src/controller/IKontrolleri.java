@@ -20,4 +20,5 @@ public interface IKontrolleri {
 	public abstract void muokkaaKulua(int id, Double summa, String nimi, String kuvaus);
 	public abstract void poistaKulu(int id);
 	public abstract void lisaaKategoria(String nimi, String omistaja);
+	public abstract List<Kategoria> getKategoriat(String omistaja);
 }

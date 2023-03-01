@@ -92,6 +92,17 @@ public class Kontrolleri implements IKontrolleri {
 		return kategoriaNimet;
 	}
 	
+	public List<Kategoria> getKategoriat(String omistaja) {
+		List<Kategoria> kategoriat = new ArrayList<Kategoria>();
+		List<Kategoria> kaikkikategoriat = kategoriaDao.haeKategoriaLista();
+		for(Kategoria k : kaikkikategoriat) {
+			if(k.getOmistaja().equals(omistaja)) {
+				kategoriat.add(k);
+			}
+		}
+		return kategoriat;
+	}
+	
 	public Kategoria getKategoria(String nimi, String omistaja) {
 		List<Kategoria> kategoriaObjektit2 = kategoriaDao.haeKategoriaLista();
 		Kategoria etsitty = null;
