@@ -363,7 +363,6 @@ public class GUI extends Application implements IGUI{
 	    		String nimi = uusiNimiField.getText();
 	    		double hinta = Double.parseDouble(uusiHintaField.getText());
 		        String kuvaus = uusiKuvausField.getText();
-	    		
 	    		kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
 		        setKulut(kulut);
 		        stage.close();
@@ -377,7 +376,6 @@ public class GUI extends Application implements IGUI{
 	    		int id = kulu.getKuluID();
 	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
 	    		Kategoria uusiKategoria = kontrolleri.getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
-	    		
 	    		kontrolleri.muutaKulunKategoria(id, uusiKategoria);
 		        setKulut(kulut);
 		        stage.close();
@@ -397,8 +395,8 @@ public class GUI extends Application implements IGUI{
 		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 		    		setKulut(kulut);
 		    		kategoriaBox.getItems().clear();
-		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
 		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
+		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
 		    		stage.close();
 	    		}
 	    		stage.close();
@@ -467,11 +465,9 @@ public class GUI extends Application implements IGUI{
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kategorian? Poistetun kategorian kulut siirtyvät yleiseen kategoriaan", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
 	    			kontrolleri.poistaKategoria(poistettavaKategoria.getKategoriaID(), kayttaja);
-	    			kategoriaBox.getItems().clear();
-	    			kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
-	    			kategoriaBoxSuodatus.getItems().clear();
-	    			kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
-	    			kategoriaBoxSuodatus.getItems().add("Kaikki");
+	    			kategoriaBox.getItems().remove(kategoriaNimi);
+	    			kategoriaBox.getSelectionModel().select("Yleinen");
+	    			kategoriaBoxSuodatus.getItems().remove(kategoriaNimi);
 	    			setKulut(kulut);
 		    		stage.close();
 	    		}
