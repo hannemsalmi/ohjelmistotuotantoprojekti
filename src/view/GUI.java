@@ -272,18 +272,31 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void lisaaKulu() {
-		String nimi = ostosField.getText();
-		double hinta = Double.parseDouble(hintaField.getText());
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
-		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
-		String kuvaus = kuvausField.getText();
-		kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		//JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe",JOptionPane.OK_OPTION);
-		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		
+		try {
+			String nimi = ostosField.getText();
+			double hinta = Double.parseDouble(hintaField.getText());
+			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
+			String kuvaus = kuvausField.getText();
+			if(kayttaja.getMaksimibudjetti() >= hinta) {
+				kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+			} else {
+				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
+				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (NumberFormatException nfe) {
+			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			System.out.println("Joku vikana arvoja syötettäessä...");
+			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		
 		ostosField.clear();
 		hintaField.clear();
@@ -360,11 +373,24 @@ public class GUI extends Application implements IGUI{
 	    	public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
 	    		int id = kulu.getKuluID();
-	    		String nimi = uusiNimiField.getText();
-	    		double hinta = Double.parseDouble(uusiHintaField.getText());
-		        String kuvaus = uusiKuvausField.getText();
-	    		kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
+	    		
+	    		try {
+	    			String nimi = uusiNimiField.getText();
+		    		double hinta = Double.parseDouble(uusiHintaField.getText());
+			        String kuvaus = uusiKuvausField.getText();
+			        kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+			        kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
+		    		kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() - hinta);
+	    		} catch (NumberFormatException nfe) {
+	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		} catch (Exception e) {
+	    			System.out.println("Joku vikana arvoja syötettäessä...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		}
+	    		
 		        setKulut(kulut);
+		        budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		        stage.close();
 	      }
 	    });
@@ -390,13 +416,13 @@ public class GUI extends Application implements IGUI{
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
-	    			kayttajanhallinta.getKirjautunutKayttaja().setMaksimibudjetti(kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+	    			kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
 		    		kontrolleri.poistaKulu(id);
-		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		    		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		    		setKulut(kulut);
 		    		kategoriaBox.getItems().clear();
 		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
-		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		    		stage.close();
 	    		}
 	    		stage.close();
@@ -449,7 +475,7 @@ public class GUI extends Application implements IGUI{
 	    		kontrolleri.muokkaaKategoriaa(muokattavaKategoria.getKategoriaID(), nimi);
 		        uusiNimiField.clear();
 		        kategoriaBox.getItems().clear();
-				kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
+				kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 				kategoriaBox.getSelectionModel().select("Yleinen");
 				setKulut(kulut);
 		        stage.close();

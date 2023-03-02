@@ -54,13 +54,9 @@ public class Kontrolleri implements IKontrolleri {
 	public void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 		kulut.lisaaKulu(kulu);
-		if(kayttaja.getMaksimibudjetti() >= kulu.getSumma()) {
-			System.out.println(kulu);
-			kuluDao.lisaaKulu(kulu);
-			paivitaBudjetti(kayttaja.getKayttajaID(),model.laskeBudjetti(kayttaja.getMaksimibudjetti(), hinta));
-		} else {
-    		System.out.println("Kulun summa on liian suuri budjettiin nähden.");
-    	}
+		System.out.println(kulu);
+		kuluDao.lisaaKulu(kulu);
+		paivitaBudjetti(kayttaja.getKayttajaID(),model.laskeBudjetti(kayttaja.getMaksimibudjetti(), hinta));
 	}
 	
 	public Kayttaja getKayttaja(int kayttajaid) {
