@@ -280,12 +280,14 @@ public class GUI extends Application implements IGUI{
 			double hinta = Double.parseDouble(hintaField.getText());
 			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
 			String kuvaus = kuvausField.getText();
+			
 			if(kayttaja.getMaksimibudjetti() >= hinta) {
 				kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
 			} else {
 				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
 				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
 			}
+			
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
 			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
