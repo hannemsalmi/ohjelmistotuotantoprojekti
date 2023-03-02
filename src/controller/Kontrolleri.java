@@ -62,6 +62,13 @@ public class Kontrolleri implements IKontrolleri {
 	public Kayttaja getKayttaja(int kayttajaid) {
 		return kayttajaDao.haeKayttajat(kayttajaid);
 	}
+	
+
+	public void poistaKayttajanTiedot(int kayttajaid) {
+		kayttajaDao.poistaKayttajanTiedot(kayttajaid);
+		
+	}
+	
 	public void lisaaKayttaja(String nimi, double budjetti) {
 		kayttaja = new Kayttaja(nimi, budjetti);
 		System.out.println(kayttaja);
@@ -146,4 +153,5 @@ public class Kontrolleri implements IKontrolleri {
 		
 		kategoriaDao.poistaKategoria(id);
 	}
+
 }

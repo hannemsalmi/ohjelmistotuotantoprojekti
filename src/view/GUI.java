@@ -601,13 +601,14 @@ public class GUI extends Application implements IGUI{
 	    Label label = new Label("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) );
 	    Label label2 = new Label("Aseta kuukausittainen budjettisi:");
 	    TextField textField = new TextField();
-	    Button button = new Button("Tallenna");
+	    Button tallennaButton = new Button("Tallenna");
+	    Button poistaButton = new Button("Poista kaikki lisäämäsi kulut ja kategoriat");
 
 	    VBox vbox = new VBox();
-	    vbox.getChildren().addAll(label, label2, textField, button);
+	    vbox.getChildren().addAll(label, label2, textField, tallennaButton, poistaButton);
 	    root.getChildren().add(vbox);
 
-	    button.setOnAction(new EventHandler<ActionEvent>() {
+	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override
 	      public void handle(ActionEvent event) {
 	        double budjetti = Double.parseDouble(textField.getText());
@@ -616,6 +617,14 @@ public class GUI extends Application implements IGUI{
 	        label.setText("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti());
 	        textField.clear();
 	        budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+	      }
+	    });
+	    
+	    poistaButton.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	      public void handle(ActionEvent event) {
+	        kontrolleri.poistaKayttajanTiedot(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+	        valitseKayttaja();
 	      }
 	    });
 

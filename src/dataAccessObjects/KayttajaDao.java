@@ -46,20 +46,19 @@ public class KayttajaDao {
 	}
 	
 	
-	public void poistaKayttaja(int id) {
+	public void poistaKayttajanTiedot(int id) {
 	    EntityManager em = datasource.MariaDbJpaConn.getInstance();
 	    em.getTransaction().begin();
 	    Kayttaja kayttaja = em.find(Kayttaja.class, id);
+	    String nimimerkki = kayttaja.getNimimerkki();
 	    if (kayttaja != null) {
 	        Query kuluQuery = em.createQuery("DELETE FROM Kulu k WHERE k.kayttaja = :kayttaja");
 	        kuluQuery.setParameter("kayttaja", kayttaja);
 	        kuluQuery.executeUpdate();
 
-	        Query kategoriaQuery = em.createQuery("DELETE FROM Kategoria k WHERE k.kayttaja = :kayttaja");
-	        kategoriaQuery.setParameter("kayttaja", kayttaja);
+	        Query kategoriaQuery = em.createQuery("DELETE FROM Kategoria k WHERE k.omistaja = :nimimerkki");
+	        kategoriaQuery.setParameter("nimimerkki", nimimerkki);
 	        kategoriaQuery.executeUpdate();
-
-	        em.remove(kayttaja);
 	    }
 	    em.getTransaction().commit();
 	}
