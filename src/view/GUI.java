@@ -69,6 +69,7 @@ public class GUI extends Application implements IGUI{
 	Button kulutusTrendiButton;
 	Button kuluDiagrammiButton;
 	Button muokkaaOstostaButton;
+	Button muokkaaKategoriaaButton;
 	Label kulutLabel;
 	Label kayttajaValitsinLabel;
 	List<Kulu> kulut = new ArrayList<>();
@@ -172,7 +173,7 @@ public class GUI extends Application implements IGUI{
 		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 		kategoriaBoxSuodatus.getItems().add("Kaikki");
 		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
-
+		
 		kategoriaBoxSuodatus.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent event) {
@@ -182,6 +183,7 @@ public class GUI extends Application implements IGUI{
 		
 		lisaaButton = new Button("Lisää ostos");
 		muokkaaOstostaButton = new Button("Muokkaa ostosta");
+		muokkaaKategoriaaButton = new Button("Muokkaa kategoriaa");
 		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
 		kayttajaAsetusButton = new Button("Käyttäjäasetukset");
 		uusiKategoriaLabel = new Label("Uusi kategoria");
@@ -220,11 +222,13 @@ public class GUI extends Application implements IGUI{
 		grid.add(uusiKategoriaLabel, 0, 3);
 		grid.add(uusiKategoriaField, 0, 4);
 		grid.add(kategoriaButton, 0, 5);
+		grid.add(muokkaaKategoriaaButton, 1, 5);
 		GridPane.setColumnSpan(kulutlista, 5);
 		grid.add(kategoriaBoxSuodatus, 4, 7);
 		grid.add(kulutlista, 0, 8);
 		grid.add(kuluDiagrammiButton, 0, 9);
 		grid.add(muokkaaOstostaButton, 1, 9);
+		
 		
 		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
@@ -255,7 +259,11 @@ public class GUI extends Application implements IGUI{
 		});
 		
 		muokkaaOstostaButton.setOnAction((event) ->{
-			avaaMuokkausnakyma();
+			avaaMuokkausnakymaKulu();
+		});
+		
+		muokkaaKategoriaaButton.setOnAction((event) ->{
+			avaaMuokkausnakymaKategoria();
 		});
 		
 		hbox.getChildren().add(grid);
@@ -264,18 +272,33 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void lisaaKulu() {
-		String nimi = ostosField.getText();
-		double hinta = Double.parseDouble(hintaField.getText());
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
-		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
-		String kuvaus = kuvausField.getText();
-		kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		//JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe",JOptionPane.OK_OPTION);
-		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		
+		try {
+			String nimi = ostosField.getText();
+			double hinta = Double.parseDouble(hintaField.getText());
+			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
+			String kuvaus = kuvausField.getText();
+			
+			if(kayttaja.getMaksimibudjetti() >= hinta) {
+				kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+			} else {
+				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
+				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		} catch (NumberFormatException nfe) {
+			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			System.out.println("Joku vikana arvoja syötettäessä...");
+			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		
 		ostosField.clear();
 		hintaField.clear();
@@ -287,6 +310,7 @@ public class GUI extends Application implements IGUI{
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		kontrolleri.lisaaKategoria(uusiKategoriaField.getText(), kayttaja.getNimimerkki());
 		kategoriaBox.getItems().add(uusiKategoriaField.getText());
+		kategoriaBoxSuodatus.getItems().add(uusiKategoriaField.getText());
 		uusiKategoriaField.clear();
 	}
 	
@@ -316,11 +340,13 @@ public class GUI extends Application implements IGUI{
         }
 	}
 	
-	public void avaaMuokkausnakyma() {
+	public void avaaMuokkausnakymaKulu() {
 		
 		StackPane root = new StackPane();
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
+	    
+	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 	    
 	    Button tallennaButton = new Button("Tallenna muutos");
 	    Button poistaButton = new Button("Poista kulu");
@@ -333,8 +359,15 @@ public class GUI extends Application implements IGUI{
 		TextField uusiHintaField = new TextField();
 		TextField uusiKuvausField = new TextField();
 		
+		Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
+		ComboBox<String> muokkausBox = new ComboBox<>();
+		muokkausBox.setEditable(false);
+		List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+		muokkausBox.getItems().addAll(kaikkiKategoriat);
+		Button tallennaKategoriaButton = new Button("Tallenna uusi kategoria");
+		
 	    VBox vbox = new VBox();
-	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, poistaButton);
+	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, uusiKategoriaLabel, muokkausBox, tallennaKategoriaButton, poistaButton);
 	    root.getChildren().add(vbox);
 
 	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -342,14 +375,36 @@ public class GUI extends Application implements IGUI{
 	    	public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
 	    		int id = kulu.getKuluID();
-	    		String nimi = uusiNimiField.getText();
-	    		double hinta = Double.parseDouble(uusiHintaField.getText());
-		        String kuvaus = uusiKuvausField.getText();
 	    		
-	    		kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
-		        uusiNimiField.clear();
-		        uusiHintaField.clear();
-		        uusiKuvausField.clear();
+	    		try {
+	    			String nimi = uusiNimiField.getText();
+		    		double hinta = Double.parseDouble(uusiHintaField.getText());
+			        String kuvaus = uusiKuvausField.getText();
+			        kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+			        kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
+		    		kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() - hinta);
+	    		} catch (NumberFormatException nfe) {
+	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		} catch (Exception e) {
+	    			System.out.println("Joku vikana arvoja syötettäessä...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		}
+	    		
+		        setKulut(kulut);
+		        budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
+		        stage.close();
+	      }
+	    });
+	    
+	    tallennaKategoriaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent event) {
+	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
+	    		int id = kulu.getKuluID();
+	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
+	    		Kategoria uusiKategoria = kontrolleri.getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
+	    		kontrolleri.muutaKulunKategoria(id, uusiKategoria);
 		        setKulut(kulut);
 		        stage.close();
 	      }
@@ -359,26 +414,100 @@ public class GUI extends Application implements IGUI{
 	    	@Override
 		    public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
-	    		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    		
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
-	    			kayttajanhallinta.getKirjautunutKayttaja().setMaksimibudjetti(kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+	    			kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
 		    		kontrolleri.poistaKulu(id);
-		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		    		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		    		setKulut(kulut);
 		    		kategoriaBox.getItems().clear();
-		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
 		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
+		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		    		stage.close();
 	    		}
 	    		stage.close();
 	    	}
 	    });
 
-	      stage.setScene(scene);
-	      stage.show();
+	    stage.setScene(scene);
+	    stage.show();
 	}
+	
+	public void avaaMuokkausnakymaKategoria() {
+		StackPane root = new StackPane();
+	    Scene scene = new Scene(root, 400, 400);
+	    Stage stage = new Stage();
+	    
+	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+	    
+	    Button tallennaButton = new Button("Tallenna muutos");
+	    Button poistaButton = new Button("Poista kategoria");
+	    
+	    ComboBox<String> muokkausBox = new ComboBox<>();
+		muokkausBox.setEditable(false);
+		List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+		List<String> muokattavatKategoriat = new ArrayList<String>();
+		for (String nimi : kaikkiKategoriat) {
+			if(!(nimi.equals("Yleinen"))) {
+				muokattavatKategoriat.add(nimi);
+			}
+		}
+		System.out.println(muokattavatKategoriat);
+		muokkausBox.getItems().addAll(muokattavatKategoriat);
+	    
+		Label infoteksti = new Label("Valitse valikosta muokattava tai poistettava kategoria");
+	    Label uusiNimiLabel = new Label("Anna uusi nimi");
+		
+		TextField uusiNimiField = new TextField();
+		
+	    VBox vbox = new VBox();
+	    vbox.getChildren().addAll(infoteksti, muokkausBox, uusiNimiLabel, uusiNimiField, tallennaButton, poistaButton);
+	    root.getChildren().add(vbox);
+	    
+	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent event) {
+	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
+	    		Kategoria muokattavaKategoria = kontrolleri.getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
+	    		
+	    		String nimi = uusiNimiField.getText();
+	    		
+	    		kontrolleri.muokkaaKategoriaa(muokattavaKategoria.getKategoriaID(), nimi);
+		        uusiNimiField.clear();
+		        kategoriaBox.getItems().clear();
+				kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
+				kategoriaBox.getSelectionModel().select("Yleinen");
+				setKulut(kulut);
+		        stage.close();
+	      }
+	    });
+	    
+	    poistaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+		    public void handle(ActionEvent event) {
+	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
+	    		Kategoria poistettavaKategoria = kontrolleri.getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
+	    		
+	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kategorian? Poistetun kategorian kulut siirtyvät yleiseen kategoriaan", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
+	    		if(valinta == 0) {
+	    			kontrolleri.poistaKategoria(poistettavaKategoria.getKategoriaID(), kayttaja);
+	    			kategoriaBox.getItems().remove(kategoriaNimi);
+	    			kategoriaBox.getSelectionModel().select("Yleinen");
+	    			kategoriaBoxSuodatus.getItems().remove(kategoriaNimi);
+	    			setKulut(kulut);
+		    		stage.close();
+	    		}
+	    		stage.close();
+	    	}
+	    });
+	    
+	    stage.setScene(scene);
+	    stage.show();
+	}
+	
+	
 	
 	public void setKulut(List<Kulu> kulut) {
 		ObservableList<Kulu> observableKulut = FXCollections.observableList(kulut);

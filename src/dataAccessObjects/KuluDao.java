@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import model.Kategoria;
 import model.Kulu;
 import model.Kulut;
 
@@ -31,7 +32,7 @@ public class KuluDao {
 		Kulu kulu = em.find(Kulu.class, kuluId);
         em.getTransaction().commit();
         return kulu;
-	} //Tein testaillessa tällaisen millä voi hakea myös yhden kulun, ehkä tälle on myöhemminkin tarvetta
+	}
 	
 	public void muutaKulu(int id, Double summa, String nimi, String kuvaus) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
@@ -41,6 +42,14 @@ public class KuluDao {
 		kulu.setSumma(summa);
 		kulu.setKuvaus(kuvaus);
         em.getTransaction().commit();
+	}
+	
+	public void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
+		EntityManager em = datasource.MariaDbJpaConn.getInstance();
+		em.getTransaction().begin();
+		Kulu kulu = em.find(Kulu.class, kuluId);
+		kulu.setKategoria(uusiKategoria);
+		em.getTransaction().commit();
 	}
 	
 	public void poistaKulu(int id) {
