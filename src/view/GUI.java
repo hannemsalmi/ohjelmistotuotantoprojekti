@@ -369,6 +369,10 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox.getItems().clear();
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
 		kategoriaBox.getSelectionModel().select("Yleinen");
+		kategoriaBoxSuodatus.getItems().clear();
+		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
+		kategoriaBoxSuodatus.getItems().add("Kaikki");
+		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
         System.out.println("Logging in user: " + selectedUser);
 	}
 	
