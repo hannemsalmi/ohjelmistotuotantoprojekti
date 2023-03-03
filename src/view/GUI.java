@@ -1,7 +1,7 @@
 package view;
 
 import java.time.LocalDate;
-
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,6 +54,9 @@ public class GUI extends Application implements IGUI{
 	Label kategoriaLabel;
 	Label kuvausLabel;
 	Label budjettiLabel;
+	Label kategoriasuodatin;
+	Label kuukausisuodatin;
+	Label vuosiSuodatin;
 	TextField ostosField;
 	TextField hintaField;
 	TextField paivamaaraField;
@@ -79,6 +82,8 @@ public class GUI extends Application implements IGUI{
 	List<Kulu> suodatetutKulut = new ArrayList<>();
 	DatePicker pvmValitsin = new DatePicker();
 	LocalDate paivamaara;
+	ComboBox<String> kuukausiValitsin;
+	ComboBox<String> vuosiValitsin;
 	
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
@@ -161,6 +166,9 @@ public class GUI extends Application implements IGUI{
 		paivamaaraField = new TextField();
 		kuvausField = new TextField();
 		
+		kategoriasuodatin = new Label("Kategoriasuodatin");
+		kuukausisuodatin = new Label("Kuukausisuodatin");
+		vuosiSuodatin = new Label("Vuosisuodatin");
 		kategoriaBox = new ComboBox<>();
 		kategoriaBox.setEditable(false);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
@@ -179,6 +187,37 @@ public class GUI extends Application implements IGUI{
 		    public void handle(ActionEvent event) {
 		        suodata();
 		    }
+		});
+		
+		kuukausiValitsin = new ComboBox<>();
+		//kuukausiValitsin.setEditable(false);
+
+		kuukausiValitsin.getItems().add("Kaikki");
+		for (int i = 1; i <= 12; i++) {
+			kuukausiValitsin.getItems().add(Month.of(i).toString());
+		}
+		kuukausiValitsin.getSelectionModel().select("Kaikki");
+
+		kuukausiValitsin.setOnAction(new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent event) {
+		    suodataAika();
+		  }
+		});
+		
+		vuosiValitsin = new ComboBox<>();
+		//vuosiValitsin.setEditable(false);
+		vuosiValitsin.getItems().add("Kaikki");
+		for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+	        vuosiValitsin.getItems().add(Integer.toString(i));
+	    }
+	    vuosiValitsin.getSelectionModel().select("Kaikki");
+
+	    vuosiValitsin.setOnAction(new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent event) {
+		    suodataAika();
+		  }
 		});
 		
 		lisaaButton = new Button("Lisää ostos");
@@ -225,6 +264,13 @@ public class GUI extends Application implements IGUI{
 		grid.add(muokkaaKategoriaaButton, 1, 5);
 		GridPane.setColumnSpan(kulutlista, 5);
 		grid.add(kategoriaBoxSuodatus, 4, 7);
+		grid.add(kuukausiValitsin, 5, 7);
+		grid.add(vuosiValitsin, 6, 7);
+		
+		grid.add(kategoriasuodatin, 4, 6);
+		grid.add(kuukausisuodatin, 5, 6);
+		grid.add(vuosiSuodatin, 6, 6);
+		
 		grid.add(kulutlista, 0, 8);
 		grid.add(kuluDiagrammiButton, 0, 9);
 		grid.add(muokkaaOstostaButton, 1, 9);
@@ -272,18 +318,33 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void lisaaKulu() {
-		String nimi = ostosField.getText();
-		double hinta = Double.parseDouble(hintaField.getText());
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	
 		String kategorianNimi = kategoriaBox.getSelectionModel().getSelectedItem();
-		Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
-		String kuvaus = kuvausField.getText();
-		kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		//JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe",JOptionPane.OK_OPTION);
-		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		
+		try {
+			String nimi = ostosField.getText();
+			double hinta = Double.parseDouble(hintaField.getText());
+			Kategoria kategoria = kontrolleri.getKategoria(kategorianNimi, kayttaja.getNimimerkki());
+			String kuvaus = kuvausField.getText();
+			
+			if(kayttaja.getMaksimibudjetti() >= hinta) {
+				kontrolleri.lisaaKulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
+			} else {
+				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
+				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		} catch (NumberFormatException nfe) {
+			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
+			System.out.println("Joku vikana arvoja syötettäessä...");
+			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		
 		ostosField.clear();
 		hintaField.clear();
@@ -308,6 +369,10 @@ public class GUI extends Application implements IGUI{
 		kategoriaBox.getItems().clear();
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
 		kategoriaBox.getSelectionModel().select("Yleinen");
+		kategoriaBoxSuodatus.getItems().clear();
+		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
+		kategoriaBoxSuodatus.getItems().add("Kaikki");
+		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
         System.out.println("Logging in user: " + selectedUser);
 	}
 	
@@ -360,11 +425,24 @@ public class GUI extends Application implements IGUI{
 	    	public void handle(ActionEvent event) {
 	    		Kulu kulu = kulutlista.getSelectionModel().getSelectedItem();
 	    		int id = kulu.getKuluID();
-	    		String nimi = uusiNimiField.getText();
-	    		double hinta = Double.parseDouble(uusiHintaField.getText());
-		        String kuvaus = uusiKuvausField.getText();
-	    		kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
+	    		
+	    		try {
+	    			String nimi = uusiNimiField.getText();
+		    		double hinta = Double.parseDouble(uusiHintaField.getText());
+			        String kuvaus = uusiKuvausField.getText();
+			        kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+			        kontrolleri.muokkaaKulua(id, hinta, nimi, kuvaus);
+		    		kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() - hinta);
+	    		} catch (NumberFormatException nfe) {
+	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		} catch (Exception e) {
+	    			System.out.println("Joku vikana arvoja syötettäessä...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		}
+	    		
 		        setKulut(kulut);
+		        budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		        stage.close();
 	      }
 	    });
@@ -390,13 +468,13 @@ public class GUI extends Application implements IGUI{
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
-	    			kayttajanhallinta.getKirjautunutKayttaja().setMaksimibudjetti(kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
+	    			kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + kontrolleri.getKulu(id).getSumma());
 		    		kontrolleri.poistaKulu(id);
-		    		kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		    		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		    		setKulut(kulut);
 		    		kategoriaBox.getItems().clear();
 		    		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
-		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+		    		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		    		stage.close();
 	    		}
 	    		stage.close();
@@ -449,7 +527,7 @@ public class GUI extends Application implements IGUI{
 	    		kontrolleri.muokkaaKategoriaa(muokattavaKategoria.getKategoriaID(), nimi);
 		        uusiNimiField.clear();
 		        kategoriaBox.getItems().clear();
-				kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
+				kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 				kategoriaBox.getSelectionModel().select("Yleinen");
 				setKulut(kulut);
 		        stage.close();
@@ -563,39 +641,66 @@ public class GUI extends Application implements IGUI{
 		int lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).getDayOfMonth();
 		// Create a series for the chart data
 		XYChart.Series<String, Number> series = new XYChart.Series<>();
-		series.setName(LocalDate.now().getMonth().toString());
 
 		// Get a list of expenditures for the logged in user
-		List<Kulu> data = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+		//List<Kulu> data = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
 
 		
 		int currentMonth = LocalDate.now().getMonthValue();
-
+		int selectedMonth = kuukausiValitsin.getSelectionModel().getSelectedIndex();
+		int selectedYearIndex = vuosiValitsin.getSelectionModel().getSelectedIndex();
+		
+		if(selectedMonth == 0 && selectedYearIndex == 0) {
+			series.setName(LocalDate.now().getMonth().toString() + " of " + Integer.toString((LocalDate.now().getYear())));
+		}
+		else if(selectedMonth == 0 && selectedYearIndex != 0) {
+			series.setName(LocalDate.now().getMonth().toString() + " of " + Integer.toString(LocalDate.now().getYear() - selectedYearIndex + 1));
+		}
+		else {
+			series.setName(kulut.get(0).getPaivamaara().getMonth().toString() + " of " + Integer.toString(kulut.get(0).getPaivamaara().getYear()));
+		}
 		// Sort the list of expenditures based on their date
-		Collections.sort(data, new Comparator<Kulu>() {
+		Collections.sort(kulut, new Comparator<Kulu>() {
 		  public int compare(Kulu k1, Kulu k2) {
 		    return k1.getPaivamaara().compareTo(k2.getPaivamaara());
 		  }
 		});
 
 		// Initialize two arrays to store the x and y values of the chart data
-		double[] xValues = new double[data.size()];
-		double[] yValues = new double[data.size()];
+		double[] xValues = new double[kulut.size()];
+		double[] yValues = new double[kulut.size()];
 
 		// Initialize a variable to keep track of the number of data points
 		int count = 0;
 
 		// Loop through the list of expenditures
-		for (int i = 0; i < data .size(); i++) {
+		for (int i = 0; i < kulut.size(); i++) {
 		  // Get the date object of the current expenditure
-		  LocalDate date = data.get(i).getPaivamaara();
+		  LocalDate date = kulut.get(i).getPaivamaara();
 
 		  // If the date is in the current month, add the data to the x and y arrays
+		  if (selectedMonth == 0 && selectedYearIndex == 0) {
 		  if (date.getMonthValue() == currentMonth) {
 		    xValues[count] = date.getDayOfMonth();
-		    kulutSumma += data.get(i).getSumma();
+		    kulutSumma += kulut.get(i).getSumma();
 		    yValues[count] = kulutSumma;
 		    count++;
+		  }
+		  }
+		  else if(selectedMonth == 0 && selectedYearIndex != 0) {
+			  int selectedYear = LocalDate.now().getYear() - selectedYearIndex + 1;
+			  if (date.getMonthValue() == currentMonth && date.getYear() == selectedYear) {
+				    xValues[count] = date.getDayOfMonth();
+				    kulutSumma += kulut.get(i).getSumma();
+				    yValues[count] = kulutSumma;
+				    count++;
+				  }
+		  }
+		  else {
+			  	xValues[count] = date.getDayOfMonth();
+			    kulutSumma += kulut.get(i).getSumma();
+			    yValues[count] = kulutSumma;
+			    count++;
 		  }
 		}
 
@@ -674,7 +779,7 @@ public class GUI extends Application implements IGUI{
 
 	public void luoKuluDiagrammi() {
 	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	    List<Kulu> kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
+	    //List<Kulu> kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 	    List<Kategoria> kategoriat = kontrolleri.getKategoriat(kayttaja.getNimimerkki());
 	    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
@@ -705,6 +810,27 @@ public class GUI extends Application implements IGUI{
 	    Stage stage = new Stage();
 	    stage.setScene(scene);
 	    stage.show();
+	}
+	
+	private void suodataAika() {
+	    int selectedMonth = kuukausiValitsin.getSelectionModel().getSelectedIndex();
+	    int selectedYearIndex = vuosiValitsin.getSelectionModel().getSelectedIndex();
+	    int selectedYear = LocalDate.now().getYear() - selectedYearIndex + 1;
+	    List<Kulu> suodatetutKulut = new ArrayList<>();
+	    kulut = kontrolleri.getKulut(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID());
+	    if (selectedMonth == 0 && selectedYearIndex == 0){
+	        setKulut(kulut);
+	      }
+	    else {
+	    	  for (Kulu kulu : kulut) {
+	    		  if ((kulu.getPaivamaara().getMonthValue() == selectedMonth || selectedMonth == 0 )&& (kulu.getPaivamaara().getYear() == selectedYear || selectedYearIndex == 0) ) {
+	    			  suodatetutKulut.add(kulu);
+	        }
+	    }
+	    	setKulut(suodatetutKulut);
+	  	    kulut = suodatetutKulut;
+	      }
+	    
 	}
 	
 	public static void main(String[] args) {
