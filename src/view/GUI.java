@@ -203,12 +203,9 @@ public class GUI extends Application implements IGUI{
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
-		budjettiaJaljella = kayttaja.getMaksimibudjetti();
-		for(Kulu kulu: kulut) {
-			if(kulu.getPaivamaara().getMonthValue() == LocalDate.now().getMonthValue() && kulu.getPaivamaara().getYear() == LocalDate.now().getYear()) {
-			budjettiaJaljella -= kulu.getSumma();
-			}
-		};
+		budjettiaJaljella = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
+		budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella) + " €");
+		budjettiaJaljella = budjettiaJaljellaLaskuri();
 		setKulut(kulut);
 		
 		ostosLabel = new Label("Ostos");
@@ -352,7 +349,6 @@ public class GUI extends Application implements IGUI{
             valitseKayttaja();
         });
         
-        budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella) + " €");
         
 		ostosLabel.setFont(labelFont);
         ostosLabel.setTextFill(accentColor);
@@ -533,7 +529,20 @@ public class GUI extends Application implements IGUI{
 		kategoriaBoxSuodatus.getItems().addAll(kontrolleri.getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
 		kategoriaBoxSuodatus.getItems().add("Kaikki");
 		kategoriaBoxSuodatus.getSelectionModel().select("Kaikki");
+		budjettiaJaljellaLaskuri();
         System.out.println("Logging in user: " + selectedUser);
+	}
+	
+	public double budjettiaJaljellaLaskuri() {
+		budjettiaJaljella = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
+		for(Kulu kulu: kulut) {
+			if(kulu.getPaivamaara().getMonthValue() == LocalDate.now().getMonthValue() && kulu.getPaivamaara().getYear() == LocalDate.now().getYear()) {
+			budjettiaJaljella -= kulu.getSumma();
+			}
+		};
+		budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+		
+		return budjettiaJaljella;
 	}
 	
 	public void suodata() {
