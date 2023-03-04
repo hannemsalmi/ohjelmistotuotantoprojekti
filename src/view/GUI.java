@@ -536,32 +536,37 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void avaaMuokkausnakymaKulu() {
-		
-		StackPane root = new StackPane();
+
+	    StackPane root = new StackPane();
+	    root.setStyle("-fx-background-color: #DAE3E5;");
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
-	    
+
 	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	    
+
 	    Button tallennaButton = new Button("Tallenna muutos");
+	    tallennaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
 	    Button poistaButton = new Button("Poista kulu");
-	    
+	    poistaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+
 	    Label uusiNimiLabel = new Label("Anna uusi nimi");
-		Label uusiHintaLabel = new Label("Anna uusi hinta");
-		Label uusiKuvausLabel = new Label("Anna uusi kuvaus");
-		
-		TextField uusiNimiField = new TextField();
-		TextField uusiHintaField = new TextField();
-		TextField uusiKuvausField = new TextField();
-		
-		Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
-		ComboBox<String> muokkausBox = new ComboBox<>();
-		muokkausBox.setEditable(false);
-		List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
-		muokkausBox.getItems().addAll(kaikkiKategoriat);
-		Button tallennaKategoriaButton = new Button("Tallenna uusi kategoria");
-		
-	    VBox vbox = new VBox();
+	    Label uusiHintaLabel = new Label("Anna uusi hinta");
+	    Label uusiKuvausLabel = new Label("Anna uusi kuvaus");
+
+	    TextField uusiNimiField = new TextField();
+	    TextField uusiHintaField = new TextField();
+	    TextField uusiKuvausField = new TextField();
+
+	    Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
+	    ComboBox<String> muokkausBox = new ComboBox<>();
+	    muokkausBox.setEditable(false);
+	    List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+	    muokkausBox.getItems().addAll(kaikkiKategoriat);
+	    Button tallennaKategoriaButton = new Button("Tallenna uusi kategoria");
+	    tallennaKategoriaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+
+	    VBox vbox = new VBox(10);
+	    vbox.setStyle("-fx-padding: 10px;");
 	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, uusiKategoriaLabel, muokkausBox, tallennaKategoriaButton, poistaButton);
 	    root.getChildren().add(vbox);
 
@@ -627,37 +632,45 @@ public class GUI extends Application implements IGUI{
 	    });
 
 	    stage.setScene(scene);
+	    stage.setTitle("Muokkaa kulua");
 	    stage.show();
 	}
 	
 	public void avaaMuokkausnakymaKategoria() {
-		StackPane root = new StackPane();
+	    StackPane root = new StackPane();
+	    root.setStyle("-fx-background-color: #DAE3E5;");
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
-	    
+
 	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-	    
+
 	    Button tallennaButton = new Button("Tallenna muutos");
+	    tallennaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
 	    Button poistaButton = new Button("Poista kategoria");
-	    
+	    poistaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+
 	    ComboBox<String> muokkausBox = new ComboBox<>();
-		muokkausBox.setEditable(false);
-		List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
-		List<String> muokattavatKategoriat = new ArrayList<String>();
-		for (String nimi : kaikkiKategoriat) {
-			if(!(nimi.equals("Yleinen"))) {
-				muokattavatKategoriat.add(nimi);
-			}
-		}
-		System.out.println(muokattavatKategoriat);
-		muokkausBox.getItems().addAll(muokattavatKategoriat);
-	    
-		Label infoteksti = new Label("Valitse valikosta muokattava tai poistettava kategoria");
+	    muokkausBox.setEditable(false);
+	    List<String> kaikkiKategoriat = kontrolleri.getKategorianimet(kayttaja.getNimimerkki());
+	    List<String> muokattavatKategoriat = new ArrayList<String>();
+	    for (String nimi : kaikkiKategoriat) {
+	        if(!(nimi.equals("Yleinen"))) {
+	            muokattavatKategoriat.add(nimi);
+	        }
+	    }
+	    System.out.println(muokattavatKategoriat);
+	    muokkausBox.getItems().addAll(muokattavatKategoriat);
+
+	    Label infoteksti = new Label("Valitse valikosta muokattava tai poistettava kategoria");
+	    infoteksti.setStyle("-fx-font-family: Arial;");
 	    Label uusiNimiLabel = new Label("Anna uusi nimi");
-		
-		TextField uusiNimiField = new TextField();
-		
+	    uusiNimiLabel.setStyle("-fx-font-family: Arial;");
+
+	    TextField uusiNimiField = new TextField();
+
 	    VBox vbox = new VBox();
+	    vbox.setSpacing(10);
+	    vbox.setPadding(new Insets(10, 10, 10, 10));
 	    vbox.getChildren().addAll(infoteksti, muokkausBox, uusiNimiLabel, uusiNimiField, tallennaButton, poistaButton);
 	    root.getChildren().add(vbox);
 	    
@@ -699,6 +712,7 @@ public class GUI extends Application implements IGUI{
 	    });
 	    
 	    stage.setScene(scene);
+	    stage.setTitle("Muokkaa kategorioita");
 	    stage.show();
 	}
 	
@@ -710,63 +724,78 @@ public class GUI extends Application implements IGUI{
 	}
 	
 	public void luoKayttajaIkkuna() {
-		StackPane root = new StackPane();
+	    StackPane root = new StackPane();
+	    root.setStyle("-fx-background-color: #DAE3E5;"); // set background color
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
 	    Label label = new Label("Luo uusi käyttäjätunnus:");
 	    TextField textField = new TextField();
+	    textField.setStyle("-fx-font-family: Arial; -fx-padding: 10px;"); // set font and padding
 	    Label label2 = new Label("Aseta kuukausittainen budjettisi:");
 	    TextField textField2 = new TextField();
+	    textField2.setStyle("-fx-font-family: Arial; -fx-padding: 10px;"); // set font and padding
 	    Button button = new Button("Luo käyttäjä");
+	    button.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-padding: 10px; -fx-font-weight: bold;"); // set button styles
 
 	    VBox vbox = new VBox();
+	    vbox.setSpacing(10);
+	    vbox.setPadding(new Insets(20)); // add margin to VBox
 	    vbox.getChildren().addAll(label, textField, label2, textField2, button);
 	    root.getChildren().add(vbox);
 
 	    button.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override
-	      public void handle(ActionEvent event) {
-	        String username = textField.getText();
-	        double budjetti = Double.parseDouble(textField2.getText());
-	        if (!username.isEmpty()) {
-	          kontrolleri.lisaaKayttaja(username, budjetti);
-	          kontrolleri.lisaaKategoria("Yleinen", username);
-	          textField.clear();
-	          textField2.clear();
-	          userProfileSelector.getItems().add(username);
-	          stage.close();
+	        public void handle(ActionEvent event) {
+	            String username = textField.getText();
+	            double budjetti = Double.parseDouble(textField2.getText());
+	            if (!username.isEmpty()) {
+	                kontrolleri.lisaaKayttaja(username, budjetti);
+	                kontrolleri.lisaaKategoria("Yleinen", username);
+	                textField.clear();
+	                textField2.clear();
+	                userProfileSelector.getItems().add(username);
+	                stage.close();
+	            }
 	        }
-	      }
 	    });
 
-	      stage.setScene(scene);
-	      stage.show();
+	    stage.setScene(scene);
+	    stage.setTitle("Luo käyttäjä");
+	    stage.show();
 	}
 	
 	public void luoAsetusIkkuna() {
-		StackPane root = new StackPane();
+	    StackPane root = new StackPane();
+	    root.setStyle("-fx-background-color: #DAE3E5;"); 
 	    Scene scene = new Scene(root, 400, 400);
 	    Stage stage = new Stage();
 	    Label label = new Label("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) );
+	    label.setStyle("-fx-font-family: Arial; "); 
 	    Label label2 = new Label("Aseta kuukausittainen budjettisi:");
+	    label2.setStyle("-fx-font-family: Arial;");
 	    TextField textField = new TextField();
+	    textField.setStyle("-fx-font-family: Arial;");
 	    Button tallennaButton = new Button("Tallenna");
+	    tallennaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;"); 
 	    Button poistaButton = new Button("Poista kaikki lisäämäsi kulut ja kategoriat");
+	    poistaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;"); 
 
 	    VBox vbox = new VBox();
+	    vbox.setSpacing(10);
+	    vbox.setPadding(new Insets(20)); 
 	    vbox.getChildren().addAll(label, label2, textField, tallennaButton, poistaButton);
 	    root.getChildren().add(vbox);
 
 	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override
-	      public void handle(ActionEvent event) {
-	        double budjetti = Double.parseDouble(textField.getText());
-	        kontrolleri.paivitaBudjetti(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID(), budjetti);
-	        kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
-	        label.setText("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti());
-	        textField.clear();
-	        budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
-	      }
+	        public void handle(ActionEvent event) {
+	            double budjetti = Double.parseDouble(textField.getText());
+	            kontrolleri.paivitaBudjetti(kayttajanhallinta.getKirjautunutKayttaja().getKayttajaID(), budjetti);
+	            kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
+	            label.setText("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti());
+	            textField.clear();
+	            budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+	        }
 	    });
 	    
 	    poistaButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -778,6 +807,7 @@ public class GUI extends Application implements IGUI{
 	    });
 
 	      stage.setScene(scene);
+	      stage.setTitle("Käyttäjäasetukset");
 	      stage.show();	
 	}
 	
@@ -788,7 +818,7 @@ public class GUI extends Application implements IGUI{
 	public void luoKuluGraph() {
 		
 		LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
-		lineChart.setTitle("Kulutus trendi");
+		lineChart.setTitle("Kulutusennuste");
 
 		// Initialize a variable to keep track of the total expenditure
 		int kulutSumma = 0;
@@ -925,8 +955,11 @@ public class GUI extends Application implements IGUI{
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", lastDayOfMonth), maxBudget));
 		lineChart.getData().add(maxBudgetSeries);
 		Scene scene = new Scene(lineChart, 800, 600);
+		
+		lineChart.setStyle("-fx-background-color: #DAE3E5;");
 
 		Stage stage = new Stage();
+		stage.setTitle("Kulutusennuste");
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -955,13 +988,18 @@ public class GUI extends Application implements IGUI{
 
 	    PieChart pieChart = new PieChart(pieChartData);
 	    pieChart.setTitle("Kulut kategorioittain");
+	    pieChart.lookup(".chart-title").setStyle("-fx-padding: 10;");
 	    pieChart.setLabelLineLength(50);
 	    pieChart.setLabelsVisible(true);
 	    pieChart.setLegendVisible(false);
 
 	    Scene scene = new Scene(new Group(pieChart), 500, 400);
+	    
+	    pieChart.setStyle("-fx-background-color: #DAE3E5;");
+
 
 	    Stage stage = new Stage();
+	    stage.setTitle("Kuludiagrammi");
 	    stage.setScene(scene);
 	    stage.show();
 	}
