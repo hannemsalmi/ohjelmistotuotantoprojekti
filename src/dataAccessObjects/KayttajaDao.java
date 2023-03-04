@@ -62,4 +62,14 @@ public class KayttajaDao {
 	    }
 	    em.getTransaction().commit();
 	}
+	
+	public void poistaKayttaja(int id) {
+		EntityManager em = datasource.MariaDbJpaConn.getInstance();
+		em.getTransaction().begin();
+		Kayttaja kayttaja = em.find(Kayttaja.class, id);
+		if (kayttaja!=null) {
+			em.remove(kayttaja);
+		}
+        em.getTransaction().commit();
+	}
 }

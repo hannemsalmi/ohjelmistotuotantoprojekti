@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -34,11 +35,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
@@ -96,6 +104,8 @@ public class GUI extends Application implements IGUI{
 		      StackPane root = new StackPane();
 		      Scene scene = new Scene(root, 400, 400);
 
+		      root.setStyle("-fx-background-color: " + "#DAE3E5" + ";");
+
 		      Label label = new Label("Luo uusi käyttäjätunnus:");
 		      TextField textField = new TextField();
 		      Label label2 = new Label("Aseta kuukausittainen budjettisi:");
@@ -142,10 +152,43 @@ public class GUI extends Application implements IGUI{
 	public HBox luoHBox() {
 		HBox hbox = new HBox();
 		hbox.setPadding(new Insets(20, 15, 20, 15));
-		hbox.setSpacing(10);
+		hbox.setStyle("-fx-background-color: " + "#DAE3E5" + ";");
+		hbox.setSpacing(20);
+		hbox.setMinWidth(1000);
 		
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 20, 10, 20));
+		grid.setStyle("-fx-background-color: " + "#DAE3E5" + ";");
+		grid.setHgap(10);
+		grid.setVgap(10);
+		
+		ColumnConstraints col1 = new ColumnConstraints(120);
+		ColumnConstraints col2 = new ColumnConstraints(120);
+		ColumnConstraints col3 = new ColumnConstraints(120);
+		ColumnConstraints col4 = new ColumnConstraints(120);
+		ColumnConstraints col5 = new ColumnConstraints(120);
+		ColumnConstraints col6 = new ColumnConstraints(120);
+		ColumnConstraints col7 = new ColumnConstraints(120);
+		ColumnConstraints col8 = new ColumnConstraints(120);
+		
+		
+		grid.getColumnConstraints().add(col1);
+		grid.getColumnConstraints().add(col2);
+		grid.getColumnConstraints().add(col3);
+		grid.getColumnConstraints().add(col4);
+		grid.getColumnConstraints().add(col5);
+		grid.getColumnConstraints().add(col6);
+		grid.getColumnConstraints().add(col7);
+		grid.getColumnConstraints().add(col8);
+		
+		Color mainColor = Color.rgb(218, 227, 229);
+		Color accentColor = Color.rgb(80, 125, 188);
+		String mainColorHex = "#DAE3E5";
+		String accentColorHex = "#507DBC";
+			
+		Font labelFont = Font.font("Arial", FontWeight.BOLD, 14);
+		Font inputFont = Font.font("Arial", FontWeight.NORMAL, 14);
+		Font budjettiFont = Font.font("Arial", FontWeight.BOLD, 20);
 		
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
@@ -158,6 +201,7 @@ public class GUI extends Application implements IGUI{
 		paivamaaraLabel = new Label("Päivämäärä");
 		lisaaButton = new Button("Lisää ostos");
 		kulutlista.setPrefHeight(300);
+		kulutlista.setPrefWidth(500);
 
 		kategoriaLabel = new Label("Kategoria");
 		kuvausLabel = new Label("Kuvaus");
@@ -166,11 +210,13 @@ public class GUI extends Application implements IGUI{
 		paivamaaraField = new TextField();
 		kuvausField = new TextField();
 		
-		kategoriasuodatin = new Label("Kategoriasuodatin");
-		kuukausisuodatin = new Label("Kuukausisuodatin");
-		vuosiSuodatin = new Label("Vuosisuodatin");
+		
+		kategoriasuodatin = new Label("Kategoria");
+		kuukausisuodatin = new Label("Kuukausi");
+		vuosiSuodatin = new Label("Vuosi");
 		kategoriaBox = new ComboBox<>();
 		kategoriaBox.setEditable(false);
+		kategoriaBox.setMaxWidth(110);
 		kategoriaBox.getItems().addAll(kontrolleri.getKategorianimet(kayttaja.getNimimerkki()));
 		kategoriaBox.getSelectionModel().select("Yleinen");
 		
@@ -193,9 +239,19 @@ public class GUI extends Application implements IGUI{
 		//kuukausiValitsin.setEditable(false);
 
 		kuukausiValitsin.getItems().add("Kaikki");
-		for (int i = 1; i <= 12; i++) {
-			kuukausiValitsin.getItems().add(Month.of(i).toString());
-		}
+		kuukausiValitsin.getItems().add("Tammi");
+		kuukausiValitsin.getItems().add("Helmi");
+		kuukausiValitsin.getItems().add("Maalis");
+		kuukausiValitsin.getItems().add("Huhti");
+		kuukausiValitsin.getItems().add("Touko");
+		kuukausiValitsin.getItems().add("Kesä");
+		kuukausiValitsin.getItems().add("Heinä");
+		kuukausiValitsin.getItems().add("Elo");
+		kuukausiValitsin.getItems().add("Syys");
+		kuukausiValitsin.getItems().add("Loka");
+		kuukausiValitsin.getItems().add("Marras");
+		kuukausiValitsin.getItems().add("Joulu");
+
 		kuukausiValitsin.getSelectionModel().select("Kaikki");
 
 		kuukausiValitsin.setOnAction(new EventHandler<ActionEvent>() {
@@ -219,17 +275,60 @@ public class GUI extends Application implements IGUI{
 		    suodataAika();
 		  }
 		});
-		
+	    
+	    kategoriaBoxSuodatus.setMinWidth(110);
+	    kuukausiValitsin.setMinWidth(110);
+	    vuosiValitsin.setMinWidth(110);
+	    
 		lisaaButton = new Button("Lisää ostos");
 		muokkaaOstostaButton = new Button("Muokkaa ostosta");
-		muokkaaKategoriaaButton = new Button("Muokkaa kategoriaa");
-		lisaaKayttajaButton = new Button("Lisää uusi käyttäjä");
+		muokkaaKategoriaaButton = new Button("Muokkaa");
+		lisaaKayttajaButton = new Button("Uusi käyttäjä");
 		kayttajaAsetusButton = new Button("Käyttäjäasetukset");
 		uusiKategoriaLabel = new Label("Uusi kategoria");
 		uusiKategoriaField = new TextField();
 		kategoriaButton = new Button("Lisää kategoria");
-		kulutusTrendiButton = new Button("Näytä kulutus graafi");
-		kuluDiagrammiButton = new Button("Näytä kuludiagrammi");
+		kulutusTrendiButton = new Button("Näytä ennuste");
+		kuluDiagrammiButton = new Button("Näytä diagrammi");
+		
+		lisaaButton.setMinWidth(110);
+		muokkaaOstostaButton.setMinWidth(110);
+		muokkaaKategoriaaButton.setMinWidth(110);
+		lisaaKayttajaButton.setMinWidth(110);
+		kayttajaAsetusButton.setMinWidth(110);
+		kategoriaButton.setMinWidth(110);
+		kulutusTrendiButton.setMinWidth(110);
+		kuluDiagrammiButton.setMinWidth(110);
+		
+		Font buttonFont = Font.font("Arial", FontWeight.BOLD, 12);
+		lisaaButton.setFont(buttonFont);
+		muokkaaOstostaButton.setFont(buttonFont);
+		muokkaaKategoriaaButton.setFont(buttonFont);
+		lisaaKayttajaButton.setFont(buttonFont);
+		kayttajaAsetusButton.setFont(buttonFont);
+		kategoriaButton.setFont(buttonFont);
+		kulutusTrendiButton.setFont(buttonFont);
+		kuluDiagrammiButton.setFont(buttonFont);
+		
+		pvmValitsin.setMaxWidth(110);
+		
+		lisaaButton.setStyle("-fx-background-color: " + accentColorHex+ "; -fx-text-fill: white;");
+		muokkaaOstostaButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		muokkaaKategoriaaButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		lisaaKayttajaButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		kayttajaAsetusButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		kategoriaButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		kulutusTrendiButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		kuluDiagrammiButton.setStyle("-fx-background-color: " + accentColorHex + "; -fx-text-fill: white;");
+		
+		kategoriaBox.setStyle("-fx-background-color: white; -fx-border-color: " + accentColorHex + "; -fx-font: 12px \"Arial\";");
+		kategoriaBoxSuodatus.setStyle("-fx-background-color: white; -fx-border-color: " + accentColorHex + "; -fx-font: 12px \"Arial\";");
+		kuukausiValitsin.setStyle("-fx-background-color: white; -fx-border-color: " + accentColorHex + "; -fx-font: 12px \"Arial\";");
+		vuosiValitsin.setStyle("-fx-background-color: white; -fx-border-color: " + accentColorHex + "; -fx-font: 12px \"Arial\";");
+		userProfileSelector.setStyle("-fx-background-color: white; -fx-border-color: " + accentColorHex + "; -fx-font: 12px \"Arial\";");
+		
+		userProfileSelector.setMaxWidth(110);
+		kategoriaBox.setMinWidth(110);
 		
 		kayttajaValitsinLabel = new Label("Valitse käyttäjä");
         userProfileSelector.getItems().addAll(kontrolleri.getKayttajat());
@@ -238,7 +337,40 @@ public class GUI extends Application implements IGUI{
             valitseKayttaja();
         });
         
-        budjettiLabel = new Label("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+        budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+        
+		ostosLabel.setFont(labelFont);
+        ostosLabel.setTextFill(accentColor);
+        hintaLabel.setFont(labelFont);
+        hintaLabel.setTextFill(accentColor);
+        paivamaaraLabel.setFont(labelFont);
+        paivamaaraLabel.setTextFill(accentColor);
+        kategoriaLabel.setFont(labelFont);
+        kategoriaLabel.setTextFill(accentColor);
+        kuvausLabel.setFont(labelFont);
+        kuvausLabel.setTextFill(accentColor);
+        kategoriasuodatin.setFont(labelFont);
+        kategoriasuodatin.setTextFill(accentColor);
+        kuukausisuodatin.setFont(labelFont);
+        kuukausisuodatin.setTextFill(accentColor);
+        vuosiSuodatin.setFont(labelFont);
+        vuosiSuodatin.setTextFill(accentColor);
+        kayttajaValitsinLabel.setFont(labelFont);
+        kayttajaValitsinLabel.setTextFill(accentColor);
+        budjettiLabel.setFont(budjettiFont);
+        budjettiLabel.setTextFill(accentColor);
+        uusiKategoriaLabel.setFont(labelFont);
+        uusiKategoriaLabel.setTextFill(accentColor);
+        ostosField.setFont(inputFont);
+        hintaField.setFont(inputFont);
+        paivamaaraField.setFont(inputFont);
+        kuvausField.setFont(inputFont);
+        
+        ostosField.setMaxWidth(110);
+        hintaField.setMaxWidth(110);
+        kuvausField.setMaxWidth(110);
+        uusiKategoriaField.setMaxWidth(110);
+        
         
 		grid.add(ostosLabel, 0, 0);
 		grid.add(ostosField, 0, 1);
@@ -250,30 +382,43 @@ public class GUI extends Application implements IGUI{
 		grid.add(kategoriaBox, 3, 1);
 		grid.add(kuvausLabel, 4, 0);
 		grid.add(kuvausField, 4, 1);
+		grid.add(budjettiLabel, 6, 9);
+		grid.add(lisaaButton, 0, 2);
+		
+	
 		grid.add(kayttajaValitsinLabel, 6, 0);
 		grid.add(userProfileSelector, 6, 1);
-		grid.add(budjettiLabel, 6, 3);
-		grid.add(lisaaKayttajaButton, 7, 1);
-		grid.add(kayttajaAsetusButton, 7, 2);
-		grid.add(lisaaButton, 0, 2);
-		grid.add(kulutusTrendiButton, 7, 4);
+		grid.add(lisaaKayttajaButton, 6, 2);
+		grid.add(kayttajaAsetusButton, 6, 3);
 		
-		grid.add(uusiKategoriaLabel, 0, 3);
-		grid.add(uusiKategoriaField, 0, 4);
-		grid.add(kategoriaButton, 0, 5);
-		grid.add(muokkaaKategoriaaButton, 1, 5);
+		grid.add(uusiKategoriaLabel, 7, 0);
+		grid.add(uusiKategoriaField, 7, 1);
+		grid.add(kategoriaButton, 7, 2);
+		grid.add(muokkaaKategoriaaButton, 7, 3);
+		
 		GridPane.setColumnSpan(kulutlista, 5);
-		grid.add(kategoriaBoxSuodatus, 4, 7);
-		grid.add(kuukausiValitsin, 5, 7);
-		grid.add(vuosiValitsin, 6, 7);
+		GridPane.setColumnSpan(budjettiLabel, 2);
+
+		grid.add(kategoriaBoxSuodatus, 2, 8);
+		grid.add(kuukausiValitsin, 3, 8);
+		grid.add(vuosiValitsin, 4, 8);
+	
+		grid.add(kategoriasuodatin, 2, 7);
+		grid.add(kuukausisuodatin, 3, 7);
+		grid.add(vuosiSuodatin, 4, 7);
 		
-		grid.add(kategoriasuodatin, 4, 6);
-		grid.add(kuukausisuodatin, 5, 6);
-		grid.add(vuosiSuodatin, 6, 6);
+		grid.add(kulutlista, 0, 9);
+		grid.add(muokkaaOstostaButton, 0, 10);
+		grid.add(kuluDiagrammiButton, 1, 10);
+		grid.add(kulutusTrendiButton, 2, 10);
 		
-		grid.add(kulutlista, 0, 8);
-		grid.add(kuluDiagrammiButton, 0, 9);
-		grid.add(muokkaaOstostaButton, 1, 9);
+		GridPane.setHalignment(budjettiLabel, HPos.CENTER);
+		/* GridPane.setHalignment(kategoriasuodatin, HPos.RIGHT);
+		GridPane.setHalignment(kuukausisuodatin, HPos.RIGHT);
+		GridPane.setHalignment(vuosiSuodatin, HPos.RIGHT);
+		GridPane.setHalignment(kategoriaBoxSuodatus, HPos.RIGHT);
+		GridPane.setHalignment(vuosiValitsin, HPos.RIGHT);
+		GridPane.setHalignment(kuukausiValitsin, HPos.RIGHT); */
 		
 		
 		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
@@ -344,7 +489,7 @@ public class GUI extends Application implements IGUI{
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
+		budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		
 		ostosField.clear();
 		hintaField.clear();
