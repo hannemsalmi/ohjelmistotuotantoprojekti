@@ -32,7 +32,7 @@ Desktop application that allows user to add expenses and track their spending. S
 
 Installing MariaDB before running the application is necessary.
 After installing, you need to create a new database for the expenses with the following credentials:
-* Database Name: budget_app
+* Database Name: budjettisovellus
 * Username: your_username
 * Password: your_password
 
