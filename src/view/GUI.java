@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -92,7 +93,7 @@ public class GUI extends Application implements IGUI{
 	LocalDate paivamaara;
 	ComboBox<String> kuukausiValitsin;
 	ComboBox<String> vuosiValitsin;
-	
+	Double budjettiaJaljella;
 	public void init() {
 		kontrolleri = new Kontrolleri(this);
 	}
@@ -194,6 +195,12 @@ public class GUI extends Application implements IGUI{
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
+		budjettiaJaljella = kayttaja.getMaksimibudjetti();
+		for(Kulu kulu: kulut) {
+			if(kulu.getPaivamaara().getMonthValue() == LocalDate.now().getMonthValue() && kulu.getPaivamaara().getYear() == LocalDate.now().getYear()) {
+			budjettiaJaljella -= kulu.getSumma();
+			}
+		};
 		setKulut(kulut);
 		
 		ostosLabel = new Label("Ostos");
@@ -337,7 +344,7 @@ public class GUI extends Application implements IGUI{
             valitseKayttaja();
         });
         
-        budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+        budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella) + " €");
         
 		ostosLabel.setFont(labelFont);
         ostosLabel.setTextFill(accentColor);
@@ -478,6 +485,7 @@ public class GUI extends Application implements IGUI{
 				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
 				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
 			}
+			budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella - hinta) + " €");
 			
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
@@ -489,7 +497,6 @@ public class GUI extends Application implements IGUI{
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",kayttaja.getMaksimibudjetti()) + " €");
 		
 		ostosField.clear();
 		hintaField.clear();
@@ -805,13 +812,13 @@ public class GUI extends Application implements IGUI{
 		int selectedYearIndex = vuosiValitsin.getSelectionModel().getSelectedIndex();
 		
 		if(selectedMonth == 0 && selectedYearIndex == 0) {
-			series.setName(LocalDate.now().getMonth().toString() + " of " + Integer.toString((LocalDate.now().getYear())));
+			series.setName("Kumuloituneet kulut: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
 		}
 		else if(selectedMonth == 0 && selectedYearIndex != 0) {
-			series.setName(LocalDate.now().getMonth().toString() + " of " + Integer.toString(LocalDate.now().getYear() - selectedYearIndex + 1));
+			series.setName("Kumuloituneet kulut: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString(LocalDate.now().getYear() - selectedYearIndex + 1));
 		}
 		else {
-			series.setName(kulut.get(0).getPaivamaara().getMonth().toString() + " of " + Integer.toString(kulut.get(0).getPaivamaara().getYear()));
+			series.setName("Kumuloituneet kulut: " + kulut.get(0).getPaivamaara().getMonth().getValue() + "." + Integer.toString(kulut.get(0).getPaivamaara().getYear()));
 		}
 		// Sort the list of expenditures based on their date
 		Collections.sort(kulut, new Comparator<Kulu>() {
@@ -872,7 +879,6 @@ public class GUI extends Application implements IGUI{
 		// It does this by looping through every day of the current month and checking if there is a corresponding expenditure for that day.
 		// If there is an expenditure for that day, it adds that day's date and the cumulative expenditure up to that day to the series.
 		// If there is no expenditure for that day, it adds that day's date and a value of 0 to the series.
-
 		for (int i = 1; i <= lastDayOfMonth; i++) {
 		    boolean found = false;
 		    // loop through all the expenditures so far in the current month
@@ -894,6 +900,7 @@ public class GUI extends Application implements IGUI{
 		        // add the day of the month and a value of 0 to the series
 		        series.getData().add(new XYChart.Data<>(dayOfMonth, 0));
 		    }
+		    
 		}
 
 
@@ -924,7 +931,16 @@ public class GUI extends Application implements IGUI{
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", 1), maxBudget));
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", lastDayOfMonth), maxBudget));
 		lineChart.getData().add(maxBudgetSeries);
-		Scene scene = new Scene(lineChart, 800, 600);
+		
+		Label info = new Label("Graafeja ei piirry jos ei ole olemassa vähintäänkin kahta datapistettä erillisiltä päiviltä. Ennuste toimii parhaiten jos dataa on usealta päivältä.");
+		info.setAlignment(Pos.CENTER);
+	    VBox vbox = new VBox();
+	    vbox.getChildren().addAll(lineChart,info);
+	    vbox.setSpacing(10); 
+	    vbox.setAlignment(Pos.CENTER); 
+	    vbox.setPrefHeight(600); 
+	    lineChart.setPrefHeight(550); 
+		Scene scene = new Scene(vbox, 800, 600);
 
 		Stage stage = new Stage();
 		stage.setScene(scene);
