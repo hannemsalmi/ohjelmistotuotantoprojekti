@@ -56,7 +56,6 @@ public class Kontrolleri implements IKontrolleri {
 		kulut.lisaaKulu(kulu);
 		System.out.println(kulu);
 		kuluDao.lisaaKulu(kulu);
-		paivitaBudjetti(kayttaja.getKayttajaID(),model.laskeBudjetti(kayttaja.getMaksimibudjetti(), hinta));
 	}
 	
 	public Kayttaja getKayttaja(int kayttajaid) {
