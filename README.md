@@ -40,9 +40,13 @@ Update the persistence.xml file located in the META-INF folder with your databas
 * property: javax.persistence.jdbc.user -> your_username
 * property: javax.persistence.jdbc.password -> your_password
 
-To run the application, open a command prompt or terminal and navigate to the root directory of the application.
-* Type `javac Budjettisovellus.java` and press enter to compile the code.
-* Type `java MyFirstJavaProgram` to run the app.
+Ensure that Maven is installed and added to system's PATH environment variable.
+
+To run the application, open a command prompt or terminal and navigate to the root directory of the application. Tehn type the following commands:
+*	mvn compile
+*	mvn package
+*	java -jar target/ohjelmistotuotantoprojekti.jar
+
 
 
 
