@@ -99,54 +99,62 @@ public class GUI extends Application implements IGUI{
 
 	@Override
 	public void start(Stage primaryStage) {
-		  try {
-		    if (kontrolleri.getKayttaja(1) == null) {
-		      StackPane root = new StackPane();
-		      Scene scene = new Scene(root, 400, 400);
+	    try {
+	        if (kontrolleri.getKayttaja(1) == null) {
+	            StackPane root = new StackPane();
+	            Scene scene = new Scene(root, 400, 400);
 
-		      root.setStyle("-fx-background-color: " + "#DAE3E5" + ";");
+	            root.setStyle("-fx-background-color: #DAE3E5;");
 
-		      Label label = new Label("Luo uusi käyttäjätunnus:");
-		      TextField textField = new TextField();
-		      Label label2 = new Label("Aseta kuukausittainen budjettisi:");
-		      TextField textField2 = new TextField();
-		      Button button = new Button("Luo käyttäjä");
+	            Label label = new Label("Luo uusi käyttäjätunnus:");
+	            TextField textField = new TextField();
+	            Label label2 = new Label("Aseta kuukausittainen budjettisi:");
+	            TextField textField2 = new TextField();
+	            Button button = new Button("Luo käyttäjä");
+	            button.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+	            label.setStyle("-fx-font-family: Arial;");
+	            textField.setStyle("-fx-font-family: Arial;");
+	            label2.setStyle("-fx-font-family: Arial;");
+	            textField2.setStyle("-fx-font-family: Arial;");
 
-		      VBox vbox = new VBox();
-		      vbox.getChildren().addAll(label, textField, label2, textField2, button);
-		      root.getChildren().add(vbox);
+	            VBox vbox = new VBox();
+	            vbox.setSpacing(10);
+	            vbox.setPadding(new Insets(10));
+	            vbox.getChildren().addAll(label, textField, label2, textField2, button);
+	            root.getChildren().add(vbox);
 
-		      button.setOnAction(new EventHandler<ActionEvent>() {
-		        @Override
-		        public void handle(ActionEvent event) {
-		          String username = textField.getText();
-		          double budjetti = Double.parseDouble(textField2.getText());
-		          if (!username.isEmpty()) {
-		            kontrolleri.lisaaKayttaja(username, budjetti);
-		            kontrolleri.lisaaKategoria("Yleinen", username);
-		            kayttajanhallinta.kirjoitaKayttajaID(1);
-		            primaryStage.setTitle("Budjettisovellus");
-		            HBox hbox = luoHBox();
-		            Scene mainScene = new Scene(hbox);
-		            primaryStage.setScene(mainScene);
-		            primaryStage.show();
-		          }
-		        }
-		      });
+	            button.setOnAction(new EventHandler<ActionEvent>() {
+	                @Override
+	                public void handle(ActionEvent event) {
+	                    String username = textField.getText();
+	                    double budjetti = Double.parseDouble(textField2.getText());
+	                    if (!username.isEmpty()) {
+	                        kontrolleri.lisaaKayttaja(username, budjetti);
+	                        kontrolleri.lisaaKategoria("Yleinen", username);
+	                        kayttajanhallinta.kirjoitaKayttajaID(1);
+	                        primaryStage.setTitle("Budjettisovellus");
+	                        HBox hbox = luoHBox();
+	                        Scene mainScene = new Scene(hbox);
+	                        primaryStage.setScene(mainScene);
+	                        primaryStage.show();
+	                    }
+	                }
+	            });
 
-		      primaryStage.setScene(scene);
-		      primaryStage.show();
-		    } else {
-		      primaryStage.setTitle("Budjettisovellus");
-		      HBox hbox = luoHBox();
-		      Scene scene = new Scene(hbox);
-		      primaryStage.setScene(scene);
-		      primaryStage.show();
-		    }
-		  } catch (Exception e) {
-		    e.printStackTrace();
-		  }
-		}
+	            primaryStage.setScene(scene);
+	            primaryStage.setTitle("Luo käyttäjä");
+	            primaryStage.show();
+	        } else {
+	            primaryStage.setTitle("Budjettisovellus");
+	            HBox hbox = luoHBox();
+	            Scene scene = new Scene(hbox);
+	            primaryStage.setScene(scene);
+	            primaryStage.show();
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	
 	public HBox luoHBox() {
