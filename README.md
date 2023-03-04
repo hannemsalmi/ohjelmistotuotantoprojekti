@@ -42,7 +42,7 @@ Update the persistence.xml file located in the META-INF folder with your databas
 
 Ensure that Maven is installed and added to system's PATH environment variable.
 
-To run the application, open a command prompt or terminal and navigate to the root directory of the application. Tehn type the following commands:
+To run the application, open a command prompt or terminal and navigate to the root directory of the application. Then type the following commands:
 *	mvn compile
 *	mvn package
 *	java -jar target/ohjelmistotuotantoprojekti.jar
