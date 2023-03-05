@@ -3,7 +3,9 @@ package dataAccessObjects;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 
@@ -43,6 +45,23 @@ public class KayttajaDao {
 	    return kayttajat;
 	}
 	
+	
+	public void poistaKayttajanTiedot(int id) {
+	    EntityManager em = datasource.MariaDbJpaConn.getInstance();
+	    em.getTransaction().begin();
+	    Kayttaja kayttaja = em.find(Kayttaja.class, id);
+	    String nimimerkki = kayttaja.getNimimerkki();
+	    if (kayttaja != null) {
+	        Query kuluQuery = em.createQuery("DELETE FROM Kulu k WHERE k.kayttaja = :kayttaja");
+	        kuluQuery.setParameter("kayttaja", kayttaja);
+	        kuluQuery.executeUpdate();
+
+	        Query kategoriaQuery = em.createQuery("DELETE FROM Kategoria k WHERE k.omistaja = :nimimerkki");
+	        kategoriaQuery.setParameter("nimimerkki", nimimerkki);
+	        kategoriaQuery.executeUpdate();
+	    }
+	    em.getTransaction().commit();
+	}
 	
 	public void poistaKayttaja(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();

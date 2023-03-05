@@ -56,12 +56,18 @@ public class Kontrolleri implements IKontrolleri {
 		kulut.lisaaKulu(kulu);
 		System.out.println(kulu);
 		kuluDao.lisaaKulu(kulu);
-		paivitaBudjetti(kayttaja.getKayttajaID(),model.laskeBudjetti(kayttaja.getMaksimibudjetti(), hinta));
 	}
 	
 	public Kayttaja getKayttaja(int kayttajaid) {
 		return kayttajaDao.haeKayttajat(kayttajaid);
 	}
+	
+
+	public void poistaKayttajanTiedot(int kayttajaid) {
+		kayttajaDao.poistaKayttajanTiedot(kayttajaid);
+		
+	}
+	
 	public void lisaaKayttaja(String nimi, double budjetti) {
 		kayttaja = new Kayttaja(nimi, budjetti);
 		System.out.println(kayttaja);
@@ -146,4 +152,5 @@ public class Kontrolleri implements IKontrolleri {
 		
 		kategoriaDao.poistaKategoria(id);
 	}
+
 }
