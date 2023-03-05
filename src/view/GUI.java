@@ -489,7 +489,7 @@ public class GUI extends Application implements IGUI{
 				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
 				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
 			}
-			budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella - hinta) + " €");
+			
 			
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
@@ -501,7 +501,7 @@ public class GUI extends Application implements IGUI{
 		
 		kulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
 		setKulut(kulut);
-		
+		budjettiLabel.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 		ostosField.clear();
 		hintaField.clear();
 		kategoriaBox.getSelectionModel().select("Yleinen");
