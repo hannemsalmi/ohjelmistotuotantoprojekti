@@ -45,8 +45,7 @@ Ensure that Maven is installed and added to system's PATH environment variable.
 To run the application, open a command prompt or terminal and navigate to the root directory of the application. Then type the following commands:
 *	mvn compile
 *	mvn package
-*	java -jar target/ohjelmistotuotantoprojekti.jar
+*	java -jar target/projekti-0.0.1-SNAPSHOT.jar
 
-
-
+Alternatively project can be run using Eclipse or other IDE.
 
