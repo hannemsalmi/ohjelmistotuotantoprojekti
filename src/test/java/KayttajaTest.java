@@ -14,7 +14,7 @@ import dataAccessObjects.KayttajaDao;
 import dataAccessObjects.KuluDao;
 import model.Kategoria;
 import model.Kayttaja;
-import model.Kulu;
+import model.Kulu; 
 
 public class KayttajaTest {
     private KayttajaDao dao;

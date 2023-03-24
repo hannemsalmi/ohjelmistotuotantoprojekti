@@ -28,7 +28,7 @@ public class KategoriaTest {
     @Test
     public void testHaeKategoriat() {
         List<Kategoria> kategoriat = kategoriaDao.haeKategoriaLista();
-
+        
         //Testataan, ettei kategorialista ole null tai tyhjä.
         assertNotNull(kategoriat);
         assertFalse(kategoriat.isEmpty());
