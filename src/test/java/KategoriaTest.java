@@ -3,6 +3,7 @@ package test.java;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class KategoriaTest {
     }
 
     @Test
-    public void testGetKategoriat() {
+    public void testHaeKategoriat() {
         List<Kategoria> kategoriat = kategoriaDao.haeKategoriaLista();
 
         //Testataan, ettei kategorialista ole null tai tyhjä.
@@ -42,4 +43,42 @@ public class KategoriaTest {
         }
         assertTrue("Kategoria listasta ei löydy yleiskategoriaa 'Yleinen'", loytyiYleinen);
     }
+    
+    @Test
+    public void testLisaaKategoria() {
+        Kategoria kategoria = new Kategoria("Testi", "Testi");
+        kategoriaDao.lisaaKategoria(kategoria);
+        Kategoria retrievedKategoria = kategoriaDao.haeKategoriat(kategoria.getKategoriaID());
+
+        assertNotNull(retrievedKategoria);
+        assertEquals("Testi", retrievedKategoria.getNimi());
+        
+        kategoriaDao.poistaKategoria(kategoria.getKategoriaID());
+    }
+    
+    @Test
+    public void testMuutaKategoria() {
+        Kategoria kategoria = new Kategoria("Testi", "Testi");
+        kategoriaDao.lisaaKategoria(kategoria);
+
+        kategoriaDao.muutaKategoria(kategoria.getKategoriaID(), "Uusi nimi");
+        Kategoria updatedKategoria = kategoriaDao.haeKategoriat(kategoria.getKategoriaID());
+
+        assertNotNull(updatedKategoria);
+        assertEquals("Uusi nimi", updatedKategoria.getNimi());
+        
+        kategoriaDao.poistaKategoria(kategoria.getKategoriaID());
+    }
+    
+    @Test
+    public void testPoistaKategoria() {
+        Kategoria kategoria = new Kategoria("Testi", "Testi");
+        kategoriaDao.lisaaKategoria(kategoria);
+
+        kategoriaDao.poistaKategoria(kategoria.getKategoriaID());
+        Kategoria deletedKategoria = kategoriaDao.haeKategoriat(kategoria.getKategoriaID());
+
+        assertNull(deletedKategoria);
+    }
 }
+
