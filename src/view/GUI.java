@@ -818,7 +818,7 @@ public class GUI extends Application implements IGUI{
 	            kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 	            label.setText("Käyttäjän " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki() + " kuukausittainen budjetti on: " + kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti());
 	            textField.clear();
-	            budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti()) + " €");
+	            budjettiLabel.setText("Budjetti:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 	        }
 	    });
 	    

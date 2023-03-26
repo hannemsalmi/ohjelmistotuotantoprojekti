@@ -4,7 +4,7 @@
   <artifactId>projekti</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+  	<sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
@@ -27,13 +27,28 @@
  		<artifactId>javafx-maven-plugin</artifactId> 
  		<version>0.0.8</version> 
  		<configuration> 
- 		<mainClass>ch.package.Main</mainClass> 
+ 		<mainClass>MainSceneBuilder</mainClass> 
 		 </configuration> 
 	</plugin>
+    <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>src/</classpathPrefix>
+            <mainClass>MainSceneBuilder</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
 	    <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.7.7.201606060606</version>
+    <version>0.8.4</version>
     <executions>
         <execution>
             <goals>
@@ -103,7 +118,6 @@
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
     <version>4.12</version>
-    <scope>test</scope>
 </dependency>
   </dependencies>
 </project>

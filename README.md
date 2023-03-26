@@ -40,13 +40,12 @@ Update the persistence.xml file located in the META-INF folder with your databas
 * property: javax.persistence.jdbc.user -> your_username
 * property: javax.persistence.jdbc.password -> your_password
 
-Ensure that Maven is installed and added to system's PATH environment variable.
+After this the application can be run using Eclipse or other IDE.
 
-To run the application, open a command prompt or terminal and navigate to the root directory of the application. Then type the following commands:
+Alternatively the application can be run through command line. However there has been some issues with this, so for now it's better to run the application using IDE.
+
+To run the application through command line, ensure that Maven is installed and added to system's PATH environment variable. Open a command prompt or terminal and navigate to the root directory of the application. Then type the following commands:
 *	mvn compile
 *	mvn package
-*	java -jar target/ohjelmistotuotantoprojekti.jar
-
-
-
+*	java -jar target/projekti-0.0.1-SNAPSHOT.jar
 
