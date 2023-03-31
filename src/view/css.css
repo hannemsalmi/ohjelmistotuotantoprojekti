@@ -1,13 +1,58 @@
-.button {
-	-fx-border-color: #507DBC;
-	-fx-border-width: 0px 2px 2px 2px;
-	-fx-background-radius: 0;
-	-fx-background-color: #97B2D8;
+.otsikko {
+	-fx-pref-width: 200px;
+	-fx-pref-height: 60px;
+	-fx-text-fill: white;
+	-fx-font-size: 24px;
+	-fx-font-family: Arial;
 	-fx-padding: 0px 0px 0px 20px;
-	-fx-alignment: center-left;
+
 }
 
-.button:hover {
+.valikkoButton {
+	-fx-background-radius: 0;
+	-fx-background-color: #7A9CCD;
+	-fx-padding: 0px 0px 0px 20px;
+	-fx-alignment: center-left;
+	-fx-text-fill: white;
+	-fx-font-size: 16px;
+}
+
+.valikkoButton:hover {
 	-fx-background-color: #507DBC;
 	-fx-text-fill: white;
+	-fx-font-size: 16px;
 }
+
+.labelInfo {
+	-fx-pref-width: 110px;
+	-fx-padding:10px 0 10px 0; 
+	-fx-text-fill: #4C676B;
+	-fx-font-family: Arial;
+	-fx-font-weight: bold;
+	-fx-font-size: 16px;
+}
+
+.textField {
+	-fx-pref-width: 100px;
+}
+
+.kuluContainer {
+	-fx-padding: 10px;
+}
+
+.comboBox {
+	-fx-pref-width: 100px;
+}
+
+.buttonTallenna {
+	-fx-pref-width: 100px;
+}
+
+.roundedBox{
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+	-fx-background-color: #DAE3E5;
+}
+
+
+

@@ -3,40 +3,35 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <BorderPane layoutY="-2.0" prefHeight="506.0" prefWidth="800.0" stylesheets="@css.css">
-         <left>
-            <VBox prefHeight="506.0" prefWidth="200.0" style="-fx-background-color: #97B2D8;" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Yleistä" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Kulut" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Kuludiagrammi" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Ennuste" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Käyttäjäasetukset" />
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Kategoria-asetukset" />
-               </children>
-            </VBox>
-         </left>
-         <top>
-            <HBox prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #507DBC;" BorderPane.alignment="CENTER">
-               <children>
-                  <Label prefHeight="62.0" prefWidth="318.0" text="Budjettisovellus" textFill="WHITE">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
-               </children></HBox>
-         </top>
-      </BorderPane>
-   </children>
-</AnchorPane>
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UlkoasuController">
+   <left>
+      <VBox fx:id="vbox" prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #7A9CCD;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="etusivu" mnemonicParsing="false" onAction="#clickEtusivu" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Etusivu" />
+            <Button fx:id="kulut" mnemonicParsing="false" onAction="#clickKulut" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kulut" />
+            <Button fx:id="kuludiagrammi" mnemonicParsing="false" onAction="#clickDiagrammi" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kuludiagrammi" />
+            <Button fx:id="ennuste" mnemonicParsing="false" onAction="#clickEnnuste" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Ennuste" />
+            <Button fx:id="asetukset" mnemonicParsing="false" onAction="#clickAsetukset" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Asetukset" />
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <HBox fx:id="hbox" prefHeight="60.0" prefWidth="1000.0" style="-fx-background-color: #507DBC;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="budjettisovellus" styleClass="otsikko" text="Budjettisovellus" textFill="#999494">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
