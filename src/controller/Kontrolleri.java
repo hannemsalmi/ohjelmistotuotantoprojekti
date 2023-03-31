@@ -1,12 +1,19 @@
 package controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
 import dataAccessObjects.KuluDao;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;

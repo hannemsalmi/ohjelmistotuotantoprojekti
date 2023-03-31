@@ -17,6 +17,8 @@
             <Button fx:id="kuludiagrammi" mnemonicParsing="false" onAction="#clickDiagrammi" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kuludiagrammi" />
             <Button fx:id="ennuste" mnemonicParsing="false" onAction="#clickEnnuste" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Ennuste" />
             <Button fx:id="asetukset" mnemonicParsing="false" onAction="#clickAsetukset" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Asetukset" />
+      <!--  <Button fx:id="buttonLangFI" mnemonicParsing="false" onAction="#kieliSuomeksi" prefHeight="34.0" prefWidth="66.0" text="FIN" />
+            <Button fx:id="buttonLangEN" mnemonicParsing="false" onAction="#kieliEnglanniksi" prefHeight="34.0" prefWidth="66.0" text="ENG" translateY="-34.0"/>-->
          </children>
       </VBox>
    </left>

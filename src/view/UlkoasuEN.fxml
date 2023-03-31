@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutY="-2.0" prefHeight="506.0" prefWidth="800.0" stylesheets="@css.css">
+         <left>
+            <VBox prefHeight="506.0" prefWidth="200.0" style="-fx-background-color: #97B2D8;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="General" />
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Expenses" />
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Expensediagram" />
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Prediction" />
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="User settings" />
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Category settings" />
+                  <Button fx:id="buttonLangFI" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" text="FIN" />
+                  <Button fx:id="buttonLangEN" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" text="ENG" translateY="-34.0">
+                     <VBox.margin>
+                        <Insets left="65.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </left>
+         <top>
+            <HBox prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #507DBC;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="62.0" prefWidth="318.0" text="Budget app" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+               </children></HBox>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
