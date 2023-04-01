@@ -6,9 +6,9 @@
  <persistence-unit name="DevPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://10.114.32.9/budjettisovellus"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/budjettisovellus"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value="jsQbjbmh"></property>
+      <property name="jakarta.persistence.jdbc.password" value="projekti"></property>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
