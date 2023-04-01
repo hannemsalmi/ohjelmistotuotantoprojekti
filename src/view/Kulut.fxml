@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.KulutController">
+   <children>
+      <BorderPane fx:id="bp" layoutX="159.0" layoutY="146.0" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox fx:id="ylaBox" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox fx:id="lisaaKulu" styleClass="roundedBox">
+                     <children>
+                        <VBox fx:id="lisaaOstos" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="ostos" styleClass="labelInfo" text="Ostos" />
+                              <TextField fx:id="syotaOstos" styleClass="textField" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="lisaaHinta" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="hinta" styleClass="labelInfo" text="Hinta" />
+                              <TextField fx:id="syotaHinta" styleClass="textField" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="lisaaPaivamaara" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="paivamaara" styleClass="labelInfo" text="Päivämäärä" />
+                              <TextField fx:id="syotaPaivamaara" styleClass="textField" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="lisaaKategoria" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="kategoria" styleClass="labelInfo" text="Kategoria" />
+                              <ComboBox fx:id="syotaKategoria" styleClass="comboBox" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="lisaaKuvaus" alignment="TOP_RIGHT" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="kuvaus" styleClass="labelInfo" text="Kuvaus" />
+                              <TextField fx:id="syotaKuvaus" styleClass="textField" />
+                              <Button fx:id="tallennaKulu" alignment="TOP_LEFT" mnemonicParsing="false" styleClass="buttonTallenna" text=" Tallenna ostos">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin></Button>
+                           </children>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <VBox fx:id="luoKategoria" alignment="TOP_RIGHT">
+                     <children>
+                        <Label fx:id="luo" minWidth="120.0" styleClass="labelInfo" text="Luo kategoria" />
+                        <TextField fx:id="uusiKategoria" styleClass="textField" />
+                        <Button fx:id="tallennaKategoria" mnemonicParsing="false" styleClass="buttonTallenna" text="Luo kategoria">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="roundedBox" />
+                        <String fx:value="kuluContainer" />
+                     </styleClass>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
