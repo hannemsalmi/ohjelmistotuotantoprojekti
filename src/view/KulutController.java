@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -72,9 +74,19 @@ public class KulutController implements ViewController{
 	
 	private ViewHandler vh;
 	
-	
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+			ostos.setText(english.getString("ostos"));
+			hinta.setText(english.getString("hinta"));
+			paivamaara.setText(english.getString("päivämäärä"));
+			kategoria.setText(english.getString("kategoria"));
+			kuvaus.setText(english.getString("kuvaus"));
+			luo.setText(english.getString("luokategoria"));
+			tallennaKulu.setText(english.getString("tallennaostos"));
+			tallennaKategoria.setText(english.getString("luokategoria"));
+		}
 	}
 }

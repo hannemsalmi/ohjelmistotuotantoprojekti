@@ -15,6 +15,7 @@ public class ViewHandler {
 	private ViewController aktiivinen;
 	private BorderPane root;
 	private AnchorPane sisalto;
+	private boolean suomi = true;
 	
 	public ViewHandler(Stage stage) {
 		this.stage = stage;
@@ -82,5 +83,13 @@ public class ViewHandler {
 		}
 	}
 	
+	public boolean getKieli() {
+		return suomi;
+	}
+		
+	public void setKieli(boolean kieli) {
+		suomi = kieli;
+	}
+
 	
 }
