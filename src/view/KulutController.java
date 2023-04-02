@@ -75,7 +75,7 @@ public class KulutController implements ViewController{
 	private ViewHandler vh;
 	
 	@Override
-	public void init(ViewHandler viewHandler) {
+	public void init(ViewHandler viewHandler) { 
 		vh = viewHandler;
 		if(!(vh.getKieli())) {
 			ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
