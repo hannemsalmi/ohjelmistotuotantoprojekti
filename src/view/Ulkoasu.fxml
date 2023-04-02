@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UlkoasuController">
+<BorderPane fx:id="bp" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UlkoasuController">
    <left>
       <VBox fx:id="vbox" prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #7A9CCD;" BorderPane.alignment="CENTER">
          <children>
@@ -17,6 +17,8 @@
             <Button fx:id="kuludiagrammi" mnemonicParsing="false" onAction="#clickDiagrammi" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kuludiagrammi" />
             <Button fx:id="ennuste" mnemonicParsing="false" onAction="#clickEnnuste" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Ennuste" />
             <Button fx:id="asetukset" mnemonicParsing="false" onAction="#clickAsetukset" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Asetukset" />
+            <Button mnemonicParsing="false" onAction="#kieliSuomeksi" prefHeight="50.0" prefWidth="100.0" styleClass="valikkoButton" text="FIN" />
+            <Button mnemonicParsing="false" onAction="#kieliEnglanniksi" prefHeight="50.0" prefWidth="100.0" styleClass="valikkoButton" text="ENG" />
       <!--  <Button fx:id="buttonLangFI" mnemonicParsing="false" onAction="#kieliSuomeksi" prefHeight="34.0" prefWidth="66.0" text="FIN" />
             <Button fx:id="buttonLangEN" mnemonicParsing="false" onAction="#kieliEnglanniksi" prefHeight="34.0" prefWidth="66.0" text="ENG" translateY="-34.0"/>-->
          </children>
