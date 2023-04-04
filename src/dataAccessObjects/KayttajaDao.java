@@ -25,7 +25,7 @@ public class KayttajaDao {
         return kayttaja;
 	}
 	
-	public void paivitaBudjetti(int id, double budjetti) {
+	public boolean paivitaBudjetti(int id, double budjetti) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kayttaja kayttaja = em.find(Kayttaja.class, id);
@@ -34,6 +34,7 @@ public class KayttajaDao {
 			em.merge(kayttaja);
 		}
 		em.getTransaction().commit();
+		return true;
 	}
 	
 	public List<Kayttaja> haeKayttajaLista() {

@@ -9,11 +9,12 @@ import model.Kulu;
 import model.Kulut;
 
 public class KuluDao {
-	public void lisaaKulu(Kulu kulu) {
+	public boolean lisaaKulu(Kulu kulu) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		em.persist(kulu);
         em.getTransaction().commit();
+        return true;
 	}
 	
 	public List<Kulu> haeKulut(int kayttajaId) {

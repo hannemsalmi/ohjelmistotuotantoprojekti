@@ -7,11 +7,12 @@ import jakarta.persistence.TypedQuery;
 import model.Kategoria;
 
 public class KategoriaDao {
-	public void lisaaKategoria(Kategoria kategoria) {
+	public boolean lisaaKategoria(Kategoria kategoria) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		em.persist(kategoria);
         em.getTransaction().commit();
+        return true;
 	}
 	
 	public Kategoria haeKategoriat(int id) {
@@ -39,7 +40,7 @@ public class KategoriaDao {
 		em.getTransaction().commit();
 	}
 	
-	public void poistaKategoria(int id) {
+	public boolean poistaKategoria(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kategoria kategoria = em.find(Kategoria.class, id);
@@ -47,5 +48,6 @@ public class KategoriaDao {
 			em.remove(kategoria);
 		}
         em.getTransaction().commit();
+        return true;
 	}
 }

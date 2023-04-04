@@ -204,4 +204,17 @@ public class Kontrolleri implements IKontrolleri {
 
 
 
+	
+	public void setKategoriaDao(KategoriaDao kategoriaDao) {
+		this.kategoriaDao = kategoriaDao;
+	}
+	
+	public void setKayttajaDao(KayttajaDao kayttajaDao) {
+		this.kayttajaDao = kayttajaDao;
+	}
+	
+	public void setKuluDao(KuluDao kuluDao) {
+		this.kuluDao = kuluDao;
+	}
+	
 }
