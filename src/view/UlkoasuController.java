@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -63,5 +65,27 @@ public class UlkoasuController implements ViewController{
 	@FXML
 	private void clickAsetukset() {
 		vh.naytaAsetukset();
+	}
+	
+	@FXML
+	private void kieliEnglanniksi() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		etusivu.setText(english.getString("etusivu"));
+		kulut.setText(english.getString("kulut"));
+		kuludiagrammi.setText(english.getString("kuludiagrammi"));
+		ennuste.setText(english.getString("ennuste"));
+		asetukset.setText(english.getString("asetukset"));
+		vh.setKieli(false);
+	}
+	
+	@FXML
+	private void kieliSuomeksi() {
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+		etusivu.setText(finnish.getString("etusivu"));
+		kulut.setText(finnish.getString("kulut"));
+		kuludiagrammi.setText(finnish.getString("kuludiagrammi"));
+		ennuste.setText(finnish.getString("ennuste"));
+		asetukset.setText(finnish.getString("asetukset"));
+		vh.setKieli(true);
 	}
 }

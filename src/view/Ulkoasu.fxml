@@ -12,11 +12,13 @@
    <left>
       <VBox fx:id="vbox" prefHeight="540.0" prefWidth="200.0" style="-fx-background-color: #7A9CCD;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="etusivu" mnemonicParsing="false" onAction="#clickEtusivu" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Etusivu" />
-            <Button fx:id="kulut" mnemonicParsing="false" onAction="#clickKulut" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kulut" />
-            <Button fx:id="kuludiagrammi" mnemonicParsing="false" onAction="#clickDiagrammi" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Kuludiagrammi" />
-            <Button fx:id="ennuste" mnemonicParsing="false" onAction="#clickEnnuste" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Ennuste" />
-            <Button fx:id="asetukset" mnemonicParsing="false" onAction="#clickAsetukset" prefHeight="50.0" prefWidth="200.0" styleClass="valikkoButton" text="Asetukset" />
+            <Button fx:id="etusivu" mnemonicParsing="false" onAction="#clickEtusivu" styleClass="valikkoButton" text="Etusivu" />
+            <Button fx:id="kulut" mnemonicParsing="false" onAction="#clickKulut" styleClass="valikkoButton" text="Kulut" />
+            <Button fx:id="kuludiagrammi" mnemonicParsing="false" onAction="#clickDiagrammi" styleClass="valikkoButton" text="Kuludiagrammi" />
+            <Button fx:id="ennuste" mnemonicParsing="false" onAction="#clickEnnuste" styleClass="valikkoButton" text="Ennuste" />
+            <Button fx:id="asetukset" mnemonicParsing="false" onAction="#clickAsetukset" styleClass="valikkoButton" text="Asetukset" />
+            <Button mnemonicParsing="false" onAction="#kieliSuomeksi" styleClass="valikkoButton" text="FIN" />
+            <Button mnemonicParsing="false" onAction="#kieliEnglanniksi" styleClass="valikkoButton" text="ENG" />
       <!--  <Button fx:id="buttonLangFI" mnemonicParsing="false" onAction="#kieliSuomeksi" prefHeight="34.0" prefWidth="66.0" text="FIN" />
             <Button fx:id="buttonLangEN" mnemonicParsing="false" onAction="#kieliEnglanniksi" prefHeight="34.0" prefWidth="66.0" text="ENG" translateY="-34.0"/>-->
          </children>

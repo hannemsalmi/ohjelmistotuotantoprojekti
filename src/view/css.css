@@ -15,6 +15,8 @@
 	-fx-alignment: center-left;
 	-fx-text-fill: white;
 	-fx-font-size: 16px;
+	-fx-pref-width: 200px;
+	-fx-pref-height: 50px;
 }
 
 .valikkoButton:hover {
