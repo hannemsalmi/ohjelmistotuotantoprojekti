@@ -207,7 +207,12 @@ public class GUI extends Application implements IGUI{
 		budjettiLabel = new Label("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella) + " €");
 		budjettiaJaljella = budjettiaJaljellaLaskuri();
 		setKulut(kulut);
-		
+		try {
+			kontrolleri.sendOstoslistaRequest();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ostosLabel = new Label("Ostos");
 		hintaLabel = new Label("Hinta");
 		paivamaaraLabel = new Label("Päivämäärä");
@@ -424,13 +429,7 @@ public class GUI extends Application implements IGUI{
 		grid.add(kulutusTrendiButton, 2, 10);
 		
 		GridPane.setHalignment(budjettiLabel, HPos.CENTER);
-		/* GridPane.setHalignment(kategoriasuodatin, HPos.RIGHT);
-		GridPane.setHalignment(kuukausisuodatin, HPos.RIGHT);
-		GridPane.setHalignment(vuosiSuodatin, HPos.RIGHT);
-		GridPane.setHalignment(kategoriaBoxSuodatus, HPos.RIGHT);
-		GridPane.setHalignment(vuosiValitsin, HPos.RIGHT);
-		GridPane.setHalignment(kuukausiValitsin, HPos.RIGHT); */
-		
+
 		
 		pvmValitsin.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override

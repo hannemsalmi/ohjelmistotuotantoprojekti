@@ -1,5 +1,6 @@
 package view;
 
+import controller.Kontrolleri;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -14,6 +15,8 @@ public class EtusivuController implements ViewController{
 	private Label label;
 	
 	private ViewHandler vh;
+	
+	private Kontrolleri kontrolleri;
 	
 	@Override
 	public void init(ViewHandler viewHandler) {

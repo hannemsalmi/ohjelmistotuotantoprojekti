@@ -25,4 +25,5 @@ public interface IKontrolleri {
 	public abstract void lisaaKategoria(String nimi, String omistaja);
 	public abstract List<Kategoria> getKategoriat(String omistaja);
 	public abstract void poistaKayttajanTiedot(int kayttajanID);
+	public abstract void sendOstoslistaRequest()throws Exception;
 }
