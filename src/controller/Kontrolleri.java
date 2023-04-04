@@ -1,31 +1,28 @@
 package controller;
 
-<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-=======
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
->>>>>>> refs/heads/master
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
 import dataAccessObjects.KuluDao;
-<<<<<<< HEAD
 import kayttajanHallinta.KayttajanHallinta;
-=======
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
->>>>>>> refs/heads/master
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;
@@ -172,26 +169,28 @@ public class Kontrolleri implements IKontrolleri {
 		kategoriaDao.poistaKategoria(id);
 	}
 	public void sendOstoslistaRequest() throws Exception {
-	    URL url = new URL( "http://localhost:5000/chatgpt");
-	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	    URL url = new URL("https://budjettiserveri.eu.pythonanywhere.com/chatgpt"); // Replace with your deployed server's URL
+	    //HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(); 
 	    String payload = "{You are a helpful assistant responding to users who are using their budget/expense tracking application."
-	    		+ "You are to respond to this message only by filtering the given expenses into two lists: One shoppinglist of everyday consumables and items that you would buy from a store."
-	    		+ "And a second list which is a reminder list that helps the user to remember their regular bills before their due date. Here are the expenses:"
-	    		+ getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
+	            + "You are to respond to this message only by filtering the given expenses into two lists: One shoppinglist of everyday consumables and items that you would buy from a store."
+	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list. No need to include the categories for any of the expenses. Here are the expenses:"
+	            + getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
 	    // Set up the connection properties
+	    connection.setRequestProperty("Client-API-Key", "MahtiSalasanaKaikilleSovellusKayttajilleProxyServeriinJottaRandomitEivatVoiLahettaaPyyntojaServerilleIlmanSovellusta");
 	    connection.setRequestMethod("POST");
 	    connection.setRequestProperty("Content-Type", "application/json");
 	    connection.setDoOutput(true);
 
 	    // Write the payload to the request body
 	    try (OutputStream outputStream = connection.getOutputStream()) {
-	        outputStream.write(payload.getBytes("UTF-8"));
+	        outputStream.write(payload.getBytes(StandardCharsets.UTF_8));
 	        outputStream.flush();
 	    }
 
 	    // Read the response
 	    StringBuilder response = new StringBuilder();
-	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            response.append(line);
@@ -202,6 +201,7 @@ public class Kontrolleri implements IKontrolleri {
 	    connection.disconnect();
 	    System.out.println(response);
 	}
+
 
 
 }
