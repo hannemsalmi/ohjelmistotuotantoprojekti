@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -102,6 +103,27 @@ public class Kulu {
 				+ ", Kategoria: " + kategoria.getNimi() + ", Kuvaus: " + kuvaus;
 	}
     
-    
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj == this) {
+	        return true;
+	    }
+	    if (!(obj instanceof Kulu)) {
+	        return false;
+	    }
+	    Kulu other = (Kulu) obj;
+	    return Objects.equals(this.nimi, other.nimi) &&
+	            Objects.equals(this.summa, other.summa) &&
+	            Objects.equals(this.paivamaara, other.paivamaara) &&
+	            Objects.equals(this.kategoria, other.kategoria) &&
+	            Objects.equals(this.kayttaja, other.kayttaja) &&
+	            Objects.equals(this.kuvaus, other.kuvaus) &&
+	            Objects.equals(this.kuluID, other.kuluID);
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(nimi, summa, paivamaara, kategoria, kayttaja, kuvaus, kuluID);
+	}
     
 }

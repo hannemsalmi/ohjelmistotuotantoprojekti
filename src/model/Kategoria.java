@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,8 +48,25 @@ public class Kategoria{
 	}
 	@Override
 	public String toString() {
-		return "Kategoria [kategoriaID=" + kategoriaID + ", nimi=" + nimi + "omistaja=" + omistaja + "]";
+		return "Kategoria [kategoriaID=" + kategoriaID + ", nimi=" + nimi + ", omistaja=" + omistaja + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj == this) {
+	        return true;
+	    }
+	    if (!(obj instanceof Kategoria)) {
+	        return false;
+	    }
+	    Kategoria other = (Kategoria) obj;
+	    return Objects.equals(this.nimi, other.nimi) &&
+	            Objects.equals(this.omistaja, other.omistaja) &&
+	            Objects.equals(this.kategoriaID, other.kategoriaID);
 	}
 
-	
+	@Override
+	public int hashCode() {
+	    return Objects.hash(nimi, omistaja, kategoriaID);
+	}
 }

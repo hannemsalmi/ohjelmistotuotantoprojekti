@@ -15,7 +15,7 @@ import org.junit.Test;
 import dataAccessObjects.KategoriaDao;
 import model.Kategoria;
 
-public class KategoriaTest {
+public class KategoriaDaoTest {
 
     private KategoriaDao kategoriaDao;
     private int kategoriaID;

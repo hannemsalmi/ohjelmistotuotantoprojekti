@@ -16,7 +16,7 @@ import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu; 
 
-public class KayttajaTest {
+public class KayttajaDaoTest {
     private KayttajaDao dao;
     private KuluDao kuluDao;
     private KategoriaDao kategoriaDao;
