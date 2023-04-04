@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
+import view.EtusivuController;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleri {
@@ -168,7 +170,7 @@ public class Kontrolleri implements IKontrolleri {
 		
 		kategoriaDao.poistaKategoria(id);
 	}
-	public void sendOstoslistaRequest() throws Exception {
+	public String sendOstoslistaRequest() throws Exception {
 	    URL url = new URL("https://budjettiserveri.eu.pythonanywhere.com/chatgpt"); // Replace with your deployed server's URL
 	    //HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(); 
@@ -184,13 +186,13 @@ public class Kontrolleri implements IKontrolleri {
 
 	    // Write the payload to the request body
 	    try (OutputStream outputStream = connection.getOutputStream()) {
-	        outputStream.write(payload.getBytes(StandardCharsets.UTF_8));
+	        outputStream.write(payload.getBytes(Charset.forName("UTF-8")));
 	        outputStream.flush();
 	    }
 
 	    // Read the response
 	    StringBuilder response = new StringBuilder();
-	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")))) {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            response.append(line);
@@ -200,6 +202,7 @@ public class Kontrolleri implements IKontrolleri {
 	    // Close the connection and return the response
 	    connection.disconnect();
 	    System.out.println(response);
+	    return response.toString();
 	}
 
 
