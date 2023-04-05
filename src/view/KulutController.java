@@ -11,7 +11,10 @@ import javax.swing.JOptionPane;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -21,7 +24,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
@@ -87,7 +92,11 @@ public class KulutController implements ViewController{
 	@FXML
 	private HBox naytaKulut;
 	@FXML
+	private VBox kulutJaOhjeistus;
+	@FXML
 	private ListView<Kulu> kulutListView;
+	@FXML
+	private Label ohjeistus;
 	
 	@FXML
 	private VBox suodatus;
@@ -287,6 +296,107 @@ public class KulutController implements ViewController{
 		    //näytetään defaultilla kaikki
 		    setKulut(kaikkiKulut);
 	    }
+	}
+	
+	public void avaaMuokkausnakymaKulu() {
+
+	    StackPane root = new StackPane();
+	    root.setStyle("-fx-background-color: #DAE3E5;");
+	    Scene scene = new Scene(root, 400, 400);
+	    Stage stage = new Stage();
+
+	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
+
+	    Button tallennaButton = new Button("Tallenna muutos");
+	    tallennaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+	    Button poistaButton = new Button("Poista kulu");
+	    poistaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+
+	    Label uusiNimiLabel = new Label("Anna uusi nimi");
+	    Label uusiHintaLabel = new Label("Anna uusi hinta");
+	    Label uusiKuvausLabel = new Label("Anna uusi kuvaus");
+
+	    TextField uusiNimiField = new TextField();
+	    TextField uusiHintaField = new TextField();
+	    TextField uusiKuvausField = new TextField();
+
+	    Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
+	    ComboBox<String> muokkausBox = new ComboBox<>();
+	    muokkausBox.setEditable(false);
+	    List<String> kaikkiKategoriat = vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki());
+	    muokkausBox.getItems().addAll(kaikkiKategoriat);
+	    Button tallennaKategoriaButton = new Button("Tallenna uusi kategoria");
+	    tallennaKategoriaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
+
+	    VBox vbox = new VBox(10);
+	    vbox.setStyle("-fx-padding: 10px;");
+	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, uusiKategoriaLabel, muokkausBox, tallennaKategoriaButton, poistaButton);
+	    root.getChildren().add(vbox);
+
+	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent event) {
+	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
+	    		int id = kulu.getKuluID();
+	    		
+	    		try {
+	    			String nimi = uusiNimiField.getText();
+		    		double hinta = Double.parseDouble(uusiHintaField.getText());
+			        String kuvaus = uusiKuvausField.getText();
+			        kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + vh.getKontrolleri().getKulu(id).getSumma());
+			        vh.getKontrolleri().muokkaaKulua(id, hinta, nimi, kuvaus);
+		    		kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() - hinta);
+	    		} catch (NumberFormatException nfe) {
+	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		} catch (Exception e) {
+	    			System.out.println("Joku vikana arvoja syötettäessä...");
+	    			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+	    		}
+	    		
+		        setKulut(kaikkiKulut);
+		        budjetti.setText("Budjetti:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		        stage.close();
+	      }
+	    });
+	    
+	    tallennaKategoriaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent event) {
+	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
+	    		int id = kulu.getKuluID();
+	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
+	    		Kategoria uusiKategoria = vh.getKontrolleri().getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
+	    		vh.getKontrolleri().muutaKulunKategoria(id, uusiKategoria);
+		        setKulut(kaikkiKulut);
+		        stage.close();
+	      }
+	    });
+	    
+	    poistaButton.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+		    public void handle(ActionEvent event) {
+	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
+	    		
+	    		int id = kulu.getKuluID();
+	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
+	    		if(valinta == 0) {
+	    			kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + vh.getKontrolleri().getKulu(id).getSumma());
+		    		vh.getKontrolleri().poistaKulu(id);
+		    		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
+		    		setKulut(kaikkiKulut);
+		    		syotaKategoria.getItems().clear();
+		    		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
+		    		budjetti.setText("Budjetti:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		    		stage.close();
+	    		}
+	    		stage.close();
+	    	}
+	    });
+
+	    stage.setScene(scene);
+	    stage.setTitle("Muokkaa kulua");
+	    stage.show();
 	}
 	
 	public void initKulut() {
