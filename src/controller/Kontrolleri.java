@@ -182,7 +182,7 @@ public class Kontrolleri implements IKontrolleri {
 	    String payload = "{You are a helpful assistant responding to users who are using their budget/expense tracking application."
 	            + "You are to respond to this message only by filtering the given expenses into two lists: One shopping list of only food items and weekly consumables that you would buy from a store, no need to add prices to shopping list items."
 	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list. No need to include the categories for any of the expenses. "
-	            + "Please provide me with the shopping and reminder lists in JSON format"
+	            + "Please provide me with the shopping and reminder lists in exactly this format: (shopping list: item=itemName, item=itemName2),(reminder list: (item=itemName, price=price1, duedate=days.months.years),(item=itemName, price=price1, duedate=days.months.years))"
 	            + "Here are the expenses:"
 	            + getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
 	    // Set up the connection properties

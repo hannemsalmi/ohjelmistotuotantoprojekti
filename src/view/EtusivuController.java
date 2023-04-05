@@ -49,21 +49,16 @@ public class EtusivuController implements ViewController{
 	    Task<Void> task = new Task<Void>() {
 	        @Override
 	        protected Void call() throws Exception {
-	        	 String responseJson = kontrolleri.sendOstoslistaRequest();
-	        	    JSONObject response = new JSONObject(responseJson);
-	        	    String messageContent = response.getJSONObject("message").getString("content");
+	        	String responseJson = kontrolleri.sendOstoslistaRequest();
+	            JSONObject response = new JSONObject(responseJson);
+	            String messageContent = response.getJSONObject("message").getString("content");
 
-	        	    // Extract the shopping list and reminder list as JSON arrays
-	        	    int shoppingListStart = messageContent.indexOf('[');
-	        	    int shoppingListEnd = messageContent.indexOf(']');
-	        	    String shoppingListJson = messageContent.substring(shoppingListStart, shoppingListEnd + 1);
+	            // Extract shopping and reminder lists as strings
+	            String shoppingListStr = messageContent.substring(messageContent.indexOf("shopping list:") + 14, messageContent.indexOf("),") + 1);
+	            String reminderListStr = messageContent.substring(messageContent.indexOf("reminder list:") + 14);
 
-	        	    int reminderListStart = messageContent.lastIndexOf('[');
-	        	    int reminderListEnd = messageContent.lastIndexOf(']');
-	        	    String reminderListJson = messageContent.substring(reminderListStart, reminderListEnd + 1);
-
-	        	    JSONArray shoppingListArray = new JSONArray(shoppingListJson);
-	        	    JSONArray reminderListArray = new JSONArray(reminderListJson);
+	            // Split the shopping list string into items
+	            String[] shoppingListItems = shoppingListStr.split(", item=");
 
 	            Platform.runLater(() -> {
 	                shoppingListVBox.getChildren().clear();
@@ -71,20 +66,26 @@ public class EtusivuController implements ViewController{
 
 	             // Display the shopping list items
 	                System.out.println("Shopping List:");
-	                for (int i = 0; i < shoppingListArray.length(); i++) {
-	                    String item = shoppingListArray.getString(i);
+	                for (String item : shoppingListItems) {
+	                    item = item.replace("item=", "").replace(")", "").trim();
 	                    System.out.println("- " + item);
 	                    shoppingListVBox.getChildren().add(new Label("- " + item));
 	                }
 
-	                // Display the reminder list items
+	                // Split the reminder list string into items
+	                String[] reminderListItems = reminderListStr.split("\\), \\(");
+
+	             // Display the reminder list items
 	                System.out.println("\nReminder List:");
-	                for (int i = 0; i < reminderListArray.length(); i++) {
-	                    JSONObject reminder = reminderListArray.getJSONObject(i);
-	                    String task = reminder.getString("bill_name");
-	                    String dueDate = reminder.getString("due_date");
-	                    System.out.println("- " + task + " (Due date: " + dueDate + ")");
-	                    reminderListVBox.getChildren().add(new Label("- " + task + " (Due date: " + dueDate + ")"));
+	                for (String item : reminderListItems) {
+	                    item = item.replace("(", "").replace(")", "");
+	                    String[] parts = item.split(", ");
+	                    String task = parts[0].replace("item=", "").trim();
+	                    String price = parts[1].replace("price=", "").trim() + "€";
+	                    String dueDate = parts[2].replace("duedate=", "").trim();
+
+	                    System.out.println("- " + task + " (" + price + ", " + dueDate + ")");
+	                    reminderListVBox.getChildren().add(new Label("- " + task + " (" + price + ", " + dueDate + ")"));
 	                }
 	            });
 
