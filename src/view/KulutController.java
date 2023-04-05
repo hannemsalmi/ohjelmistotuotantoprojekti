@@ -171,7 +171,6 @@ public class KulutController implements ViewController{
 		syotaHinta.clear();
 		syotaKuvaus.clear();
 		syotaKategoria.getSelectionModel().select("Yleinen");
-		suodataAika();
 		suodata();
 		
 	}
@@ -202,34 +201,91 @@ public class KulutController implements ViewController{
 	}
 	
 	public void suodata() {
-		ObservableList<Kulu> alkuperainenList = FXCollections.observableList(kaikkiKulut);
 		String valittuKategoria = valitseKategoria.getSelectionModel().getSelectedItem();
-        if (valittuKategoria.equals("Kaikki")) {
-            kulutListView.setItems(alkuperainenList);
-        } else {
-            List<Kulu> suodatetutKulut = kaikkiKulut.stream()
-                .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-                .collect(Collectors.toList());
-            ObservableList<Kulu> suodatetutKulutList = FXCollections.observableList(suodatetutKulut);
-            kulutListView.setItems(suodatetutKulutList);
-        }
-	}
-	
-	public void suodataAika() {
-	    int valittuKuukausi = valitseKuukausi.getSelectionModel().getSelectedIndex();
+		int valittuKuukausi = valitseKuukausi.getSelectionModel().getSelectedIndex();
 	    int valittuVuosiIndeksi = valitseVuosi.getSelectionModel().getSelectedIndex();
 	    int valittuVuosi = LocalDate.now().getYear() - valittuVuosiIndeksi + 1;
+	    
 	    List<Kulu> suodatetutKulut = new ArrayList<>();
-	    if (valittuKuukausi == 0 && valittuVuosiIndeksi == 0){
-	        setKulut(kaikkiKulut);
-	      }
-	    else {
-	    	  for (Kulu kulu : kaikkiKulut) {
-	    		  if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi || valittuKuukausi == 0 )&& (kulu.getPaivamaara().getYear() == valittuVuosi || valittuVuosiIndeksi == 0) ) {
+	    List<Kulu> valiaikaisetKulut = new ArrayList<>();
+	    List<Kulu> toisetValiaikaisetKulut = new ArrayList<>();
+	    
+	    //vain kategoriaa on muutettu
+	    if (!valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
+	    	suodatetutKulut = kaikkiKulut.stream()
+	            .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+	            .collect(Collectors.toList());
+	    	setKulut(suodatetutKulut);
+	    //vain kuukautta muutettu
+	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
 	    			  suodatetutKulut.add(kulu);
-	        }
-	    }
-	    setKulut(suodatetutKulut);
+	    		}
+	    	}
+		    setKulut(suodatetutKulut);
+	    //vain vuotta muutettu
+	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			  suodatetutKulut.add(kulu);
+	    		}
+	    	}
+		    setKulut(suodatetutKulut);
+		//kategoriaa ja kuukautta muutettu
+	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+		        .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    // kategoriaa ja vuotta muutettu
+	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+			    .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+			    .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    // kuukautta ja vuotta muutettu
+	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			valiaikaisetKulut.add(kulu);
+	    		}
+	    	}
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    //kategoriaa, kuukautta ja vuotta muutettu
+	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+		        .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			  toisetValiaikaisetKulut.add(kulu);
+	    		}
+	    	}
+	    	for (Kulu kulu : toisetValiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    } else {
+		    //näytetään defaultilla kaikki
+		    setKulut(kaikkiKulut);
 	    }
 	}
 	

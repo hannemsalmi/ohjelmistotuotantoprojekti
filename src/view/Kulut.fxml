@@ -108,9 +108,9 @@
                         <Label fx:id="kategoriaSuodatus" styleClass="labelInfo" text="Kategoria" />
                         <ComboBox fx:id="valitseKategoria" onAction="#suodata" prefWidth="150.0" styleClass="comboBox" />
                         <Label fx:id="kuukausiSuodatus" styleClass="labelInfo" text="Kuukausi" />
-                        <ComboBox fx:id="valitseKuukausi" onAction="#suodataAika" prefWidth="150.0" styleClass="comboBox" />
+                        <ComboBox fx:id="valitseKuukausi" onAction="#suodata" prefWidth="150.0" styleClass="comboBox" />
                         <Label fx:id="vuosiSuodatus" styleClass="labelInfo" text="Vuosi" />
-                        <ComboBox fx:id="valitseVuosi" onAction="#suodataAika" prefWidth="150.0" styleClass="comboBox" />
+                        <ComboBox fx:id="valitseVuosi" onAction="#suodata" prefWidth="150.0" styleClass="comboBox" />
                      </children>
                   </VBox>
                </children>
