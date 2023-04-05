@@ -81,7 +81,7 @@ public class EtusivuController implements ViewController{
 	                    item = item.replace("(", "").replace(")", "");
 	                    String[] parts = item.split(", ");
 	                    String task = parts[0].replace("item=", "").trim();
-	                    String price = parts[1].replace("price=", "").trim() + "€";
+	                    String price = parts[1].replace("price=", "").replace(" e", "").trim() + "€";
 	                    String dueDate = parts[2].replace("duedate=", "").trim();
 
 	                    System.out.println("- " + task + " (" + price + ", " + dueDate + ")");
