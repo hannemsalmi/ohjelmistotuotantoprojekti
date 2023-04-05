@@ -35,7 +35,7 @@ public class KuluDao {
         return kulu;
 	}
 	
-	public void muutaKulu(int id, Double summa, String nimi, String kuvaus) {
+	public boolean muutaKulu(int id, Double summa, String nimi, String kuvaus) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kulu kulu = em.find(Kulu.class, id);
@@ -43,17 +43,19 @@ public class KuluDao {
 		kulu.setSumma(summa);
 		kulu.setKuvaus(kuvaus);
         em.getTransaction().commit();
+        return true;
 	}
 	
-	public void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
+	public boolean muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kulu kulu = em.find(Kulu.class, kuluId);
 		kulu.setKategoria(uusiKategoria);
 		em.getTransaction().commit();
+		return true;
 	}
 	
-	public void poistaKulu(int id) {
+	public boolean poistaKulu(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kulu kulu = em.find(Kulu.class, id);
@@ -61,5 +63,6 @@ public class KuluDao {
 			em.remove(kulu);
 		}
         em.getTransaction().commit();
+        return true;
 	}
 }

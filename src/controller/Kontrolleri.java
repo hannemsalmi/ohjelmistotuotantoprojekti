@@ -132,23 +132,27 @@ public class Kontrolleri implements IKontrolleri {
 		return etsitty;
 	}
 	
-	public void muokkaaKulua(int id, Double summa, String nimi, String kuvaus) {
+	public boolean muokkaaKulua(int id, Double summa, String nimi, String kuvaus) {
 		kuluDao.muutaKulu(id, summa, nimi, kuvaus);
+		return true;
 	}
 	
-	public void muokkaaKategoriaa(int id, String nimi) {
+	public boolean muokkaaKategoriaa(int id, String nimi) {
 		kategoriaDao.muutaKategoria(id, nimi);
+		return true;
 	}
 	
-	public void muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
+	public boolean muutaKulunKategoria(int kuluId, Kategoria uusiKategoria) {
 		kuluDao.muutaKulunKategoria(kuluId, uusiKategoria);
+		return true;
 	}
 	
-	public void poistaKulu(int id) {
+	public boolean poistaKulu(int id) {
 		kuluDao.poistaKulu(id);
+		return true;
 	}
 	
-	public void poistaKategoria(int id, Kayttaja kayttaja) {
+	public boolean poistaKategoria(int id, Kayttaja kayttaja) {
 		Kategoria poistettava = kategoriaDao.haeKategoriat(id);
 		Kategoria yleinen = null;
 		List<Kulu> kulut = kuluDao.haeKulut(kayttaja.getKayttajaID());
@@ -167,6 +171,7 @@ public class Kontrolleri implements IKontrolleri {
 		}
 		
 		kategoriaDao.poistaKategoria(id);
+		return true;
 	}
 	public void sendOstoslistaRequest() throws Exception {
 	    URL url = new URL("https://budjettiserveri.eu.pythonanywhere.com/chatgpt"); // Replace with your deployed server's URL

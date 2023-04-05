@@ -1,6 +1,7 @@
 package test.java;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,6 +53,46 @@ public class KontrolleriTest {
     }
     
     @Test
+    public void testPoistaKategoria() {
+    	Kayttaja kayttaja = new Kayttaja("Matti", 500);
+        String nimi = "Ruoka";
+        Kategoria kategoria = new Kategoria(nimi, kayttaja.getNimimerkki());
+        when(kategoriaDao.lisaaKategoria(kategoria)).thenReturn(true);
+        when(kategoriaDao.poistaKategoria(kategoria.getKategoriaID())).thenReturn(true);
+        kontrolleri.lisaaKategoria(nimi, kayttaja.getNimimerkki());
+        boolean poistettiin = kontrolleri.poistaKategoria(kategoria.getKategoriaID(), kayttaja);
+        assertTrue(poistettiin);
+        verify(kategoriaDao).lisaaKategoria(kategoria);
+        verify(kategoriaDao).poistaKategoria(kategoria.getKategoriaID());
+    }
+    
+    @Test
+    public void muokkaaKategoriaa() {
+    	Kategoria kategoria = new Kategoria("Ruoka", "Matti");
+    	
+        when(kategoriaDao.muutaKategoria(kategoria.getKategoriaID(), "Juomat")).thenReturn(true);
+        boolean success = kontrolleri.muokkaaKategoriaa(kategoria.getKategoriaID(), "Juomat");
+        assertTrue(success);
+        verify(kategoriaDao).muutaKategoria(kategoria.getKategoriaID(), "Juomat");
+    }
+    
+    @Test
+    public void testGetKategoriat() {
+        
+        List<Kategoria> kategoriat = new ArrayList<>();
+        Kayttaja kayttaja = new Kayttaja("Matti", 500);
+        kategoriat.add(new Kategoria("Ruoka", kayttaja.getNimimerkki()));
+        kategoriat.add(new Kategoria("Vaatteet", kayttaja.getNimimerkki()));
+        
+        when(kategoriaDao.haeKategoriaLista()).thenReturn(kategoriat);
+        
+        List<Kategoria> palautetutKategoriat = kontrolleri.getKategoriat(kayttaja.getNimimerkki());
+        
+        assertEquals(kategoriat, palautetutKategoriat);
+        verify(kategoriaDao).haeKategoriaLista();
+    }
+    
+    @Test
     public void testLisaaKulu() {
         String nimi = "Ruokaostokset";
         double hinta = 20.0;
@@ -66,6 +107,68 @@ public class KontrolleriTest {
     }
     
     @Test
+    public void testPoistaKulu() {
+    	
+    	Kayttaja kayttaja = new Kayttaja("Matti", 500);
+    	Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
+        Kulu kulu = new Kulu("Ostos", 10.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos");
+        
+        when(kuluDao.poistaKulu(kulu.getKuluID())).thenReturn(true);
+        
+        boolean poistettiin = kontrolleri.poistaKulu(kulu.getKuluID());
+        
+        assertTrue(poistettiin);
+        verify(kuluDao).poistaKulu(kulu.getKuluID());
+    }
+    
+    @Test
+    public void testGetKulut() {
+        
+        List<Kulu> kulut = new ArrayList<>();
+        Kayttaja kayttaja = new Kayttaja("Matti", 500);
+        Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
+        kulut.add(new Kulu("Pulla", 2.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos"));
+        kulut.add(new Kulu("Banaani", 1.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos"));
+        
+        when(kuluDao.haeKulut(kayttaja.getKayttajaID())).thenReturn(kulut);
+        
+        List<Kulu> palautetutKulut = kontrolleri.getKulut(kayttaja.getKayttajaID());
+        
+        assertEquals(kulut, palautetutKulut);
+        verify(kuluDao).haeKulut(kayttaja.getKayttajaID());
+    }
+   
+    @Test
+    public void testPaivitaKulu() {
+        
+        Kayttaja kayttaja = new Kayttaja("Matti", 500);
+        Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
+        Kulu kulu = new Kulu("Pulla", 2.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos");
+        
+        when(kuluDao.muutaKulu(kulu.getKuluID(), 1.5, "Pulla", "Ruokaostos")).thenReturn(true);
+        
+        boolean paivitettiin = kontrolleri.muokkaaKulua(kulu.getKuluID(), 1.5, "Pulla", "Ruokaostos");
+        
+        assertTrue(paivitettiin);
+        verify(kuluDao).muutaKulu(kulu.getKuluID(), 1.5, "Pulla", "Ruokaostos");
+    }
+
+    
+    @Test
+    public void testMuutaKulunKategoria() {
+        Kayttaja kayttaja = new Kayttaja("Matti", 500);
+        Kategoria kategoria = new Kategoria("Juoma", kayttaja.getNimimerkki());
+        Kulu kulu = new Kulu("Limu", 2.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos");
+
+        when(kuluDao.muutaKulunKategoria(kulu.getKuluID(), kategoria)).thenReturn(true);
+        
+        boolean paivitettiin = kontrolleri.muutaKulunKategoria(kulu.getKuluID(), kategoria);
+        
+        assertTrue(paivitettiin);
+        verify(kuluDao).muutaKulunKategoria(kulu.getKuluID(), kategoria);
+    }
+        
+    @Test
     public void testPaivitaBudjetti() {
         int kayttajaID = 1;
         double budjetti = 500.0;
@@ -73,4 +176,6 @@ public class KontrolleriTest {
         kontrolleri.paivitaBudjetti(kayttajaID, budjetti);
         verify(kayttajaDao).paivitaBudjetti(kayttajaID, budjetti);
     }
+    
+    
 }
