@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
+import view.EtusivuController;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleri {
@@ -173,13 +175,15 @@ public class Kontrolleri implements IKontrolleri {
 		kategoriaDao.poistaKategoria(id);
 		return true;
 	}
-	public void sendOstoslistaRequest() throws Exception {
+	public String sendOstoslistaRequest() throws Exception {
 	    URL url = new URL("https://budjettiserveri.eu.pythonanywhere.com/chatgpt"); // Replace with your deployed server's URL
 	    //HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 	    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection(); 
 	    String payload = "{You are a helpful assistant responding to users who are using their budget/expense tracking application."
-	            + "You are to respond to this message only by filtering the given expenses into two lists: One shoppinglist of everyday consumables and items that you would buy from a store."
-	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list. No need to include the categories for any of the expenses. Here are the expenses:"
+	            + "You are to respond to this message only by filtering the given expenses into two lists: One shopping list of only food items and weekly consumables that you would buy from a store, no need to add prices to shopping list items."
+	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list. No need to include the categories for any of the expenses. "
+	            + "Please provide me with the shopping and reminder lists in JSON format"
+	            + "Here are the expenses:"
 	            + getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
 	    // Set up the connection properties
 	    connection.setRequestProperty("Client-API-Key", "MahtiSalasanaKaikilleSovellusKayttajilleProxyServeriinJottaRandomitEivatVoiLahettaaPyyntojaServerilleIlmanSovellusta");
@@ -189,13 +193,13 @@ public class Kontrolleri implements IKontrolleri {
 
 	    // Write the payload to the request body
 	    try (OutputStream outputStream = connection.getOutputStream()) {
-	        outputStream.write(payload.getBytes(StandardCharsets.UTF_8));
+	        outputStream.write(payload.getBytes(Charset.forName("UTF-8")));
 	        outputStream.flush();
 	    }
 
 	    // Read the response
 	    StringBuilder response = new StringBuilder();
-	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")))) {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            response.append(line);
@@ -205,6 +209,7 @@ public class Kontrolleri implements IKontrolleri {
 	    // Close the connection and return the response
 	    connection.disconnect();
 	    System.out.println(response);
+	    return response.toString();
 	}
 
 
