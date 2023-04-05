@@ -410,7 +410,7 @@ public class KulutController implements ViewController{
 	}
 	
 	public void initSuodatus() {
-		budjetti.setText("Budjettisi on \n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
 		valitseKategoria.getItems().add("Kaikki");
 		valitseKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
 		valitseKategoria.getSelectionModel().select("Kaikki");

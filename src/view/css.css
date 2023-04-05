@@ -59,10 +59,16 @@
 	-fx-pref-width: 100px;
 }
 
-.roundedBox{
+.roundedBox {
 	-fx-border-radius: 10px;
 	-fx-background-radius: 10px;
 	-fx-background-color: #DAE3E5;
+}
+
+.pieChart {
+	-fx-text-fill: #4C676B;
+	-fx-pref-width: 640px;
+	-fx-pref-height: 540px;
 }
 
 

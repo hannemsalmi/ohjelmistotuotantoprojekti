@@ -1,14 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagrammiController">
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DiagrammiController">
    <children>
       <BorderPane fx:id="bp" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <Label fx:id="label" text="Oon diagrammi" BorderPane.alignment="CENTER" />
+            <HBox fx:id="kaikkiSisalto" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox fx:id="chartBox" prefHeight="519.0" prefWidth="631.0">
+                     <children>
+                        <PieChart fx:id="pieChart" styleClass="pieChart" title="Kulutus kategorioittain" />
+                     </children>
+                     <styleClass>
+                        <String fx:value="pieChart" />
+                        <String fx:value="kuluContainer" />
+                        <String fx:value="roundedBox" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="suodatus" alignment="BOTTOM_CENTER" minWidth="140.0">
+                     <children>
+                        <Label fx:id="kulutus" text="Kulutus yhteensä" wrapText="true">
+                           <styleClass>
+                              <String fx:value="labelInfo" />
+                              <String fx:value="kuluContainer" />
+                           </styleClass></Label>
+                        <VBox fx:id="kuukausi" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="kuukausiLabel" styleClass="labelInfo" text="Kuukausi" />
+                              <ComboBox fx:id="kuukausiBox" styleClass="comboBox" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vuosi" styleClass="kuluContainer">
+                           <children>
+                              <Label fx:id="vuosiLabel" styleClass="labelInfo" text="Vuosi" />
+                              <ComboBox fx:id="vuosiBox" prefWidth="150.0" styleClass="comboBox" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="roundedBox" />
+                        <String fx:value="kuluContainer" />
+                     </styleClass>
+                  </VBox>
+               </children>
+            </HBox>
          </center>
       </BorderPane>
    </children>

@@ -97,15 +97,15 @@
                   <VBox fx:id="kulutJaOhjeistus">
                      <children>
                         <ListView fx:id="kulutListView" onMouseClicked="#avaaMuokkausnakymaKulu" prefHeight="365.0" prefWidth="630.0" />
-                        <Label fx:id="ohjeistus" minWidth="500.0" styleClass="labelInfoPieni" text="Muokkaa ostosta tai poista ostos valitsemalla se listalta" />
+                        <Label fx:id="ohjeistus" styleClass="labelInfoPieni" text="Muokkaa ostosta tai poista ostos valitsemalla se listalta" />
                      </children>
                   </VBox>
                   <VBox fx:id="suodatus" alignment="BOTTOM_LEFT" prefHeight="365.0" prefWidth="140.0" styleClass="kuluContainer">
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets bottom="25.0" left="10.0" />
                      </HBox.margin>
                      <children>
-                        <Label fx:id="budjetti" prefHeight="151.0" prefWidth="109.0" styleClass="labelInfo" wrapText="true">
+                        <Label fx:id="budjetti" prefHeight="150.0" prefWidth="110.0" styleClass="labelInfo" wrapText="true">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
