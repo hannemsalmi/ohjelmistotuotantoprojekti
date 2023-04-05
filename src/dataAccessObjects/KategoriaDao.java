@@ -32,12 +32,13 @@ public class KategoriaDao {
 		return kategoriaLista;
 	}
 	
-	public void muutaKategoria(int id, String nimi) {
+	public boolean muutaKategoria(int id, String nimi) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kategoria kategoria = em.find(Kategoria.class, id);
 		kategoria.setNimi(nimi);
 		em.getTransaction().commit();
+		return true;
 	}
 	
 	public boolean poistaKategoria(int id) {
