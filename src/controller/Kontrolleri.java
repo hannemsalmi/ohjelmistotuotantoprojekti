@@ -182,7 +182,7 @@ public class Kontrolleri implements IKontrolleri {
 	    String payload = "{You are a helpful assistant responding to users who are using their budget/expense tracking application."
 	            + "You are to respond to this message only by filtering the given expenses into two lists: One shopping list of only food items and weekly consumables that you need to buy weekly from a store, no need to add prices to shopping list items."
 	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list along with the price. "
-	            + "Only put items to the reminder list that are repeating static expences such as rent, electricity etc."
+	            + "Only put items to the reminder list that are in the provided expenses and are repeating static expences."
 	            + "No need to include the categories for any of the expenses. "
 	            + "Please provide me the shopping and reminder lists in exactly this format: (shopping list: item=itemName, item=itemName2),(reminder list: (item=itemName, price=price1, duedate=days.months.years),(item=itemName2, price=price2, duedate=days.months.years))"
 	            + "You must only use these expenses to create the lists, if no expenses are available you can leave empty values to the provided format. Here are the expenses: "
