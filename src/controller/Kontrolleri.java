@@ -185,7 +185,7 @@ public class Kontrolleri implements IKontrolleri {
 	            + "Only put items to the reminder list that are repeating static expences such as rent, electricity etc."
 	            + "No need to include the categories for any of the expenses. "
 	            + "Please provide me the shopping and reminder lists in exactly this format: (shopping list: item=itemName, item=itemName2),(reminder list: (item=itemName, price=price1, duedate=days.months.years),(item=itemName2, price=price2, duedate=days.months.years))"
-	            + "Here are the expenses:"
+	            + "You must only use these expenses to create the lists, if no expenses are available you can leave empty values to the provided format. Here are the expenses: "
 	            + getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
 	    // Set up the connection properties
 	    connection.setRequestProperty("Client-API-Key", "MahtiSalasanaKaikilleSovellusKayttajilleProxyServeriinJottaRandomitEivatVoiLahettaaPyyntojaServerilleIlmanSovellusta");
