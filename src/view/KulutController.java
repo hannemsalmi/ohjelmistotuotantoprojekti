@@ -343,9 +343,8 @@ public class KulutController implements ViewController{
 	    			String nimi = uusiNimiField.getText();
 		    		double hinta = Double.parseDouble(uusiHintaField.getText());
 			        String kuvaus = uusiKuvausField.getText();
-			        kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + vh.getKontrolleri().getKulu(id).getSumma());
 			        vh.getKontrolleri().muokkaaKulua(id, hinta, nimi, kuvaus);
-		    		kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() - hinta);
+			        budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
 	    		} catch (NumberFormatException nfe) {
 	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
 	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
