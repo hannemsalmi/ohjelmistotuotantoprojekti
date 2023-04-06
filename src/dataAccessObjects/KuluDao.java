@@ -1,5 +1,6 @@
 package dataAccessObjects;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
@@ -39,9 +40,11 @@ public class KuluDao {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
 		Kulu kulu = em.find(Kulu.class, id);
+		LocalDate pvm = kulu.getPaivamaara();
 		kulu.setNimi(nimi);
 		kulu.setSumma(summa);
 		kulu.setKuvaus(kuvaus);
+		kulu.setPaivamaara(pvm);
         em.getTransaction().commit();
         return true;
 	}
