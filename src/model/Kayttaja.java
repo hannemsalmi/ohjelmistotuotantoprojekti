@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,5 +52,24 @@ public class Kayttaja {
 				+ maksimibudjetti + "]";
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj == this) {
+	        return true;
+	    }
+	    if (!(obj instanceof Kayttaja)) {
+	        return false;
+	    }
+	    Kayttaja other = (Kayttaja) obj;
+	    return Objects.equals(this.kayttajaID, other.kayttajaID) &&
+	            Objects.equals(this.nimimerkki, other.nimimerkki) &&
+	            Objects.equals(this.maksimibudjetti, other.maksimibudjetti);
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(kayttajaID, nimimerkki, maksimibudjetti);
+	}
+    
 	
 }

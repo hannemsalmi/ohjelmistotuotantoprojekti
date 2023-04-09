@@ -1,15 +1,20 @@
 package test.java;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +22,7 @@ import controller.Kontrolleri;
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
 import dataAccessObjects.KuluDao;
+import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
@@ -41,7 +47,29 @@ public class KontrolleriTest {
         kontrolleri.setKayttajaDao(kayttajaDao);
         kontrolleri.setKuluDao(kuluDao);
     }
+    
+    @Test
+    public void testGetKategorianimet() {
+    	String omistaja = "testOmistaja";
+    	List<Kategoria> kategoriaObjektit = new ArrayList<>();
+    	kategoriaObjektit.add(new Kategoria("testi1", "testi1 omistaja"));
+    	kategoriaObjektit.add(new Kategoria("testi2", omistaja));
+    	when(kategoriaDao.haeKategoriaLista()).thenReturn(kategoriaObjektit);
+    	
+    	List<String> result = kontrolleri.getKategorianimet(omistaja);
+    	
+    	List<String> expected = new ArrayList<>();
+    	expected.add("testi2");
+    	assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testGetKategoria() {
+        kontrolleri.getKategoria("kategoria1", "omistaja1");
 
+        verify(kategoriaDao).haeKategoriaLista();
+    }
+    
     @Test
     public void testLisaaKategoria() {
         String nimi = "Ruoka";
@@ -78,8 +106,7 @@ public class KontrolleriTest {
     
     @Test
     public void testGetKategoriat() {
-        
-        List<Kategoria> kategoriat = new ArrayList<>();
+    	List<Kategoria> kategoriat = new ArrayList<>();
         Kayttaja kayttaja = new Kayttaja("Matti", 500);
         kategoriat.add(new Kategoria("Ruoka", kayttaja.getNimimerkki()));
         kategoriat.add(new Kategoria("Vaatteet", kayttaja.getNimimerkki()));
@@ -108,7 +135,6 @@ public class KontrolleriTest {
     
     @Test
     public void testPoistaKulu() {
-    	
     	Kayttaja kayttaja = new Kayttaja("Matti", 500);
     	Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
         Kulu kulu = new Kulu("Ostos", 10.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos");
@@ -123,7 +149,6 @@ public class KontrolleriTest {
     
     @Test
     public void testGetKulut() {
-        
         List<Kulu> kulut = new ArrayList<>();
         Kayttaja kayttaja = new Kayttaja("Matti", 500);
         Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
@@ -138,9 +163,21 @@ public class KontrolleriTest {
         verify(kuluDao).haeKulut(kayttaja.getKayttajaID());
     }
    
+	@Test
+	public void testGetKulu() {
+		Kulu expectedKulu = new Kulu();
+		expectedKulu.setKuluID(1);
+		expectedKulu.setSumma(10.0);
+		
+		when(kuluDao.haeKulu(1)).thenReturn(expectedKulu);
+		
+		Kulu actualKulu = kontrolleri.getKulu(1);
+		
+		assertEquals(expectedKulu, actualKulu);
+	}
+    
     @Test
     public void testPaivitaKulu() {
-        
         Kayttaja kayttaja = new Kayttaja("Matti", 500);
         Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
         Kulu kulu = new Kulu("Pulla", 2.0, LocalDate.now(), kategoria, kayttaja, "Ruokaostos");
@@ -177,5 +214,78 @@ public class KontrolleriTest {
         verify(kayttajaDao).paivitaBudjetti(kayttajaID, budjetti);
     }
     
+    @Test
+    public void testGetKayttajat() {
+        List<Kayttaja> kayttajaObjektit = Arrays.asList(
+            new Kayttaja("user1", 1000),
+            new Kayttaja("user2", 800)
+        );
+      
+        when(kayttajaDao.haeKayttajaLista()).thenReturn(kayttajaObjektit);
+        
+        List<String> kayttajaNimet = kontrolleri.getKayttajat();
+        
+        List<String> expected = Arrays.asList("user1", "user2");
+        assertEquals(expected, kayttajaNimet);
+    }
     
-}
+    @Test
+    public void testGetKayttaja() {
+        int testKayttajaId = 1;
+        Kayttaja testKayttaja = new Kayttaja("Testikayttaja", 100.0);
+        testKayttaja.setKayttajaID(testKayttajaId);
+
+        when(kayttajaDao.haeKayttajat(testKayttajaId)).thenReturn(testKayttaja);
+
+        Kayttaja resultKayttaja = kontrolleri.getKayttaja(testKayttajaId);
+
+        Assert.assertEquals(testKayttaja, resultKayttaja);
+    }
+    
+    @Test
+    public void testLisaaKayttaja() {
+        Kayttaja kayttaja = new Kayttaja("Testi", 1000.0);
+        
+        doNothing().when(kayttajaDao).lisaaKayttaja(kayttaja);
+        
+        kontrolleri.lisaaKayttaja(kayttaja.getNimimerkki(), kayttaja.getMaksimibudjetti());
+        
+        verify(kayttajaDao).lisaaKayttaja(kayttaja);
+    }
+    
+    @Test
+    public void testPoistaKayttajanTiedot() {
+      int kayttajaid = 1;
+      when(kayttajaDao.poistaKayttajanTiedot(kayttajaid)).thenReturn(true);
+      kontrolleri.poistaKayttajanTiedot(kayttajaid);
+      verify(kayttajaDao).poistaKayttajanTiedot(kayttajaid);
+    }
+    
+    /*
+     * Tätä testiä en saanut vielä toimimaan
+     * 
+    @Test
+    public void testSendOstoslistaRequest() throws Exception {
+        // Create a mock object for KayttajanHallinta and set a fake logged-in user
+        KayttajanHallinta mockKayttajanHallinta = mock(KayttajanHallinta.class);
+        Kayttaja kayttaja = new Kayttaja("Testi", 1000);
+        when(mockKayttajanHallinta.getKirjautunutKayttaja()).thenReturn(kayttaja);
+
+        // Create a test expense list
+        Kategoria kategoria = new Kategoria("Ruoka", kayttaja.getNimimerkki());
+        Kategoria kategoria2 = new Kategoria("Laskut", kayttaja.getNimimerkki());
+        
+        List<Kulu> testKulut = new ArrayList<>();
+        testKulut.add(new Kulu("Maito", 1.50, LocalDate.now(), kategoria , kayttaja, "Maitoa ostettu"));
+        testKulut.add(new Kulu("Mansikat", 4.50, LocalDate.now(), kategoria , kayttaja, "Mansikoita ostettu"));
+        testKulut.add(new Kulu("Sähkölasku", 52.50, LocalDate.now(), kategoria2, kayttaja, "Kallista"));
+        testKulut.add(new Kulu("Vesilasku", 30.00, LocalDate.now(), kategoria2, kayttaja, "Vesilasku kahdelta"));
+        
+        // Mock the KategoriaDao to return the test expense list
+        when(kontrolleri.getKulut(kayttaja.getKayttajaID())).thenReturn(testKulut);
+
+        // Call the sendOstoslistaRequest method and assert that no exceptions were thrown
+        assertDoesNotThrow(() -> kontrolleri.sendOstoslistaRequest());
+    }
+    */
+    }

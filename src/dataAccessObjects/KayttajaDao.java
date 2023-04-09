@@ -47,7 +47,7 @@ public class KayttajaDao {
 	}
 	
 	
-	public void poistaKayttajanTiedot(int id) {
+	public boolean poistaKayttajanTiedot(int id) {
 	    EntityManager em = datasource.MariaDbJpaConn.getInstance();
 	    em.getTransaction().begin();
 	    Kayttaja kayttaja = em.find(Kayttaja.class, id);
@@ -62,6 +62,7 @@ public class KayttajaDao {
 	        kategoriaQuery.executeUpdate();
 	    }
 	    em.getTransaction().commit();
+	    return true;
 	}
 	
 	public void poistaKayttaja(int id) {

@@ -214,8 +214,6 @@ public class Kontrolleri implements IKontrolleri {
 	    return response.toString();
 	}
 
-
-
 	
 	public void setKategoriaDao(KategoriaDao kategoriaDao) {
 		this.kategoriaDao = kategoriaDao;
@@ -228,5 +226,4 @@ public class Kontrolleri implements IKontrolleri {
 	public void setKuluDao(KuluDao kuluDao) {
 		this.kuluDao = kuluDao;
 	}
-	
 }
