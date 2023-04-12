@@ -31,7 +31,7 @@
                   </VBox>
                   <VBox fx:id="suodatus" alignment="BOTTOM_CENTER" minWidth="140.0">
                      <children>
-                        <Label fx:id="kulutus" text="Kulutus yhteensä" wrapText="true">
+                        <Label fx:id="kulutus" text="Kulutus" wrapText="true">
                            <styleClass>
                               <String fx:value="labelInfo" />
                               <String fx:value="kuluContainer" />
@@ -39,13 +39,13 @@
                         <VBox fx:id="kuukausi" styleClass="kuluContainer">
                            <children>
                               <Label fx:id="kuukausiLabel" styleClass="labelInfo" text="Kuukausi" />
-                              <ComboBox fx:id="kuukausiBox" styleClass="comboBox" />
+                              <ComboBox fx:id="kuukausiBox" onAction="#suodataAika" styleClass="comboBox" />
                            </children>
                         </VBox>
                         <VBox fx:id="vuosi" styleClass="kuluContainer">
                            <children>
                               <Label fx:id="vuosiLabel" styleClass="labelInfo" text="Vuosi" />
-                              <ComboBox fx:id="vuosiBox" prefWidth="150.0" styleClass="comboBox" />
+                              <ComboBox fx:id="vuosiBox" onAction="#suodataAika" prefWidth="150.0" styleClass="comboBox" />
                            </children>
                         </VBox>
                      </children>
