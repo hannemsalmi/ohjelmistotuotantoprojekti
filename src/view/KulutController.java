@@ -380,7 +380,6 @@ public class KulutController implements ViewController{
 	    		int id = kulu.getKuluID();
 	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
 	    		if(valinta == 0) {
-	    			kayttaja.setMaksimibudjetti(kayttaja.getMaksimibudjetti() + vh.getKontrolleri().getKulu(id).getSumma());
 		    		vh.getKontrolleri().poistaKulu(id);
 		    		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
 		    		setKulut(kaikkiKulut);
