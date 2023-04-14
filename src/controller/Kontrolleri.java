@@ -175,6 +175,7 @@ public class Kontrolleri implements IKontrolleri {
 		kategoriaDao.poistaKategoria(id);
 		return true;
 	}
+	
 	public String sendOstoslistaRequest() throws Exception {
 	    URL url = new URL("https://budjettiserveri.eu.pythonanywhere.com/chatgpt"); // Replace with your deployed server's URL
 	    //HttpURLConnection connection = (HttpURLConnection) url.openConnection();

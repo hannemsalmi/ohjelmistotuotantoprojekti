@@ -11,10 +11,7 @@ import javax.swing.JOptionPane;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -24,9 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
@@ -131,7 +126,7 @@ public class KulutController implements ViewController{
 		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		
 		initKulut();
-		initKategoria();
+		initKategoriaJaPvm();
 		initSuodatus();
 	}
 	
@@ -180,6 +175,8 @@ public class KulutController implements ViewController{
 		syotaHinta.clear();
 		syotaKuvaus.clear();
 		syotaKategoria.getSelectionModel().select("Yleinen");
+		LocalDate paiva = LocalDate.now();
+		syotaPaivamaara.setValue(paiva);
 		suodata();
 		
 	}
@@ -318,9 +315,12 @@ public class KulutController implements ViewController{
 		setKulut(kaikkiKulut);
 	}
 	
-	public void initKategoria() {
+	public void initKategoriaJaPvm() {
 		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
 		syotaKategoria.getSelectionModel().select("Yleinen");
+		
+		LocalDate paiva = LocalDate.now();
+		syotaPaivamaara.setValue(paiva);
 	}
 	
 	public void initSuodatus() {

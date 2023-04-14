@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EtusivuController">
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EtusivuController">
    <children>
       <BorderPane fx:id="bp" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <HBox spacing="30">
-               <VBox spacing="5">
-                  <Label style="-fx-font-weight: bold;" text="Ostoslista:" />
-                  <VBox fx:id="shoppingListVBox" />
+            <HBox alignment="TOP_CENTER" styleClass="kuluContainer">
+               <VBox prefWidth="200.0">
+                  <HBox.margin>
+                     <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                  </HBox.margin>
+                  <children>
+                     <Label styleClass="labelInfo" text="Tervetuloa" wrapText="true" />
+                  </children>
+                  <styleClass>
+                     <String fx:value="roundedBox" />
+                     <String fx:value="kuluContainer" />
+                  </styleClass>
                </VBox>
-               <VBox spacing="5">
-                  <Label style="-fx-font-weight: bold;" text="Muistilista:" />
+               <VBox prefWidth="200.0" spacing="5">
+                  <Label styleClass="labelInfo" text="Ostoslista:">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <VBox fx:id="shoppingListVBox" />
+                  <styleClass>
+                     <String fx:value="kuluContainer" />
+                     <String fx:value="roundedBox" />
+                  </styleClass>
+                  <HBox.margin>
+                     <Insets bottom="40.0" right="40.0" top="40.0" />
+                  </HBox.margin>
+               </VBox>
+               <VBox prefWidth="200.0" spacing="5">
+                  <Label styleClass="labelInfo" text="Muistilista:" />
                   <VBox fx:id="reminderListVBox" />
+                  <HBox.margin>
+                     <Insets bottom="40.0" right="40.0" top="40.0" />
+                  </HBox.margin>
+                  <styleClass>
+                     <String fx:value="kuluContainer" />
+                     <String fx:value="roundedBox" />
+                  </styleClass>
                </VBox>
             </HBox>
          </center>
       </BorderPane>
    </children>
 </AnchorPane>
-

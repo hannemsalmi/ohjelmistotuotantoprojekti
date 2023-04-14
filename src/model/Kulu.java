@@ -9,9 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name="kulut")
@@ -23,9 +21,9 @@ public class Kulu {
     private String nimi;
     private double summa;
     private LocalDate paivamaara;
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     private Kategoria kategoria;
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne (cascade=CascadeType.PERSIST)
     private Kayttaja kayttaja;
     private String kuvaus;
 
