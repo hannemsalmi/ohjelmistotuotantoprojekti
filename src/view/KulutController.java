@@ -299,66 +299,14 @@ public class KulutController implements ViewController{
 	}
 	
 	public void avaaMuokkausnakymaKulu() {
-
-	    StackPane root = new StackPane();
-	    root.setStyle("-fx-background-color: #DAE3E5;");
-	    Scene scene = new Scene(root, 400, 400);
-	    Stage stage = new Stage();
-
-	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
-
-	    Button tallennaButton = new Button("Tallenna muutos");
-	    tallennaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
-	    Button poistaButton = new Button("Poista kulu");
-	    poistaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
-
-	    Label uusiNimiLabel = new Label("Anna uusi nimi");
-	    Label uusiHintaLabel = new Label("Anna uusi hinta");
-	    Label uusiKuvausLabel = new Label("Anna uusi kuvaus");
-
-	    TextField uusiNimiField = new TextField();
-	    TextField uusiHintaField = new TextField();
-	    TextField uusiKuvausField = new TextField();
-
-	    Label uusiKategoriaLabel = new Label("Valitse uusi kategoria");
-	    ComboBox<String> muokkausBox = new ComboBox<>();
-	    muokkausBox.setEditable(false);
-	    List<String> kaikkiKategoriat = vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki());
-	    muokkausBox.getItems().addAll(kaikkiKategoriat);
-	    Button tallennaKategoriaButton = new Button("Tallenna uusi kategoria");
-	    tallennaKategoriaButton.setStyle("-fx-background-color: #507DBC; -fx-text-fill: white; -fx-font-weight: bold;");
-
-	    VBox vbox = new VBox(10);
-	    vbox.setStyle("-fx-padding: 10px;");
-	    vbox.getChildren().addAll(uusiNimiLabel, uusiNimiField, uusiHintaLabel, uusiHintaField, uusiKuvausLabel, uusiKuvausField, tallennaButton, uusiKategoriaLabel, muokkausBox, tallennaKategoriaButton, poistaButton);
-	    root.getChildren().add(vbox);
-
-	    tallennaButton.setOnAction(new EventHandler<ActionEvent>() {
-	    	@Override
-	    	public void handle(ActionEvent event) {
-	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
-	    		int id = kulu.getKuluID();
-	    		
-	    		try {
-	    			String nimi = uusiNimiField.getText();
-		    		double hinta = Double.parseDouble(uusiHintaField.getText());
-			        String kuvaus = uusiKuvausField.getText();
-			        vh.getKontrolleri().muokkaaKulua(id, hinta, nimi, kuvaus);
-			        budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
-	    		} catch (NumberFormatException nfe) {
-	    			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
-	    			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
-	    		} catch (Exception e) {
-	    			System.out.println("Joku vikana arvoja syötettäessä...");
-	    			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
-	    		}
-	    		
-		        setKulut(kaikkiKulut);
-		        budjetti.setText("Budjetti:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
-		        stage.close();
-	      }
-	    });
+		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
+		int kuluId = kulu.getKuluID();
 	    
+		vh.avaaKulunMuokkaus(kuluId);
+	    
+
+
+	    /*
 	    tallennaKategoriaButton.setOnAction(new EventHandler<ActionEvent>() {
 	    	@Override
 	    	public void handle(ActionEvent event) {
@@ -390,11 +338,15 @@ public class KulutController implements ViewController{
 	    		}
 	    		stage.close();
 	    	}
-	    });
-
-	    stage.setScene(scene);
-	    stage.setTitle("Muokkaa kulua");
-	    stage.show();
+	    });**/
+	}
+	
+	public void paivitaKulut() {
+		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
+		setKulut(kaikkiKulut);
+		syotaKategoria.getItems().clear();
+		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
+		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 	}
 	
 	public void initKulut() {
@@ -432,4 +384,6 @@ public class KulutController implements ViewController{
 	    }
 		valitseVuosi.getSelectionModel().select("Kaikki");
 	}
+
+	
 }

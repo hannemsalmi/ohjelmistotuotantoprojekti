@@ -5,22 +5,13 @@ import java.util.List;
 
 import controller.IKontrolleri;
 import controller.Kontrolleri;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
-import model.Kulu;
 
 //Täältä löytyvät kaikki metodit, joita kutsutaan eri controllereista
 public class ViewHandler implements IGUI{
@@ -33,6 +24,7 @@ public class ViewHandler implements IGUI{
 	
 	private KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
 	private Stage kayttajaStage;
+	private Stage muokkaaKuluaStage;
 
 	public ViewHandler(Stage stage) {
 		this.stage = stage;
@@ -126,6 +118,25 @@ public class ViewHandler implements IGUI{
 		}
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 	}
+	
+	public void avaaKulunMuokkaus(int kuluId) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("../view/KulunMuokkaus.fxml"));
+			Parent sisalto = loader.load();
+			ViewController controller = loader.getController();
+			controller.init(this);
+			//downcastaus controllerista
+			((KulunMuokkausController)controller).setKuluId(kuluId);
+			
+			muokkaaKuluaStage = new Stage();
+			muokkaaKuluaStage.setScene(new Scene(sisalto));
+			muokkaaKuluaStage.setTitle("Muokkaa kulua");
+			muokkaaKuluaStage.show();
+		} catch (IOException e) {
+			System.out.println("Ei onnistu kulun muokkaus");
+		}
+	}
 
 	public KayttajanHallinta getKayttajanhallinta() {
 		return kayttajanhallinta;
@@ -137,5 +148,13 @@ public class ViewHandler implements IGUI{
 	
 	public Stage getKayttajaStage() {
 		return kayttajaStage;
+	}
+	
+	public Stage getMuokkaaKuluaStage() {
+		return muokkaaKuluaStage;
+	}
+
+	public ViewController getAktiivinen() {
+		return aktiivinen;
 	}
 }

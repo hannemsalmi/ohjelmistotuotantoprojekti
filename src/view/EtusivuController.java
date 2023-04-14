@@ -1,10 +1,8 @@
 package view;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import controller.IKontrolleri;
-import controller.Kontrolleri;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;

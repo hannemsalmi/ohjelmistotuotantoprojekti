@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="ap" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.KulunMuokkausController">
+   <children>
+      <BorderPane fx:id="bp" layoutX="-99.0" layoutY="-124.0" prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <HBox fx:id="sisalto" styleClass="kuluContainer" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox fx:id="vasen" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="nimiLabel" styleClass="labelInfoPieni" text="Anna uusi nimi">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="nimiField" />
+                        <Label fx:id="hintaLabel" styleClass="labelInfoPieni" text="Anna uusi hinta">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="hintaField" />
+                        <Label fx:id="kuvausLabel" styleClass="labelInfoPieni" text="Anna uusi kuvaus" />
+                        <TextField fx:id="kuvausField" />
+                        <Button fx:id="tallennaVasen" mnemonicParsing="false" onAction="#tallennaNimiHintaKuvaus" styleClass="buttonTallenna" text="Tallenna">
+                           <VBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                     <styleClass>
+                        <String fx:value="roundedBox" />
+                        <String fx:value="kuluContainer" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="oikea" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="kategoria" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="kategoriaLabel" styleClass="labelInfoPieni" text="Valitse uusi kategoria" />
+                              <ComboBox fx:id="kategoriaBox" styleClass="comboBox" />
+                              <Button fx:id="tallennaKategoria" mnemonicParsing="false" onAction="#tallennaKategoria" styleClass="buttonTallenna" text="Tallenna">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <styleClass>
+                              <String fx:value="roundedBox" />
+                              <String fx:value="kuluContainer" />
+                           </styleClass>
+                        </VBox>
+                        <VBox fx:id="poista" prefHeight="120.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <styleClass>
+                              <String fx:value="roundedBox" />
+                              <String fx:value="kuluContainer" />
+                           </styleClass>
+                           <children>
+                              <Label fx:id="poistaLabel" styleClass="labelInfoPieni" text="Poista kulu" />
+                              <Button fx:id="poistaButton" mnemonicParsing="false" onAction="#poistaKulu" styleClass="buttonTallenna" text="Poista" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
