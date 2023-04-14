@@ -303,42 +303,6 @@ public class KulutController implements ViewController{
 		int kuluId = kulu.getKuluID();
 	    
 		vh.avaaKulunMuokkaus(kuluId);
-	    
-
-
-	    /*
-	    tallennaKategoriaButton.setOnAction(new EventHandler<ActionEvent>() {
-	    	@Override
-	    	public void handle(ActionEvent event) {
-	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
-	    		int id = kulu.getKuluID();
-	    		String kategoriaNimi = muokkausBox.getSelectionModel().getSelectedItem();
-	    		Kategoria uusiKategoria = vh.getKontrolleri().getKategoria(kategoriaNimi, kayttaja.getNimimerkki());
-	    		vh.getKontrolleri().muutaKulunKategoria(id, uusiKategoria);
-		        setKulut(kaikkiKulut);
-		        stage.close();
-	      }
-	    });
-	    
-	    poistaButton.setOnAction(new EventHandler<ActionEvent>() {
-	    	@Override
-		    public void handle(ActionEvent event) {
-	    		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
-	    		
-	    		int id = kulu.getKuluID();
-	    		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
-	    		if(valinta == 0) {
-		    		vh.getKontrolleri().poistaKulu(id);
-		    		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
-		    		setKulut(kaikkiKulut);
-		    		syotaKategoria.getItems().clear();
-		    		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
-		    		budjetti.setText("Budjetti:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
-		    		stage.close();
-	    		}
-	    		stage.close();
-	    	}
-	    });**/
 	}
 	
 	public void paivitaKulut() {
