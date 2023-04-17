@@ -137,9 +137,13 @@ public class KulutController implements ViewController{
 		paivamaara.setText(english.getString("päivämäärä"));
 		kategoria.setText(english.getString("kategoria"));
 		kuvaus.setText(english.getString("kuvaus"));
-		luo.setText(english.getString("luokategoria"));
-		tallennaKulu.setText(english.getString("tallennaostos"));
-		tallennaKategoria.setText(english.getString("luokategoria"));
+		luo.setText(english.getString("luoKategoria"));
+		tallennaKulu.setText(english.getString("tallennaOstos"));
+		tallennaKategoria.setText(english.getString("luoKategoria"));
+		kategoriaSuodatus.setText(english.getString("kategoriaSuodatus"));
+		kuukausiSuodatus.setText(english.getString("kuukausiSuodatus"));
+		vuosiSuodatus.setText(english.getString("vuosiSuodatus"));
+		ohjeistus.setText(english.getString("ohjeistus"));
 	}
 	
 	public void lisaaKulu() {
@@ -193,7 +197,11 @@ public class KulutController implements ViewController{
 			budjettiaJaljella -= kulu.getSumma();
 			}
 		};
-		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+		if(vh.getKieli()) {
+			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+		} else {
+			budjetti.setText("Budget remaining:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+		}
 		
 		return budjettiaJaljella;
 	}
@@ -307,7 +315,11 @@ public class KulutController implements ViewController{
 		setKulut(kaikkiKulut);
 		syotaKategoria.getItems().clear();
 		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
-		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		if(vh.getKieli()) {
+			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		} else {
+			budjetti.setText("Budget remaining:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		}
 	}
 	
 	public void initKulut() {
@@ -324,7 +336,11 @@ public class KulutController implements ViewController{
 	}
 	
 	public void initSuodatus() {
-		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+		if(vh.getKieli()) {
+			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+		} else {
+			budjetti.setText("Budget remaining:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+		}
 		valitseKategoria.getItems().add("Kaikki");
 		valitseKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
 		valitseKategoria.getSelectionModel().select("Kaikki");

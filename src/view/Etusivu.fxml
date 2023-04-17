@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EtusivuController">
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EtusivuController">
    <children>
       <BorderPane fx:id="bp" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -18,7 +18,7 @@
                      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                   </HBox.margin>
                   <children>
-                     <Label styleClass="labelInfo" text="Tervetuloa" wrapText="true" />
+                     <Label fx:id="tervetuloa" styleClass="labelInfo" text="Tervetuloa" wrapText="true" />
                   </children>
                   <styleClass>
                      <String fx:value="roundedBox" />
@@ -26,7 +26,7 @@
                   </styleClass>
                </VBox>
                <VBox prefWidth="200.0" spacing="5">
-                  <Label styleClass="labelInfo" text="Ostoslista:">
+                  <Label fx:id="ostoslista" styleClass="labelInfo" text="Ostoslista:">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -41,7 +41,7 @@
                   </HBox.margin>
                </VBox>
                <VBox prefWidth="200.0" spacing="5">
-                  <Label styleClass="labelInfo" text="Muistilista:" />
+                  <Label fx:id="muistilista" styleClass="labelInfo" text="Muistilista:" />
                   <VBox fx:id="reminderListVBox" />
                   <HBox.margin>
                      <Insets bottom="40.0" right="40.0" top="40.0" />

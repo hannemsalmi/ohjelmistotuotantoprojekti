@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,12 +60,23 @@ public class DiagrammiController implements ViewController {
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
 		kayttajanhallinta = vh.getKayttajanhallinta();
 		kaikkiKulut = vh.getKontrolleri().getKulut(kayttajanhallinta.lueKayttajaID());
 		suodatetut = kaikkiKulut;
 		initSuodatus();
 		naytaKuluDiagrammi();
 		laskeKulutusYhteensa();
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		pieChart.setTitle(english.getString("otsikko"));
+		kulutus.setText(english.getString("kulutus"));
+		kuukausiLabel.setText(english.getString("kuukausi"));
+		vuosiLabel.setText(english.getString("vuosi"));
 	}
 	
 	public void naytaKuluDiagrammi() {
@@ -122,7 +134,11 @@ public class DiagrammiController implements ViewController {
 			kokonaiskulutus += kulu.getSumma();
 		}
 		
-		kulutus.setText("Kulutus yhteensä:\n" + String.format("%.2f",kokonaiskulutus ) + " €");
+		if(vh.getKieli()) {
+			kulutus.setText("Kulutus yhteensä:\n" + String.format("%.2f",kokonaiskulutus ) + " €");
+		} else {
+			kulutus.setText("Expenditure in total:\n" + String.format("%.2f",kokonaiskulutus ) + " €");
+		}
 	}
 	
 	public void initSuodatus() {

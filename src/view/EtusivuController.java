@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ResourceBundle;
+
 import org.json.JSONObject;
 
 import controller.IKontrolleri;
@@ -20,6 +22,12 @@ public class EtusivuController implements ViewController{
 	@FXML
 	private Label label;
 	@FXML
+	private Label tervetuloa;
+	@FXML
+	private Label ostoslista;
+	@FXML
+	private Label muistilista;
+	@FXML
 	private VBox shoppingListVBox;
 
 	@FXML
@@ -33,6 +41,10 @@ public class EtusivuController implements ViewController{
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
+		
 		kontrolleri = vh.getKontrolleri();
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 		try {
@@ -41,6 +53,13 @@ public class EtusivuController implements ViewController{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		tervetuloa.setText(english.getString("tervetuloa"));
+		ostoslista.setText(english.getString("ostoslista"));
+		muistilista.setText(english.getString("muistilista"));
 	}
 	
 	public void displayOstoslista() {

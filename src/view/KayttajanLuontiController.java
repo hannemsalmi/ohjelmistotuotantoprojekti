@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -44,7 +46,17 @@ public class KayttajanLuontiController implements ViewController {
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
 		kayttajanhallinta = vh.getKayttajanhallinta();
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		kayttajaLabel.setText(english.getString("käyttäjä"));
+		budjettiLabel.setText(english.getString("kuukausiBudjetti"));
+		tallennaButton.setText(english.getString("luoKäyttäjä"));
 	}
 
 	public void luoUusiKayttaja() {

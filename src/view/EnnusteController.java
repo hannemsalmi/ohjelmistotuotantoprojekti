@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
@@ -46,9 +47,18 @@ public class EnnusteController implements ViewController{
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
 		kayttajanhallinta = vh.getKayttajanhallinta();
 		kulut = vh.getKontrolleri().getKulut(kayttajanhallinta.lueKayttajaID());
 		luoKuluGraph();
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		chart.setTitle(english.getString("ennusteOtsikko"));
+		info.setText(english.getString("info"));
 	}
 	
 	public void luoKuluGraph() {
@@ -61,7 +71,11 @@ public class EnnusteController implements ViewController{
 		int lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).getDayOfMonth();
 		// luodaan series ennusteen datalle
 		XYChart.Series<String, Number> series = new XYChart.Series<>();
-		series.setName("Kumuloituneet kulut: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
+		if(vh.getKieli()) {
+			series.setName("Kumuloituneet kulut: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
+		} else {
+			series.setName("Accumulated expenses: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
+		}
 		
 		int currentMonth = LocalDate.now().getMonthValue();
 		
@@ -131,7 +145,11 @@ public class EnnusteController implements ViewController{
 		
 		// luo uusi series extrapolated datalle
 		XYChart.Series<String, Number> extrapolationSeries = new XYChart.Series<>();
-		extrapolationSeries.setName("Ennuste loppukuun kuluista");
+		if(vh.getKieli()) {
+			extrapolationSeries.setName("Ennuste loppukuun kuluista");
+		} else {
+			extrapolationSeries.setName("Prediction of expenses for the rest of the month");
+		}
 		
 		// lisää extrapolated datapisteet seriesiin käyttäen slopea ja muokkaa regressio-viivaa niin että trendi näkyy selkeästi tulevaisuudessa
 		for (int i = 1; i <= lastDayOfMonth; i++) {
@@ -145,7 +163,11 @@ public class EnnusteController implements ViewController{
 		// uusi series näyttää max budjetin arvon
 		double maxBudget = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
 		XYChart.Series<String, Number> maxBudgetSeries = new XYChart.Series<>();
-		maxBudgetSeries.setName("Max budjetti");
+		if(vh.getKieli()) {
+			maxBudgetSeries.setName("Max budjetti");
+		} else {
+			maxBudgetSeries.setName("Max budget");
+		}
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", 1), maxBudget));
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", lastDayOfMonth), maxBudget));
 		//lisää max budjetti taulukkoon

@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
@@ -68,9 +69,24 @@ public class KulunMuokkausController implements ViewController{
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
 		kayttajanhallinta = vh.getKayttajanhallinta();
 		
 		initKategoriaBox();
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		nimiLabel.setText(english.getString("nimi"));
+		hintaLabel.setText(english.getString("uusiHinta"));
+		kuvausLabel.setText(english.getString("uusiKuvaus"));
+		tallennaVasen.setText(english.getString("tallenna"));
+		kategoriaLabel.setText(english.getString("uusiKategoria"));
+		tallennaKategoria.setText(english.getString("tallenna"));
+		poistaLabel.setText(english.getString("kulunPoisto"));
+		poistaButton.setText(english.getString("poisto"));
 	}
 
 	public void tallennaNimiHintaKuvaus() {
@@ -81,10 +97,18 @@ public class KulunMuokkausController implements ViewController{
 	        vh.getKontrolleri().muokkaaKulua(kuluId, hinta, nimi, kuvaus);
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
-			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			if(vh.getKieli()) {
+				JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showConfirmDialog(null, "Type numerical values when asked.", "Input error", JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (Exception e) {
 			System.out.println("Joku vikana arvoja syötettäessä...");
-			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			if(vh.getKieli()) {
+				JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showConfirmDialog(null, "Type correct valuetypes.", "Input error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		teeLopputoimet();
@@ -99,10 +123,18 @@ public class KulunMuokkausController implements ViewController{
 	}
 	
 	public void poistaKulu() {
-		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
-		if(valinta == 0) {
-    		vh.getKontrolleri().poistaKulu(kuluId);
+		if(vh.getKieli()) {
+			int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
+			if(valinta == 0) {
+	    		vh.getKontrolleri().poistaKulu(kuluId);
+			}
+		} else {
+			int valinta = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the expense?", "Think once more...",JOptionPane.OK_CANCEL_OPTION);
+			if(valinta == 0) {
+	    		vh.getKontrolleri().poistaKulu(kuluId);
+			}
 		}
+		
 		
 		teeLopputoimet();
 	}
