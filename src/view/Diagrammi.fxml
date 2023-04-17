@@ -31,11 +31,10 @@
                   </VBox>
                   <VBox fx:id="suodatus" alignment="BOTTOM_CENTER" minWidth="140.0">
                      <children>
-                        <Label fx:id="kulutus" text="Kulutus" wrapText="true">
-                           <styleClass>
-                              <String fx:value="labelInfo" />
-                              <String fx:value="kuluContainer" />
-                           </styleClass></Label>
+                        <Label fx:id="kulutus" styleClass="labelInfo" text="Kulutus" wrapText="true">
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin></Label>
                         <VBox fx:id="kuukausi" styleClass="kuluContainer">
                            <children>
                               <Label fx:id="kuukausiLabel" styleClass="labelInfo" text="Kuukausi" />
