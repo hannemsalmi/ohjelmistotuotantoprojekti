@@ -8,9 +8,12 @@ import controller.IKontrolleri;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import kayttajanHallinta.KayttajanHallinta;
 
@@ -20,20 +23,40 @@ public class EtusivuController implements ViewController{
 	@FXML
 	private BorderPane bp;
 	@FXML
-	private Label label;
+	private HBox sisalto;
 	@FXML
-	private Label tervetuloa;
+	private VBox tervetuloa;
 	@FXML
-	private Label ostoslista;
+	private Label tervetuloaLabel;
 	@FXML
-	private Label muistilista;
+	private VBox profiili;
+	@FXML
+	private Label profiiliLabel;
+	@FXML
+	private ComboBox<String> profiiliBox;
+	@FXML
+	private VBox uusiProfiili;
+	@FXML
+	private Label uusiProfiiliLabel;
+	@FXML
+	private Button uusiProfiiliButton;
+	
+	@FXML
+	private VBox ostoslista;
+	@FXML
+	private Label ostoslistaLabel;
 	@FXML
 	private VBox shoppingListVBox;
-
+	
+	@FXML
+	private VBox muistilista;
+	@FXML
+	private Label muistilistaLabel;
 	@FXML
 	private VBox reminderListVBox;
-	private ViewHandler vh;
 	
+	
+	private ViewHandler vh;
 	private IKontrolleri kontrolleri;
 	
 	KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
@@ -47,7 +70,8 @@ public class EtusivuController implements ViewController{
 		
 		kontrolleri = vh.getKontrolleri();
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
-		tervetuloa.setText("Tervetuloa " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		paivitaTervehdys();
+		initProfiiliBox();
 		
 		try {
 			displayOstoslista();
@@ -58,9 +82,9 @@ public class EtusivuController implements ViewController{
 	
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
-		tervetuloa.setText(english.getString("tervetuloa"));
-		ostoslista.setText(english.getString("ostoslista"));
-		muistilista.setText(english.getString("muistilista"));
+		tervetuloaLabel.setText(english.getString("tervetuloa"));
+		ostoslistaLabel.setText(english.getString("ostoslista"));
+		muistilistaLabel.setText(english.getString("muistilista"));
 	}
 	
 	public void displayOstoslista() {
@@ -115,5 +139,27 @@ public class EtusivuController implements ViewController{
 	    thread.setDaemon(true);
 	    thread.start();
 	}
-
+	
+	public void valitseKayttaja() {
+		int valittuKayttaja = profiiliBox.getSelectionModel().getSelectedIndex() +1;
+        kayttajanhallinta.kirjoitaKayttajaID(valittuKayttaja);
+        kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(valittuKayttaja));
+        System.out.println("Logging in user: " + valittuKayttaja);
+        paivitaTervehdys();
+	}
+	
+	public void luoUusiKayttaja() {
+		vh.luoUusiKayttaja();
+		vh.paivitaKayttaja();
+		paivitaTervehdys();
+	}
+	
+	public void paivitaTervehdys() {
+		tervetuloaLabel.setText("Tervetuloa " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		profiiliBox.getSelectionModel().select(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+	}
+	
+	private void initProfiiliBox() {
+		profiiliBox.getItems().addAll(kontrolleri.getKayttajat());
+	}
 }

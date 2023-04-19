@@ -1,5 +1,6 @@
 package view;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -63,9 +64,19 @@ public class KayttajanLuontiController implements ViewController {
 		String username = kayttajaField.getText();
         double budjetti = Double.parseDouble(budjettiField.getText());
         if (!username.isEmpty()) {
-            vh.getKontrolleri().lisaaKayttaja(username, budjetti);
+        	vh.getKontrolleri().lisaaKayttaja(username, budjetti);
             vh.getKontrolleri().lisaaKategoria("Yleinen", username);
-            kayttajanhallinta.kirjoitaKayttajaID(1);
+            
+            int haluttuId = -1;
+            List<String> kayttajat = vh.getKontrolleri().getKayttajat();
+            for(int i = 0; i < kayttajat.size(); i++) {
+            	if(kayttajat.get(i).equals(username)){
+            		haluttuId = (i+1);
+            	}           	
+            }
+            
+            kayttajanhallinta.kirjoitaKayttajaID(haluttuId);
+            System.out.println(haluttuId);
             kayttajanhallinta.setKirjautunutKayttaja(vh.getKontrolleri().getKayttaja(kayttajanhallinta.lueKayttajaID()));
             Stage stage = vh.getKayttajaStage();
             stage.close();

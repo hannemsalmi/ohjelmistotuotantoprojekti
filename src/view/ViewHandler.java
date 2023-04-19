@@ -54,6 +54,10 @@ public class ViewHandler implements IGUI{
 		}
 		
 		onkoKayttajaa();
+		
+		if(!(kontrolleri.getKayttajat().isEmpty())) {
+			naytaEtusivu();
+		}
 	}
 	
 	public void naytaEtusivu() {
@@ -100,21 +104,29 @@ public class ViewHandler implements IGUI{
 	
 	public void onkoKayttajaa() {
 		if (kontrolleri.getKayttaja(1) == null) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../view/KayttajanLuonti.fxml"));
-				Parent sisalto = loader.load();
-				ViewController controller = loader.getController();
-				controller.init(this);
-				
-				kayttajaStage = new Stage();
-				kayttajaStage.setScene(new Scene(sisalto));
-	            kayttajaStage.setTitle("Luo uusi käyttäjä");
-	    	    kayttajaStage.show();
-			} catch (IOException e) {
-				System.out.println("Ei onnistu uuden käyttäjän luonti");
-			}
+			luoUusiKayttaja();
 		}
+		paivitaKayttaja();
+	}
+	
+	public void luoUusiKayttaja() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("../view/KayttajanLuonti.fxml"));
+			Parent sisalto = loader.load();
+			ViewController controller = loader.getController();
+			controller.init(this);
+			
+			kayttajaStage = new Stage();
+			kayttajaStage.setScene(new Scene(sisalto));
+            kayttajaStage.setTitle("Luo uusi käyttäjä");
+    	    kayttajaStage.show();
+		} catch (IOException e) {
+			System.out.println("Ei onnistu uuden käyttäjän luonti");
+		}
+	}
+	
+	public void paivitaKayttaja() {
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 	}
 	
