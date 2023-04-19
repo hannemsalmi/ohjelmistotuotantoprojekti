@@ -70,5 +70,6 @@ public class KayttajanLuontiController implements ViewController {
             Stage stage = vh.getKayttajaStage();
             stage.close();
         }
+        vh.naytaEtusivu();
 	}
 }

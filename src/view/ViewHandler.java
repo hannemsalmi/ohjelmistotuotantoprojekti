@@ -53,7 +53,6 @@ public class ViewHandler implements IGUI{
 			System.out.println("Ei onnistunut rootin avaus");
 		}
 		
-		naytaEtusivu();
 		onkoKayttajaa();
 	}
 	

@@ -47,11 +47,12 @@ public class EtusivuController implements ViewController{
 		
 		kontrolleri = vh.getKontrolleri();
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
+		tervetuloa.setText("Tervetuloa " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		
 		try {
 			displayOstoslista();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Ei toiminut listojen avaus");
 		}
 	}
 	
