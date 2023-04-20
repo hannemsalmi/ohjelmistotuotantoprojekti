@@ -59,7 +59,7 @@ public class EtusivuController implements ViewController{
 	private ViewHandler vh;
 	private IKontrolleri kontrolleri;
 	
-	KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
+	KayttajanHallinta kayttajanhallinta;
 	
 	@Override
 	public void init(ViewHandler viewHandler) {
@@ -69,6 +69,7 @@ public class EtusivuController implements ViewController{
 		}
 		
 		kontrolleri = vh.getKontrolleri();
+		kayttajanhallinta = vh.getKayttajanhallinta();
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 		paivitaTervehdys();
 		initProfiiliBox();
