@@ -43,7 +43,7 @@ Update the persistence.xml file located in the META-INF folder with your databas
 * property: javax.persistence.jdbc.user -> your_username
 * property: javax.persistence.jdbc.password -> your_password
 
-After this the application can be run using Eclipse or other IDE.
+After this the application can be run using Eclipse or other IDE. Class MainView contains the main class of the newest version of the application, so this is the class you should run.
 
 Alternatively the application can be run through command line. However there has been some issues with this, so for now it's better to run the application using IDE.
 
