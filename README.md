@@ -18,6 +18,8 @@ Desktop application that allows user to add expenses and track their spending. S
 * Modifying and removing expenses and categories
 * Viewing expenses in chart and filtering expenses by category
 * Viewing spending habits through graphs
+* List of commonly purhcased items
+* List of recurring expenses
 
 ## Technologies used:
 * **Java**: The programming language used for the project.
@@ -27,6 +29,7 @@ Desktop application that allows user to add expenses and track their spending. S
 * **Jakarta Persistence (JPA)**: A library which provides an object-relational mapping (ORM) framework for Java.
 * **Hibernate**: A framework that simplifies the communication between a program and a database.
 * **JUnit 5**: A framework used for unit testing.
+* **Mockito**: A mocking framework used for testing.
 
 ## Installation and configuration
 
