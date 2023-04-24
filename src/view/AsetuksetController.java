@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
@@ -75,6 +76,8 @@ public class AsetuksetController implements ViewController{
 	private ComboBox<String> poistettavaKategoriaBox;
 	@FXML
 	private Button poistaKategoriaButton;
+	@FXML
+	private Label muokkausInfo;
 	
 	private ViewHandler vh;
 	private KayttajanHallinta kayttajanhallinta;
@@ -82,10 +85,30 @@ public class AsetuksetController implements ViewController{
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		if(!(vh.getKieli())) {
+			asetaKieli();
+		}
 		kayttajanhallinta = vh.getKayttajanhallinta();
 		
 		initKayttajat();
 		initKategoriat();
+	}
+	
+	public void asetaKieli() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		kayttajaAsetuksetLabel.setText(english.getString("käyttäjäAsetukset"));
+		muokattavaKayttajaLabel.setText(english.getString("muokattavaProfiili"));
+		uusiBudjettiLabel.setText(english.getString("uusiBudjetti"));
+		tallennaKayttajaButton.setText(english.getString("tallenna"));
+		profiilinTyhjennysLabel.setText(english.getString("profiilinTyhjennys"));
+		tyhjennaButton.setText(english.getString("tyhjennä"));
+		kategoriaAsetuksetLabel.setText(english.getString("kategoriaAsetukset"));
+		muokatavaKategoriaLabel.setText(english.getString("muokattavaKategoria"));
+		uusiKategoriaLabel.setText(english.getString("uusiNimi"));
+		tallennaUusiKategoria.setText(english.getString("tallenna"));
+		poistettavaKategoriaLabel.setText(english.getString("poistettavaKategoria"));
+		poistaKategoriaButton.setText(english.getString("poisto"));
+		muokkausInfo.setText(english.getString("muokkausInfo"));
 	}
 	
 	public void tallennaUusiBudjetti() {
@@ -119,14 +142,27 @@ public class AsetuksetController implements ViewController{
 	public void poistaKategoria() {
 		String poistettava = poistettavaKategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria poistettavaKategoria = vh.getKontrolleri().getKategoria(poistettava, kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		
-		int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kategorian? Poistetun kategorian kulut siirtyvät yleiseen kategoriaan", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
-		if(valinta == 0) {
-			vh.getKontrolleri().poistaKategoria(poistettavaKategoria.getKategoriaID(), kayttajanhallinta.getKirjautunutKayttaja());
-			kategoriaBox.getItems().remove(poistettava);
-			poistettavaKategoriaBox.getItems().remove(poistettava);
-			poistettavaKategoriaBox.getSelectionModel().clearSelection();
+		if(vh.getKieli()) {
+			int valinta = JOptionPane.showConfirmDialog(null, finnish.getString("kategorianPoistoVaroitus"), finnish.getString("harkitse"),JOptionPane.OK_CANCEL_OPTION);
+			if(valinta == 0) {
+				vh.getKontrolleri().poistaKategoria(poistettavaKategoria.getKategoriaID(), kayttajanhallinta.getKirjautunutKayttaja());
+				kategoriaBox.getItems().remove(poistettava);
+				poistettavaKategoriaBox.getItems().remove(poistettava);
+				poistettavaKategoriaBox.getSelectionModel().clearSelection();
+			}
+		} else {
+			int valinta = JOptionPane.showConfirmDialog(null, english.getString("kategorianPoistoVaroitus"), english.getString("harkitse"),JOptionPane.OK_CANCEL_OPTION);
+			if(valinta == 0) {
+				vh.getKontrolleri().poistaKategoria(poistettavaKategoria.getKategoriaID(), kayttajanhallinta.getKirjautunutKayttaja());
+				kategoriaBox.getItems().remove(poistettava);
+				poistettavaKategoriaBox.getItems().remove(poistettava);
+				poistettavaKategoriaBox.getSelectionModel().clearSelection();
+			}
 		}
+		
 	}
 	
 	private void initKayttajat() {

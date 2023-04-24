@@ -83,7 +83,9 @@ public class EtusivuController implements ViewController{
 	
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
-		tervetuloaLabel.setText(english.getString("tervetuloa"));
+		profiiliLabel.setText(english.getString("profiiliValinta"));
+		uusiProfiiliLabel.setText(english.getString("luoProfiiliTeksti"));
+		uusiProfiiliButton.setText(english.getString("luoProfiili"));
 		ostoslistaLabel.setText(english.getString("ostoslista"));
 		muistilistaLabel.setText(english.getString("muistilista"));
 	}
@@ -156,7 +158,13 @@ public class EtusivuController implements ViewController{
 	}
 	
 	public void paivitaTervehdys() {
-		tervetuloaLabel.setText("Tervetuloa " + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+		if(vh.getKieli()) {
+			tervetuloaLabel.setText(finnish.getString("tervetuloa") + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		} else {
+			tervetuloaLabel.setText(english.getString("tervetuloa") + kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
+		}
 		profiiliBox.getSelectionModel().select(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
 	}
 	

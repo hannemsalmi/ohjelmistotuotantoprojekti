@@ -149,6 +149,8 @@ public class KulutController implements ViewController{
 	public void lisaaKulu() {
 		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		String kategorianNimi = syotaKategoria.getSelectionModel().getSelectedItem();
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		
 		try {
 			String ostoksenNimi = syotaOstos.getText();
@@ -161,24 +163,44 @@ public class KulutController implements ViewController{
 				vh.getKontrolleri().lisaaKulu(ostoksenNimi, ostoksenHinta, ostoksenPvm, ostoksenKategoria, kayttaja, ostoksenKuvaus);
 			} else {
 				System.out.println("Kulun summa on liian suuri budjettiin nähden.");
-				JOptionPane.showConfirmDialog(null, "Kulun summa on liian suuri budjettiisi.", "Kulun summassa virhe", JOptionPane.ERROR_MESSAGE);
+				if(vh.getKieli()) {
+					JOptionPane.showConfirmDialog(null, finnish.getString("budjettiVaroitus"), finnish.getString("summaVirhe"), JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showConfirmDialog(null, english.getString("budjettiVaroitus"), english.getString("summaVirhe"), JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
-			JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			if(vh.getKieli()) {
+				JOptionPane.showConfirmDialog(null, finnish.getString("numeroVaroitus"), finnish.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showConfirmDialog(null, english.getString("numeroVaroitus"), english.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (Exception e) {
 			System.out.println("Jokin vikana arvoja syötettäessä...");
-			JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+			if(vh.getKieli()) {
+				JOptionPane.showConfirmDialog(null, finnish.getString("tyyppiVirhe"), finnish.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showConfirmDialog(null, english.getString("tyyppiVirhe"), english.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
 		setKulut(kaikkiKulut);
-		budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		if(vh.getKieli()) {
+			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		} else {
+			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+		}
 		syotaOstos.clear();
 		syotaHinta.clear();
 		syotaKuvaus.clear();
-		syotaKategoria.getSelectionModel().select("Yleinen");
+		if(vh.getKieli()) {
+			syotaKategoria.getSelectionModel().select(finnish.getString("yleinen"));
+		} else {
+			syotaKategoria.getSelectionModel().select(english.getString("yleinen"));
+		}
 		LocalDate paiva = LocalDate.now();
 		syotaPaivamaara.setValue(paiva);
 		suodata();
@@ -191,6 +213,8 @@ public class KulutController implements ViewController{
 	}
 	
 	public double budjettiaJaljellaLaskuri() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		Double budjettiaJaljella = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
 		for(Kulu kulu: kaikkiKulut) {
 			if(kulu.getPaivamaara().getMonthValue() == LocalDate.now().getMonthValue() && kulu.getPaivamaara().getYear() == LocalDate.now().getYear()) {
@@ -198,9 +222,9 @@ public class KulutController implements ViewController{
 			}
 		};
 		if(vh.getKieli()) {
-			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f",budjettiaJaljella ) + " €");
 		} else {
-			budjetti.setText("Budget remaining:\n" + String.format("%.2f",budjettiaJaljella ) + " €");
+			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljella ) + " €");
 		}
 		
 		return budjettiaJaljella;
@@ -224,14 +248,17 @@ public class KulutController implements ViewController{
 	    List<Kulu> valiaikaisetKulut = new ArrayList<>();
 	    List<Kulu> toisetValiaikaisetKulut = new ArrayList<>();
 	    
+	    ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+	    
 	    //vain kategoriaa on muutettu
-	    if (!valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
+	    if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0 || !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
 	    	suodatetutKulut = kaikkiKulut.stream()
 	            .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
 	            .collect(Collectors.toList());
 	    	setKulut(suodatetutKulut);
 	    //vain kuukautta muutettu
-	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0 || valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
 	    	for (Kulu kulu : kaikkiKulut) {
 	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
 	    			  suodatetutKulut.add(kulu);
@@ -239,7 +266,7 @@ public class KulutController implements ViewController{
 	    	}
 		    setKulut(suodatetutKulut);
 	    //vain vuotta muutettu
-	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0 || valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
 	    	for (Kulu kulu : kaikkiKulut) {
 	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
 	    			  suodatetutKulut.add(kulu);
@@ -247,7 +274,7 @@ public class KulutController implements ViewController{
 	    	}
 		    setKulut(suodatetutKulut);
 		//kategoriaa ja kuukautta muutettu
-	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0 || !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
 	    	valiaikaisetKulut = kaikkiKulut.stream()
 		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
 		        .collect(Collectors.toList());
@@ -258,7 +285,7 @@ public class KulutController implements ViewController{
 	    	}
 	    	setKulut(suodatetutKulut);
 	    // kategoriaa ja vuotta muutettu
-	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0 || !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
 	    	valiaikaisetKulut = kaikkiKulut.stream()
 			    .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
 			    .collect(Collectors.toList());
@@ -269,7 +296,7 @@ public class KulutController implements ViewController{
 	    	}
 	    	setKulut(suodatetutKulut);
 	    // kuukautta ja vuotta muutettu
-	    } else if (valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0 || valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
 	    	for (Kulu kulu : kaikkiKulut) {
 	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
 	    			valiaikaisetKulut.add(kulu);
@@ -282,7 +309,7 @@ public class KulutController implements ViewController{
 	    	}
 	    	setKulut(suodatetutKulut);
 	    //kategoriaa, kuukautta ja vuotta muutettu
-	    } else if (!valittuKategoria.equals("Kaikki") && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0 || !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
 	    	valiaikaisetKulut = kaikkiKulut.stream()
 		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
 		        .collect(Collectors.toList());
@@ -311,14 +338,16 @@ public class KulutController implements ViewController{
 	}
 	
 	public void paivitaKulut() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
 		setKulut(kaikkiKulut);
 		syotaKategoria.getItems().clear();
 		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
 		if(vh.getKieli()) {
-			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 		} else {
-			budjetti.setText("Budget remaining:\n" + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
+			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 		}
 	}
 	
@@ -328,41 +357,72 @@ public class KulutController implements ViewController{
 	}
 	
 	public void initKategoriaJaPvm() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		syotaKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
-		syotaKategoria.getSelectionModel().select("Yleinen");
+		if(vh.getKieli()) {
+			syotaKategoria.getSelectionModel().select(finnish.getString("yleinen"));
+		} else {
+			syotaKategoria.getSelectionModel().select(english.getString("yleinen"));
+		}
 		
 		LocalDate paiva = LocalDate.now();
 		syotaPaivamaara.setValue(paiva);
 	}
 	
 	public void initSuodatus() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		if(vh.getKieli()) {
-			budjetti.setText("Budjettia jäljellä:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+			valitseKategoria.getItems().add(finnish.getString("kaikki"));
+			valitseKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
+			valitseKategoria.getSelectionModel().select(finnish.getString("kaikki"));
+			valitseKuukausi.getItems().add(finnish.getString("kaikki"));
+			valitseKuukausi.getItems().add(finnish.getString("tammi"));
+			valitseKuukausi.getItems().add(finnish.getString("helmi"));
+			valitseKuukausi.getItems().add(finnish.getString("maalis"));
+			valitseKuukausi.getItems().add(finnish.getString("huhti"));
+			valitseKuukausi.getItems().add(finnish.getString("touko"));
+			valitseKuukausi.getItems().add(finnish.getString("kesä"));
+			valitseKuukausi.getItems().add(finnish.getString("heinä"));
+			valitseKuukausi.getItems().add(finnish.getString("elo"));
+			valitseKuukausi.getItems().add(finnish.getString("syys"));
+			valitseKuukausi.getItems().add(finnish.getString("loka"));
+			valitseKuukausi.getItems().add(finnish.getString("marras"));
+			valitseKuukausi.getItems().add(finnish.getString("joulu"));
+			valitseKuukausi.getSelectionModel().select(finnish.getString("kaikki"));
+			valitseVuosi.getItems().add(finnish.getString("kaikki"));
+			for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+				valitseVuosi.getItems().add(Integer.toString(i));
+		    }
+			valitseVuosi.getSelectionModel().select(finnish.getString("kaikki"));
 		} else {
-			budjetti.setText("Budget remaining:\n" + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+			budjetti.setText(english.getString("jäljellä") + String.format("%.2f", budjettiaJaljellaLaskuri()) + " €");
+			valitseKategoria.getItems().add(english.getString("kaikki"));
+			valitseKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
+			valitseKategoria.getSelectionModel().select(english.getString("kaikki"));
+			valitseKuukausi.getItems().add(english.getString("kaikki"));
+			valitseKuukausi.getItems().add(english.getString("tammi"));
+			valitseKuukausi.getItems().add(english.getString("helmi"));
+			valitseKuukausi.getItems().add(english.getString("maalis"));
+			valitseKuukausi.getItems().add(english.getString("huhti"));
+			valitseKuukausi.getItems().add(english.getString("touko"));
+			valitseKuukausi.getItems().add(english.getString("kesä"));
+			valitseKuukausi.getItems().add(english.getString("heinä"));
+			valitseKuukausi.getItems().add(english.getString("elo"));
+			valitseKuukausi.getItems().add(english.getString("syys"));
+			valitseKuukausi.getItems().add(english.getString("loka"));
+			valitseKuukausi.getItems().add(english.getString("marras"));
+			valitseKuukausi.getItems().add(english.getString("joulu"));
+			valitseKuukausi.getSelectionModel().select(english.getString("kaikki"));
+			valitseVuosi.getItems().add(english.getString("kaikki"));
+			for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+				valitseVuosi.getItems().add(Integer.toString(i));
+		    }
+			valitseVuosi.getSelectionModel().select(english.getString("kaikki"));
 		}
-		valitseKategoria.getItems().add("Kaikki");
-		valitseKategoria.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki()));
-		valitseKategoria.getSelectionModel().select("Kaikki");
-		valitseKuukausi.getItems().add("Kaikki");
-		valitseKuukausi.getItems().add("Tammi");
-		valitseKuukausi.getItems().add("Helmi");
-		valitseKuukausi.getItems().add("Maalis");
-		valitseKuukausi.getItems().add("Huhti");
-		valitseKuukausi.getItems().add("Touko");
-		valitseKuukausi.getItems().add("Kesä");
-		valitseKuukausi.getItems().add("Heinä");
-		valitseKuukausi.getItems().add("Elo");
-		valitseKuukausi.getItems().add("Syys");
-		valitseKuukausi.getItems().add("Loka");
-		valitseKuukausi.getItems().add("Marras");
-		valitseKuukausi.getItems().add("Joulu");
-		valitseKuukausi.getSelectionModel().select("Kaikki");
-		valitseVuosi.getItems().add("Kaikki");
-		for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
-			valitseVuosi.getItems().add(Integer.toString(i));
-	    }
-		valitseVuosi.getSelectionModel().select("Kaikki");
+		
 	}
 
 	

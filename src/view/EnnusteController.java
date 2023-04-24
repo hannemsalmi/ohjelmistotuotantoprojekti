@@ -62,6 +62,8 @@ public class EnnusteController implements ViewController{
 	}
 	
 	public void luoKuluGraph() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 	
 		//päivittää kulut
 		kulut = vh.getKontrolleri().getKulut(kayttajanhallinta.lueKayttajaID());
@@ -72,9 +74,9 @@ public class EnnusteController implements ViewController{
 		// luodaan series ennusteen datalle
 		XYChart.Series<String, Number> series = new XYChart.Series<>();
 		if(vh.getKieli()) {
-			series.setName("Kumuloituneet kulut: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
+			series.setName(finnish.getString("kumuloituma") + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
 		} else {
-			series.setName("Accumulated expenses: " + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
+			series.setName(english.getString("kumuloituma") + LocalDate.now().getMonth().getValue() + "." + Integer.toString((LocalDate.now().getYear())));
 		}
 		
 		int currentMonth = LocalDate.now().getMonthValue();
@@ -146,9 +148,9 @@ public class EnnusteController implements ViewController{
 		// luo uusi series extrapolated datalle
 		XYChart.Series<String, Number> extrapolationSeries = new XYChart.Series<>();
 		if(vh.getKieli()) {
-			extrapolationSeries.setName("Ennuste loppukuun kuluista");
+			extrapolationSeries.setName(finnish.getString("ennusteLoppukuu"));
 		} else {
-			extrapolationSeries.setName("Prediction of expenses for the rest of the month");
+			extrapolationSeries.setName(english.getString("ennusteLoppukuu"));
 		}
 		
 		// lisää extrapolated datapisteet seriesiin käyttäen slopea ja muokkaa regressio-viivaa niin että trendi näkyy selkeästi tulevaisuudessa
@@ -164,9 +166,9 @@ public class EnnusteController implements ViewController{
 		double maxBudget = kayttajanhallinta.getKirjautunutKayttaja().getMaksimibudjetti();
 		XYChart.Series<String, Number> maxBudgetSeries = new XYChart.Series<>();
 		if(vh.getKieli()) {
-			maxBudgetSeries.setName("Max budjetti");
+			maxBudgetSeries.setName(finnish.getString("maxBudjetti"));
 		} else {
-			maxBudgetSeries.setName("Max budget");
+			maxBudgetSeries.setName(english.getString("maxBudjetti"));
 		}
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", 1), maxBudget));
 		maxBudgetSeries.getData().add(new XYChart.Data<>(String.format("%02d.", lastDayOfMonth), maxBudget));

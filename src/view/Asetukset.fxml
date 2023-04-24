@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AsetuksetController">
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AsetuksetController">
    <children>
       <BorderPane fx:id="bp" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -103,7 +103,7 @@
                               </Button>
                            </children>
                         </VBox>
-                        <Label text="Kategoria-asetukset muuttavat aktiivisen profiilin kategoriatietoja" wrapText="true">
+                        <Label fx:id="muokkausInfo" text="Kategoria-asetukset muuttavat aktiivisen profiilin kategoriatietoja" wrapText="true">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>

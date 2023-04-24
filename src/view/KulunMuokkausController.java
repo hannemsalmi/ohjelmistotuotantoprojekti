@@ -90,6 +90,8 @@ public class KulunMuokkausController implements ViewController{
 	}
 
 	public void tallennaNimiHintaKuvaus() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		try {
 			String nimi = nimiField.getText();
     		double hinta = Double.parseDouble(hintaField.getText());
@@ -98,16 +100,16 @@ public class KulunMuokkausController implements ViewController{
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
 			if(vh.getKieli()) {
-				JOptionPane.showConfirmDialog(null, "Syötä numeroarvot niitä pyydettäessä.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showConfirmDialog(null, finnish.getString("numeroVaroitus"), finnish.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
 			} else {
-				JOptionPane.showConfirmDialog(null, "Type numerical values when asked.", "Input error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showConfirmDialog(null, english.getString("numeroVaroitus"), english.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
 			System.out.println("Joku vikana arvoja syötettäessä...");
 			if(vh.getKieli()) {
-				JOptionPane.showConfirmDialog(null, "Syötä oikeantyyppiset arvot.", "Syöttövirhe", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showConfirmDialog(null, finnish.getString("tyyppiVirhe"), finnish.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
 			} else {
-				JOptionPane.showConfirmDialog(null, "Type correct valuetypes.", "Input error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showConfirmDialog(null, english.getString("tyyppiVirhe"), english.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
@@ -123,13 +125,15 @@ public class KulunMuokkausController implements ViewController{
 	}
 	
 	public void poistaKulu() {
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		if(vh.getKieli()) {
-			int valinta = JOptionPane.showConfirmDialog(null, "Haluatko varmasti poistaa kulun?", "Mieti vielä kerran...",JOptionPane.OK_CANCEL_OPTION);
+			int valinta = JOptionPane.showConfirmDialog(null, finnish.getString("kuluPoistoVaroitus"), finnish.getString("harkitse"),JOptionPane.OK_CANCEL_OPTION);
 			if(valinta == 0) {
 	    		vh.getKontrolleri().poistaKulu(kuluId);
 			}
 		} else {
-			int valinta = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the expense?", "Think once more...",JOptionPane.OK_CANCEL_OPTION);
+			int valinta = JOptionPane.showConfirmDialog(null, english.getString("kuluPoistoVaroitus"), english.getString("harkitse"),JOptionPane.OK_CANCEL_OPTION);
 			if(valinta == 0) {
 	    		vh.getKontrolleri().poistaKulu(kuluId);
 			}

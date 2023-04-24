@@ -129,37 +129,64 @@ public class DiagrammiController implements ViewController {
 	
 	public void laskeKulutusYhteensa() {
 		double kokonaiskulutus = 0;
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		
 		for (Kulu kulu : suodatetut) {
 			kokonaiskulutus += kulu.getSumma();
 		}
 		
 		if(vh.getKieli()) {
-			kulutus.setText("Kulutus yhteensä:\n" + String.format("%.2f",kokonaiskulutus ) + " €");
+			kulutus.setText(finnish.getString("yhteisKulutus") + String.format("%.2f",kokonaiskulutus ) + " €");
 		} else {
-			kulutus.setText("Expenditure in total:\n" + String.format("%.2f",kokonaiskulutus ) + " €");
+			kulutus.setText(english.getString("yhteisKulutus") + String.format("%.2f",kokonaiskulutus ) + " €");
 		}
 	}
 	
 	public void initSuodatus() {
-		kuukausiBox.getItems().add("Kaikki");
-		kuukausiBox.getItems().add("Tammi");
-		kuukausiBox.getItems().add("Helmi");
-		kuukausiBox.getItems().add("Maalis");
-		kuukausiBox.getItems().add("Huhti");
-		kuukausiBox.getItems().add("Touko");
-		kuukausiBox.getItems().add("Kesä");
-		kuukausiBox.getItems().add("Heinä");
-		kuukausiBox.getItems().add("Elo");
-		kuukausiBox.getItems().add("Syys");
-		kuukausiBox.getItems().add("Loka");
-		kuukausiBox.getItems().add("Marras");
-		kuukausiBox.getItems().add("Joulu");
-		kuukausiBox.getSelectionModel().select("Kaikki");
-		vuosiBox.getItems().add("Kaikki");
-		for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
-			vuosiBox.getItems().add(Integer.toString(i));
-	    }
-		vuosiBox.getSelectionModel().select("Kaikki");
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+		if(vh.getKieli()) {
+			kuukausiBox.getItems().add(finnish.getString("kaikki"));
+			kuukausiBox.getItems().add(finnish.getString("tammi"));
+			kuukausiBox.getItems().add(finnish.getString("helmi"));
+			kuukausiBox.getItems().add(finnish.getString("maalis"));
+			kuukausiBox.getItems().add(finnish.getString("huhti"));
+			kuukausiBox.getItems().add(finnish.getString("touko"));
+			kuukausiBox.getItems().add(finnish.getString("kesä"));
+			kuukausiBox.getItems().add(finnish.getString("heinä"));
+			kuukausiBox.getItems().add(finnish.getString("elo"));
+			kuukausiBox.getItems().add(finnish.getString("syys"));
+			kuukausiBox.getItems().add(finnish.getString("loka"));
+			kuukausiBox.getItems().add(finnish.getString("marras"));
+			kuukausiBox.getItems().add(finnish.getString("joulu"));
+			kuukausiBox.getSelectionModel().select(finnish.getString("kaikki"));
+			vuosiBox.getItems().add(finnish.getString("kaikki"));
+			for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+				vuosiBox.getItems().add(Integer.toString(i));
+		    }
+			vuosiBox.getSelectionModel().select(finnish.getString("kaikki"));
+		} else {
+			kuukausiBox.getItems().add(english.getString("kaikki"));
+			kuukausiBox.getItems().add(english.getString("tammi"));
+			kuukausiBox.getItems().add(english.getString("helmi"));
+			kuukausiBox.getItems().add(english.getString("maalis"));
+			kuukausiBox.getItems().add(english.getString("huhti"));
+			kuukausiBox.getItems().add(english.getString("touko"));
+			kuukausiBox.getItems().add(english.getString("kesä"));
+			kuukausiBox.getItems().add(english.getString("heinä"));
+			kuukausiBox.getItems().add(english.getString("elo"));
+			kuukausiBox.getItems().add(english.getString("syys"));
+			kuukausiBox.getItems().add(english.getString("loka"));
+			kuukausiBox.getItems().add(english.getString("marras"));
+			kuukausiBox.getItems().add(english.getString("joulu"));
+			kuukausiBox.getSelectionModel().select(english.getString("kaikki"));
+			vuosiBox.getItems().add(english.getString("kaikki"));
+			for (int i = LocalDate.now().getYear(); i >= LocalDate.now().getYear() - 5; i--) {
+				vuosiBox.getItems().add(Integer.toString(i));
+		    }
+			vuosiBox.getSelectionModel().select(english.getString("kaikki"));
+		}
+		
 	}
 }
