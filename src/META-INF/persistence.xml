@@ -8,7 +8,7 @@
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/budjettisovellus"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value="mustikka12"></property>
+      <property name="jakarta.persistence.jdbc.password" value="jsQbjbmh"></property>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
