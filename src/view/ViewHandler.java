@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import controller.IKontrolleri;
 import controller.Kontrolleri;
@@ -12,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
+import model.Kulu;
 
 //Täältä löytyvät kaikki metodit, joita kutsutaan eri controllereista
 public class ViewHandler implements IGUI{
@@ -20,7 +22,7 @@ public class ViewHandler implements IGUI{
 	private ViewController aktiivinen;
 	private BorderPane root;
 	private AnchorPane sisalto;
-	private boolean suomi = true;
+	private boolean suomi;
 	
 	private KayttajanHallinta kayttajanhallinta = KayttajanHallinta.getInstance();
 	private Stage kayttajaStage;
@@ -34,7 +36,7 @@ public class ViewHandler implements IGUI{
 	public void start() {
 		try {
 		Scene scene;
-		
+		this.suomi = true;
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("../view/Ulkoasu.fxml"));
 		
@@ -95,10 +97,20 @@ public class ViewHandler implements IGUI{
 	}
 	
 	public boolean getKieli() {
+		List<Kulu> kulut = kontrolleri.getKulut((kayttajanhallinta.lueKayttajaID()));
+		for(Kulu kulu: kulut) {
+			if(kulu.getKieli() == !suomi) {
+				suomi = !suomi;
+			}
+		}
 		return suomi;
 	}
 		
 	public void setKieli(boolean kieli) {
+		List<Kulu> kulut = kontrolleri.getKulut((kayttajanhallinta.lueKayttajaID()));
+		for(Kulu kulu: kulut) {
+			kulu.setKieli(kieli);
+		}
 		suomi = kieli;
 	}
 	
@@ -116,10 +128,16 @@ public class ViewHandler implements IGUI{
 			Parent sisalto = loader.load();
 			ViewController controller = loader.getController();
 			controller.init(this);
+			ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+			ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 			
 			kayttajaStage = new Stage();
 			kayttajaStage.setScene(new Scene(sisalto));
-            kayttajaStage.setTitle("Luo uusi käyttäjä");
+			if(suomi) {
+				kayttajaStage.setTitle(finnish.getString("uusiKäyttäjä"));
+			} else {
+				kayttajaStage.setTitle(english.getString("uusiKäyttäjä"));
+			}
     	    kayttajaStage.show();
 		} catch (IOException e) {
 			System.out.println("Ei onnistu uuden käyttäjän luonti");
@@ -140,9 +158,16 @@ public class ViewHandler implements IGUI{
 			//downcastaus controllerista
 			((KulunMuokkausController)controller).setKuluId(kuluId);
 			
+			ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+			ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+			
 			muokkaaKuluaStage = new Stage();
 			muokkaaKuluaStage.setScene(new Scene(sisalto));
-			muokkaaKuluaStage.setTitle("Muokkaa kulua");
+			if(suomi) {
+				muokkaaKuluaStage.setTitle(finnish.getString("muokkausTitle"));
+			} else {
+				muokkaaKuluaStage.setTitle(english.getString("muokkausTitle"));
+			}
 			muokkaaKuluaStage.show();
 		} catch (IOException e) {
 			System.out.println("Ei onnistu kulun muokkaus");

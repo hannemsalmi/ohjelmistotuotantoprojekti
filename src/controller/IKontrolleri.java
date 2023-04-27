@@ -128,4 +128,5 @@ public interface IKontrolleri {
      * @throws Exception If there is an issue with the request.
      */
 	public abstract String sendOstoslistaRequest()throws Exception;
+	
 }

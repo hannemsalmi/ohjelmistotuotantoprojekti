@@ -227,4 +227,5 @@ public class Kontrolleri implements IKontrolleri {
 	public void setKuluDao(KuluDao kuluDao) {
 		this.kuluDao = kuluDao;
 	}
+
 }

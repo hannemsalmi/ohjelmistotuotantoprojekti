@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,6 +27,7 @@ public class Kulu {
     @ManyToOne (cascade=CascadeType.PERSIST)
     private Kayttaja kayttaja;
     private String kuvaus;
+    private boolean kieli = true;
 
     public Kulu(String nimi, double summa, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
     	this.nimi = nimi;
@@ -94,11 +96,30 @@ public class Kulu {
 	public void setPaivamaara(LocalDate paivamaara) {
 		this.paivamaara = paivamaara;
 	}
+	
+	public boolean getKieli() {
+		return kieli;
+	}
+	
+	public void setKieli(boolean kieli) {
+		this.kieli = kieli;
+	}
 
 	@Override
 	public String toString() {
-		return  "Kulu: " + nimi + ", Summa: " + String.format("%.2f",summa) + " e, Päivämäärä: " + paivamaara
-				+ ", Kategoria: " + kategoria.getNimi() + ", Kuvaus: " + kuvaus;
+		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
+		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		if(kieli) {
+			return finnish.getString("tkNimi") + nimi + finnish.getString("tkArvo") + 
+					String.format("%.2f",summa) + finnish.getString("tkPvm") + paivamaara + 
+					finnish.getString("tkKategoria") + kategoria.getNimi() + finnish.getString("tkKuvaus") + 
+					kuvaus;
+		} else {
+			return english.getString("tkNimi") + nimi + english.getString("tkArvo") + 
+					String.format("%.2f",summa) + english.getString("tkPvm") + paivamaara + 
+					english.getString("tkKategoria") + kategoria.getNimi() + english.getString("tkKuvaus") + 
+					kuvaus;
+		}
 	}
     
 	@Override
