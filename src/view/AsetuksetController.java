@@ -18,6 +18,10 @@ import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
 
+/**
+ * AsetuksetController implements a controller class for Asetukset.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class AsetuksetController implements ViewController{
 	@FXML
 	private AnchorPane ap;
@@ -82,6 +86,10 @@ public class AsetuksetController implements ViewController{
 	private ViewHandler vh;
 	private KayttajanHallinta kayttajanhallinta;
 	
+	/**
+	 * Initiates AsetuksetController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -94,6 +102,9 @@ public class AsetuksetController implements ViewController{
 		initKategoriat();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		kayttajaAsetuksetLabel.setText(english.getString("käyttäjäAsetukset"));
@@ -111,6 +122,9 @@ public class AsetuksetController implements ViewController{
 		muokkausInfo.setText(english.getString("muokkausInfo"));
 	}
 	
+	/**
+	 * A method used for setting a new max budget for a selected user.
+	 */
 	public void tallennaUusiBudjetti() {
 		double budjetti = Double.parseDouble(uusiBudjettiField.getText());
 		int valittuKayttaja = kayttajaBox.getSelectionModel().getSelectedIndex() +1;
@@ -121,12 +135,18 @@ public class AsetuksetController implements ViewController{
         uusiBudjettiField.clear();
 	}
 	
+	/**
+	 * A method used for deleting all the data from a selected user.
+	 */
 	public void tyhjennaTiedot() {
 		int valittuKayttaja = tyhjennysBox.getSelectionModel().getSelectedIndex() +1;
 		vh.getKontrolleri().poistaKayttajanTiedot(valittuKayttaja);
 		tyhjennysBox.getSelectionModel().clearSelection();
 	}
 	
+	/**
+	 * A method used for changing the name of a selected category from the active profile.
+	 */
 	public void tallennaUusiKategorianimi() {
 		String vanhaNimi = kategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria muokattavaKategoria = vh.getKontrolleri().getKategoria(vanhaNimi, kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
@@ -139,6 +159,9 @@ public class AsetuksetController implements ViewController{
 		kategoriaBox.getItems().addAll(vh.getKontrolleri().getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki()));
 	}
 	
+	/**
+	 * A method used for deleting a category from the active profile.
+	 */
 	public void poistaKategoria() {
 		String poistettava = poistettavaKategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria poistettavaKategoria = vh.getKontrolleri().getKategoria(poistettava, kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
@@ -165,11 +188,17 @@ public class AsetuksetController implements ViewController{
 		
 	}
 	
+	/**
+	 * Initiates the user data for comboboxes.
+	 */
 	private void initKayttajat() {
 		kayttajaBox.getItems().addAll(vh.getKontrolleri().getKayttajat());
 		tyhjennysBox.getItems().addAll(vh.getKontrolleri().getKayttajat());
 	}
 	
+	/**
+	 * Initiates the category data for comboboxes.
+	 */
 	private void initKategoriat() {
 		List<String> kategoriat = vh.getKontrolleri().getKategorianimet(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
 		

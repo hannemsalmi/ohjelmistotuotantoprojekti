@@ -21,6 +21,10 @@ import javafx.scene.layout.VBox;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kulu;
 
+/**
+ * EnnusteController implements a controller class for Ennuste.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class EnnusteController implements ViewController{
 	@FXML
 	private AnchorPane ap;
@@ -44,6 +48,10 @@ public class EnnusteController implements ViewController{
 	private KayttajanHallinta kayttajanhallinta;
 	private List<Kulu> kulut;
 	
+	/**
+	 * Initiates EnnusteController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -55,12 +63,18 @@ public class EnnusteController implements ViewController{
 		luoKuluGraph();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		chart.setTitle(english.getString("ennusteOtsikko"));
 		info.setText(english.getString("info"));
 	}
 	
+	/**
+	 * A method which creates a graph of the expenses during the ongoing month.
+	 */
 	public void luoKuluGraph() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");

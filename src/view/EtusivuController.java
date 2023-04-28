@@ -17,6 +17,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import kayttajanHallinta.KayttajanHallinta;
 
+/**
+ * EtusivuController implements a controller class for Etusivu.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class EtusivuController implements ViewController{
 	@FXML
 	private AnchorPane ap;
@@ -61,6 +65,10 @@ public class EtusivuController implements ViewController{
 	
 	KayttajanHallinta kayttajanhallinta;
 	
+	/**
+	 * Initiates AsetuksetController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -81,6 +89,9 @@ public class EtusivuController implements ViewController{
 		}
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		profiiliLabel.setText(english.getString("profiiliValinta"));
@@ -90,6 +101,10 @@ public class EtusivuController implements ViewController{
 		muistilistaLabel.setText(english.getString("muistilista"));
 	}
 	
+	/**
+	 * A method which is used to creating a shopping list and a reminder list based on the expences of the user.
+	 * AI api is used for generating the lists.
+	 */
 	public void displayOstoslista() {
 	    Task<Void> task = new Task<Void>() {
 	        @Override
@@ -109,7 +124,7 @@ public class EtusivuController implements ViewController{
 	                shoppingListVBox.getChildren().clear();
 	                reminderListVBox.getChildren().clear();
 
-	             // Display the shopping list items
+	                // Display the shopping list items
 	                System.out.println("Shopping List:");
 	                for (String item : shoppingListItems) {
 	                    item = item.replace("item=", "").replace(")", "").trim();
@@ -120,7 +135,7 @@ public class EtusivuController implements ViewController{
 	                // Split the reminder list string into items
 	                String[] reminderListItems = reminderListStr.split("\\), \\(");
 
-	             // Display the reminder list items
+	                // Display the reminder list items
 	                System.out.println("\nReminder List:");
 	                for (String item : reminderListItems) {
 	                    item = item.replace("(", "").replace(")", "");
@@ -143,6 +158,9 @@ public class EtusivuController implements ViewController{
 	    thread.start();
 	}
 	
+	/**
+	 * A method for selecting the active profile.
+	 */
 	public void valitseKayttaja() {
 		int valittuKayttaja = profiiliBox.getSelectionModel().getSelectedIndex() +1;
         kayttajanhallinta.kirjoitaKayttajaID(valittuKayttaja);
@@ -151,12 +169,18 @@ public class EtusivuController implements ViewController{
         paivitaTervehdys();
 	}
 	
+	/**
+	 * A method used for creating a new user profile.
+	 */
 	public void luoUusiKayttaja() {
 		vh.luoUusiKayttaja();
 		vh.paivitaKayttaja();
 		paivitaTervehdys();
 	}
 	
+	/**
+	 * A method which updates the welcome message based on the profile active right now.
+	 */
 	public void paivitaTervehdys() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -168,6 +192,9 @@ public class EtusivuController implements ViewController{
 		profiiliBox.getSelectionModel().select(kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
 	}
 	
+	/**
+	 * Initiates the data in user profile combobox.
+	 */
 	private void initProfiiliBox() {
 		profiiliBox.getItems().addAll(kontrolleri.getKayttajat());
 	}

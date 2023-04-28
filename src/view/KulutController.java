@@ -27,6 +27,10 @@ import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 
+/**
+ * KulutController implements a controller class for Kulut.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class KulutController implements ViewController{
 	@FXML
 	private AnchorPane ap;
@@ -115,6 +119,10 @@ public class KulutController implements ViewController{
 	private Kayttaja kayttaja;
 	private List<Kulu> kaikkiKulut;
 	
+	/**
+	 * Initiates AsetuksetController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) { 
 		vh = viewHandler;
@@ -130,6 +138,9 @@ public class KulutController implements ViewController{
 		initSuodatus();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ostos.setText(english.getString("ostos"));
@@ -146,6 +157,11 @@ public class KulutController implements ViewController{
 		ohjeistus.setText(english.getString("ohjeistus"));
 	}
 	
+	/**
+	 * A method used for adding the expense to the expense listing and the database.
+	 * There are checks to see that the values inserted are in correct format.
+	 * All the fields are resetted after saving the expense.
+	 */
 	public void lisaaKulu() {
 		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		String kategorianNimi = syotaKategoria.getSelectionModel().getSelectedItem();
@@ -204,14 +220,21 @@ public class KulutController implements ViewController{
 		LocalDate paiva = LocalDate.now();
 		syotaPaivamaara.setValue(paiva);
 		suodata();
-		
 	}
 	
+	/**
+	 * A method used for updating the expense listing visible for the user.
+	 * @param kulut A list which includes all the expenses the user has.
+	 */
 	public void setKulut(List<Kulu> kulut) {
 		ObservableList<Kulu> observableKulut = FXCollections.observableList(kulut);
 		this.kulutListView.setItems(observableKulut);
 	}
 	
+	/**
+	 * A method used for calculating the remaining budget of the month.
+	 * @return The double value of the money user still has left to spend in this month.
+	 */
 	public double budjettiaJaljellaLaskuri() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -230,6 +253,9 @@ public class KulutController implements ViewController{
 		return budjettiaJaljella;
 	}
 	
+	/**
+	 * A method used for adding a new category for the active profile.
+	 */
 	public void lisaaUusiKategoria() {
 		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		vh.getKontrolleri().lisaaKategoria(uusiKategoria.getText(), kayttaja.getNimimerkki());
@@ -238,6 +264,9 @@ public class KulutController implements ViewController{
 		uusiKategoria.clear();
 	}
 	
+	/**
+	 * A method which filters the expense listing based on a selected category, month and year.
+	 */
 	public void suodata() {
 		String valittuKategoria = valitseKategoria.getSelectionModel().getSelectedItem();
 		int valittuKuukausi = valitseKuukausi.getSelectionModel().getSelectedIndex();
@@ -408,9 +437,11 @@ public class KulutController implements ViewController{
 			    setKulut(kaikkiKulut);
 		    }
 		}
-	    
 	}
 	
+	/**
+	 * A method which opens the view (KulunMuokkaus.fxml) where it is possible to modify the expense.
+	 */
 	public void avaaMuokkausnakymaKulu() {
 		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
 		int kuluId = kulu.getKuluID();
@@ -418,6 +449,9 @@ public class KulutController implements ViewController{
 		vh.avaaKulunMuokkaus(kuluId);
 	}
 	
+	/**
+	 * A method used for refreshing the expense listing and the money-left-for-this-month value.
+	 */
 	public void paivitaKulut() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -432,11 +466,17 @@ public class KulutController implements ViewController{
 		}
 	}
 	
+	/**
+	 * A method used for initiating the expense listing.
+	 */
 	public void initKulut() {
 		kaikkiKulut = vh.getKontrolleri().getKulut(kayttajanhallinta.lueKayttajaID());
 		setKulut(kaikkiKulut);
 	}
 	
+	/**
+	 * A method used for initiating the category and date values for the comboboxes used for adding the expense.
+	 */
 	public void initKategoriaJaPvm() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -451,6 +491,9 @@ public class KulutController implements ViewController{
 		syotaPaivamaara.setValue(paiva);
 	}
 	
+	/**
+	 * Initiates the category, month and year values for the comboboxes which are used to filter the expenses of the expense listing.
+	 */
 	public void initSuodatus() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -503,8 +546,5 @@ public class KulutController implements ViewController{
 		    }
 			valitseVuosi.getSelectionModel().select(english.getString("kaikki"));
 		}
-		
 	}
-
-	
 }

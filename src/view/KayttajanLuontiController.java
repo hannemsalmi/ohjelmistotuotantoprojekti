@@ -13,6 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 
+/**
+ * KayttajanLuontiController implements a controller class for KayttajanLuonti.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class KayttajanLuontiController implements ViewController {
 
 	@FXML
@@ -44,6 +48,10 @@ public class KayttajanLuontiController implements ViewController {
 	private ViewHandler vh;
 	private KayttajanHallinta kayttajanhallinta;
 	
+	/**
+	 * Initiates KayttajanLuontiController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -53,13 +61,19 @@ public class KayttajanLuontiController implements ViewController {
 		kayttajanhallinta = vh.getKayttajanhallinta();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		kayttajaLabel.setText(english.getString("käyttäjä"));
 		budjettiLabel.setText(english.getString("kuukausiBudjetti"));
 		tallennaButton.setText(english.getString("luoKäyttäjä"));
 	}
-
+	
+	/**
+	 * A method used for creating a new user profile.
+	 */
 	public void luoUusiKayttaja() {
 		String username = kayttajaField.getText();
         double budjetti = Double.parseDouble(budjettiField.getText());

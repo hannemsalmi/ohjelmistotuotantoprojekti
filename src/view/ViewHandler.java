@@ -15,7 +15,10 @@ import javafx.stage.Stage;
 import kayttajanHallinta.KayttajanHallinta;
 import model.Kulu;
 
-//Täältä löytyvät kaikki metodit, joita kutsutaan eri controllereista
+/**
+ * A class that includes the methods which are used to control the views, their alternation and their cooperation.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class ViewHandler implements IGUI{
 	private IKontrolleri kontrolleri;
 	private Stage stage;
@@ -28,11 +31,20 @@ public class ViewHandler implements IGUI{
 	private Stage kayttajaStage;
 	private Stage muokkaaKuluaStage;
 
+	/**
+	 * Constructor for class ViewHandler
+	 * @param stage A stage which is showing the graphic user interface.
+	 */
 	public ViewHandler(Stage stage) {
 		this.stage = stage;
 		kontrolleri = new Kontrolleri(this);
 	}
 	
+	/**
+	 * A method for starting the program.
+	 * Sets the language as default(suomi) and checks if there is a user profile in the database.
+	 * If not, the method opens a view where you can create a new profile.
+	 */
 	public void start() {
 		try {
 		Scene scene;
@@ -62,26 +74,45 @@ public class ViewHandler implements IGUI{
 		}
 	}
 	
+	/**
+	 * Opens Etusivu.fxml for the central part of the root pane.
+	 */
 	public void naytaEtusivu() {
 		avaaSisalto("../view/Etusivu.fxml");
 	}
 	
+	/**
+	 * Opens Kulut.fxml for the central part of the root pane.
+	 */
 	public void naytaKulut() {
 		avaaSisalto("../view/Kulut.fxml");
 	}
 	
+	/**
+	 * Opens the Diagrammi.fxml for the central part of the root pane.
+	 */
 	public void naytaDiagrammi() {
 		avaaSisalto("../view/Diagrammi.fxml");
 	}
 	
+	/**
+	 * Opens the Ennuste.fxml for the central part of the root pane.
+	 */
 	public void naytaEnnuste() {
 		avaaSisalto("../view/Ennuste.fxml");
 	}
 
+	/**
+	 * Opens the Asetukset.fxml for the central part of the root pane.
+	 */
 	public void naytaAsetukset() {
 		avaaSisalto("../view/Asetukset.fxml");
 	}
 	
+	/**
+	 * Includes and performs the concrete commands for opening a particular .fxml file
+	 * @param nimi String value which contains the package and name of the .fxml file that will be opened.
+	 */
 	private void avaaSisalto(String nimi) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -96,6 +127,10 @@ public class ViewHandler implements IGUI{
 		}
 	}
 	
+	/**
+	 * Checks if the language is Finnish.
+	 * @return A boolean value which is true if the language is Finnish and false if it is English.
+	 */
 	public boolean getKieli() {
 		List<Kulu> kulut = kontrolleri.getKulut((kayttajanhallinta.lueKayttajaID()));
 		for(Kulu kulu: kulut) {
@@ -106,6 +141,10 @@ public class ViewHandler implements IGUI{
 		return suomi;
 	}
 		
+	/**
+	 * Sets the selected language as the language of the program.
+	 * @param kieli Boolean value which is true if the language is Finnish and false if the language is English.
+	 */
 	public void setKieli(boolean kieli) {
 		List<Kulu> kulut = kontrolleri.getKulut((kayttajanhallinta.lueKayttajaID()));
 		for(Kulu kulu: kulut) {
@@ -114,6 +153,11 @@ public class ViewHandler implements IGUI{
 		suomi = kieli;
 	}
 	
+	/**
+	 * A method which checks if there is a user profile in database.
+	 * If not, it opens a view where a user can create a new profile.
+	 * Sets the newly created user as active user or keeps the active user as same if no new user is created.
+	 */
 	public void onkoKayttajaa() {
 		if (kontrolleri.getKayttaja(1) == null) {
 			luoUusiKayttaja();
@@ -121,6 +165,9 @@ public class ViewHandler implements IGUI{
 		paivitaKayttaja();
 	}
 	
+	/**
+	 * A method which creates a stage where the user can create a new user profile.
+	 */
 	public void luoUusiKayttaja() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -144,10 +191,16 @@ public class ViewHandler implements IGUI{
 		}
 	}
 	
+	/**
+	 * Updates the current user as logged in user.
+	 */
 	public void paivitaKayttaja() {
 		kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(kayttajanhallinta.lueKayttajaID()));
 	}
 	
+	/**
+	 * A method which creates a stage where the user can modify an already created expense.
+	 */
 	public void avaaKulunMuokkaus(int kuluId) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -174,22 +227,46 @@ public class ViewHandler implements IGUI{
 		}
 	}
 
+	/**
+	 * Forwards KayttajanHallinta to another classes
+	 * @return Instance of kayttajanHallinta.
+	 */
 	public KayttajanHallinta getKayttajanhallinta() {
 		return kayttajanhallinta;
 	}
 
+	/**
+	 * Forwards controller to another classes
+	 * @return IKontrolleri which all the graphic user interface classes are using.
+	 */
 	public IKontrolleri getKontrolleri() {
 		return kontrolleri;
 	}
 	
+	/**
+	 * Forwards kayttajaStage to KayttajanLuontiController where it is used to 
+	 * close the window after a new user has been created.
+	 * @return Stage kayttajaStage
+	 */
 	public Stage getKayttajaStage() {
 		return kayttajaStage;
 	}
 	
+	/**
+	 * Forwards muokkaaKuluaStage to KulunMuokkausController where it is used to 
+	 * close the window after an expense has been modified.
+	 * @return Stage kayttajaStage
+	 */
 	public Stage getMuokkaaKuluaStage() {
 		return muokkaaKuluaStage;
 	}
 
+	/**
+	 * Forwards the now active controller to another class.
+	 * Used only for forwarding KulutController to KulunMuokkausController where it is used to
+	 * update expense list to reflect changes the user made.
+	 * @return ViewCOntroller aktiivinen
+	 */
 	public ViewController getAktiivinen() {
 		return aktiivinen;
 	}

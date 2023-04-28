@@ -22,6 +22,10 @@ import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 
+/**
+ * DiagrammiController implements a controller class for Diagrammi.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class DiagrammiController implements ViewController {
 	@FXML
 	private AnchorPane ap;
@@ -56,7 +60,10 @@ public class DiagrammiController implements ViewController {
 	private List<Kulu> kaikkiKulut;
 	private List <Kulu> suodatetut;
 	
-	
+	/**
+	 * Initiates DiagrammiController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -71,6 +78,9 @@ public class DiagrammiController implements ViewController {
 		laskeKulutusYhteensa();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		pieChart.setTitle(english.getString("otsikko"));
@@ -79,6 +89,9 @@ public class DiagrammiController implements ViewController {
 		vuosiLabel.setText(english.getString("vuosi"));
 	}
 	
+	/**
+	 * A method which creates a diagram of the expenses during a selected month.
+	 */
 	public void naytaKuluDiagrammi() {
 	    Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 	    List<Kategoria> kategoriat = vh.getKontrolleri().getKategoriat(kayttaja.getNimimerkki());
@@ -105,6 +118,10 @@ public class DiagrammiController implements ViewController {
 	    pieChart.setLegendVisible(false);
 	}
 	
+	/**
+	 * A method used for filtering expenses by the month and the year.
+	 * Filtered expenses are then displayed in the diagram and the info of the amount of money used during the selected month will be updated.
+	 */
 	public void suodataAika() {
 	    int valittuKuukausi = kuukausiBox.getSelectionModel().getSelectedIndex();
 	    int valittuVuosiIndeksi = vuosiBox.getSelectionModel().getSelectedIndex();
@@ -127,6 +144,9 @@ public class DiagrammiController implements ViewController {
 		laskeKulutusYhteensa();
 	}
 	
+	/**
+	 * A method which calculates the expenditure of the selected month.
+	 */
 	public void laskeKulutusYhteensa() {
 		double kokonaiskulutus = 0;
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
@@ -143,6 +163,9 @@ public class DiagrammiController implements ViewController {
 		}
 	}
 	
+	/**
+	 * Initiates the comboboxes for filtering.
+	 */
 	public void initSuodatus() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");

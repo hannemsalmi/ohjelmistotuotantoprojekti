@@ -19,6 +19,10 @@ import kayttajanHallinta.KayttajanHallinta;
 import model.Kategoria;
 import model.Kayttaja;
 
+/**
+ * KulunMuokkausController implements a controller class for KulunMuokkaus.fxml.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class KulunMuokkausController implements ViewController{
 	
 	@FXML
@@ -66,6 +70,10 @@ public class KulunMuokkausController implements ViewController{
 	private KayttajanHallinta kayttajanhallinta;
 	private int kuluId;
 
+	/**
+	 * Initiates KulunMuokkausController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
@@ -77,6 +85,9 @@ public class KulunMuokkausController implements ViewController{
 		initKategoriaBox();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface.
+	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		nimiLabel.setText(english.getString("nimi"));
@@ -89,6 +100,9 @@ public class KulunMuokkausController implements ViewController{
 		poistaButton.setText(english.getString("poisto"));
 	}
 
+	/**
+	 * A method used for saving the modified expense and updating the graphic user interface to have the new data of the expense.
+	 */
 	public void tallennaNimiHintaKuvaus() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -116,6 +130,10 @@ public class KulunMuokkausController implements ViewController{
 		teeLopputoimet();
 	}
 	
+	/**
+	 * A method used for saving the new category for the expense.
+	 * Updates the expense list to reflect the change.
+	 */
 	public void tallennaKategoria() {
 		String kategoriaNimi = kategoriaBox.getSelectionModel().getSelectedItem();
 		Kategoria uusiKategoria = vh.getKontrolleri().getKategoria(kategoriaNimi, kayttajanhallinta.getKirjautunutKayttaja().getNimimerkki());
@@ -124,6 +142,9 @@ public class KulunMuokkausController implements ViewController{
 		teeLopputoimet();
 	}
 	
+	/**
+	 * A method used for removing an expense from the expense list and the database. 
+	 */
 	public void poistaKulu() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
@@ -139,16 +160,21 @@ public class KulunMuokkausController implements ViewController{
 			}
 		}
 		
-		
 		teeLopputoimet();
 	}
 	
+	/**
+	 * Initiates the combobox for category selection.
+	 */
 	private void initKategoriaBox() {
 		Kayttaja kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
 		List<String> kaikkiKategoriat = vh.getKontrolleri().getKategorianimet(kayttaja.getNimimerkki());
 	    kategoriaBox.getItems().addAll(kaikkiKategoriat);
 	}
 	
+	/**
+	 * A method used for updating the expense listing based on the modifications user made to expenses.
+	 */
 	private void teeLopputoimet() {
 		ViewController aktiivinen = vh.getAktiivinen();
 		((KulutController) aktiivinen).paivitaKulut();
@@ -157,6 +183,10 @@ public class KulunMuokkausController implements ViewController{
 		stage.close();
 	}
 
+	/**
+	 * Gets the id of the expense being modified from the KulutController and sets it to KulunMuokkausController. 
+	 * @param kuluId The id of the expense.
+	 */
 	public void setKuluId(int kuluId) {
 		this.kuluId = kuluId;
 	}

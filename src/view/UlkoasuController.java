@@ -9,8 +9,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-//Täältä löytyy navigointiboxin toiminnallisuudet ja sovelluksen nimibox
-//ViewHandlerissa tämän tiedoston sisältö nimellä root 
+/**
+ * UlkoasuController implements a controller class for Ulkoasu.fxml.
+ * This class includes the navigation buttons of the left side of the graphic user interface and the name tab.
+ * In ViewHandler, this class works as the variable called root.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class UlkoasuController implements ViewController{
 	@FXML
 	private BorderPane bp;
@@ -33,40 +37,59 @@ public class UlkoasuController implements ViewController{
 	private Button asetukset;
 	
 	private ViewHandler vh;
-	
-	public UlkoasuController() {
-	}
 
+	/**
+	 * Initiates UlkoasuController when it is opened.
+	 * @param ViewHandler The class which controls the view changes and functions.
+	 */
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
 	}
 	
+	/**
+	 * A method which opens the Etusivu.fxml into the central part of the borderpane of this class.
+	 */
 	@FXML
 	private void clickEtusivu() {
 		vh.naytaEtusivu();
 	}
 	
+	/**
+	 * A method which opens the Kulut.fxml into the central part of the borderpane of this class.
+	 */
 	@FXML
 	private void clickKulut() {
 		vh.naytaKulut();
 	}
 	
+	/**
+	 * A method which opens the Diagrammi.fxml into the central part of the borderpane of this class.
+	 */
 	@FXML
 	private void clickDiagrammi() {
 		vh.naytaDiagrammi();
 	}
 	
+	/**
+	 * A method which opens the Ennuste.fxml into the central part of the borderpane of this class.
+	 */
 	@FXML
 	private void clickEnnuste() {
 		vh.naytaEnnuste();
 	}
 	
+	/**
+	 * A method which opens the Asetukset.fxml into the central part of the borderpane of this class.
+	 */
 	@FXML
 	private void clickAsetukset() {
 		vh.naytaAsetukset();
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface to be English.
+	 */
 	@FXML
 	private void kieliEnglanniksi() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
@@ -78,6 +101,9 @@ public class UlkoasuController implements ViewController{
 		vh.setKieli(false);
 	}
 	
+	/**
+	 * A method for changing the language of the graphic user interface to be Finnish.
+	 */
 	@FXML
 	private void kieliSuomeksi() {
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
