@@ -6,7 +6,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import model.Kategoria;
 
+/**
+ * A class which is responsible for getting category data from database and saving category data into database.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public class KategoriaDao {
+	
+	/**
+	 * Adding a category into database.
+	 * @param kategoria The category which will be added.
+	 * @return Boolean value true if adding is successful and false if not.
+	 */
 	public boolean lisaaKategoria(Kategoria kategoria) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
@@ -15,6 +25,11 @@ public class KategoriaDao {
         return true;
 	}
 	
+	/**
+	 * Getting a category from database.
+	 * @param id Id value which identifies the category.
+	 * @return The category retrieved.
+	 */
 	public Kategoria haeKategoriat(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
@@ -23,6 +38,10 @@ public class KategoriaDao {
         return kategoria;
 	}
 	
+	/**
+	 * Getting every category from every user from database.
+	 * @return List of the categories retrieved.
+	 */
 	public List<Kategoria> haeKategoriaLista(){
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
@@ -32,6 +51,12 @@ public class KategoriaDao {
 		return kategoriaLista;
 	}
 	
+	/**
+	 * Changes the name of the category.
+	 * @param id The id of the category which is changed.
+	 * @param nimi The new name of the category.
+	 * @return Boolean value true is everything works, false if not.
+	 */
 	public boolean muutaKategoria(int id, String nimi) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();
@@ -41,6 +66,11 @@ public class KategoriaDao {
 		return true;
 	}
 	
+	/**
+	 * Deletes a category from database.
+	 * @param id Id value of the category.
+	 * @return True if everything goes well, false if not.
+	 */
 	public boolean poistaKategoria(int id) {
 		EntityManager em = datasource.MariaDbJpaConn.getInstance();
 		em.getTransaction().begin();

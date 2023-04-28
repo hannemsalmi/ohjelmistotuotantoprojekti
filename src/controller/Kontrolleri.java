@@ -3,34 +3,22 @@ package controller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import dataAccessObjects.KategoriaDao;
 import dataAccessObjects.KayttajaDao;
 import dataAccessObjects.KuluDao;
 import kayttajanHallinta.KayttajanHallinta;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import model.Budjettilaskuri;
 import model.IBudjettilaskuri;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
 import model.Kulut;
-import view.EtusivuController;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleri {
@@ -82,8 +70,7 @@ public class Kontrolleri implements IKontrolleri {
 	
 
 	public void poistaKayttajanTiedot(int kayttajaid) {
-		kayttajaDao.poistaKayttajanTiedot(kayttajaid);
-		
+		kayttajaDao.poistaKayttajanTiedot(kayttajaid);	
 	}
 	
 	public void lisaaKayttaja(String nimi, double budjetti) {
@@ -215,7 +202,6 @@ public class Kontrolleri implements IKontrolleri {
 	    return response.toString();
 	}
 
-	
 	public void setKategoriaDao(KategoriaDao kategoriaDao) {
 		this.kategoriaDao = kategoriaDao;
 	}
@@ -227,5 +213,4 @@ public class Kontrolleri implements IKontrolleri {
 	public void setKuluDao(KuluDao kuluDao) {
 		this.kuluDao = kuluDao;
 	}
-
 }

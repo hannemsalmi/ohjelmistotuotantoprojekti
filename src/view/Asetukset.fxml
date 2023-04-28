@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AsetuksetController">
+<AnchorPane fx:id="ap" prefHeight="540.0" prefWidth="800.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AsetuksetController">
    <children>
       <BorderPane fx:id="bp" prefHeight="540.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -23,7 +23,7 @@
                         <String fx:value="roundedBox" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets bottom="60.0" left="60.0" right="10.0" top="60.0" />
+                        <Insets bottom="60.0" left="40.0" right="10.0" top="60.0" />
                      </HBox.margin>
                      <children>
                         <Label fx:id="kayttajaAsetuksetLabel" text="Käyttäjäasetukset">
@@ -67,7 +67,7 @@
                         <String fx:value="roundedBox" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets bottom="60.0" right="60.0" top="60.0" />
+                        <Insets bottom="60.0" right="40.0" top="60.0" />
                      </HBox.margin>
                      <children>
                         <Label fx:id="kategoriaAsetuksetLabel" text="Kategoria-asetukset">
