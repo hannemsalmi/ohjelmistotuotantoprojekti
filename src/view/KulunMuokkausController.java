@@ -86,7 +86,7 @@ public class KulunMuokkausController implements ViewController{
 	}
 	
 	/**
-	 * A method for changing the language of the graphic user interface.
+	 * A method for changing the language of the graphical user interface.
 	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
@@ -101,7 +101,7 @@ public class KulunMuokkausController implements ViewController{
 	}
 
 	/**
-	 * A method used for saving the modified expense and updating the graphic user interface to have the new data of the expense.
+	 * A method used for saving the modified expense and updating the graphical user interface to have the new data of the expense.
 	 */
 	public void tallennaNimiHintaKuvaus() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");

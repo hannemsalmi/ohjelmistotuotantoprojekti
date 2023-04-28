@@ -1,7 +1,7 @@
 package view;
 
 /**
-* Interface for all of the graphic user interface controllers.
+* Interface for all of the graphical user interface controllers.
 * Includes a method which initiates the controller with a ViewHardler class.
 */
 public interface ViewController {

@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * UlkoasuController implements a controller class for Ulkoasu.fxml.
- * This class includes the navigation buttons of the left side of the graphic user interface and the name tab.
+ * This class includes the navigation buttons of the left side of the graphical user interface and the name tab.
  * In ViewHandler, this class works as the variable called root.
  * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
@@ -88,7 +88,7 @@ public class UlkoasuController implements ViewController{
 	}
 	
 	/**
-	 * A method for changing the language of the graphic user interface to be English.
+	 * A method for changing the language of the graphical user interface to be English.
 	 */
 	@FXML
 	private void kieliEnglanniksi() {
@@ -102,7 +102,7 @@ public class UlkoasuController implements ViewController{
 	}
 	
 	/**
-	 * A method for changing the language of the graphic user interface to be Finnish.
+	 * A method for changing the language of the graphical user interface to be Finnish.
 	 */
 	@FXML
 	private void kieliSuomeksi() {

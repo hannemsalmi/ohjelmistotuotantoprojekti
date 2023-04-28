@@ -33,7 +33,7 @@ public class ViewHandler implements IGUI{
 
 	/**
 	 * Constructor for class ViewHandler
-	 * @param stage A stage which is showing the graphic user interface.
+	 * @param stage A stage which is showing the graphical user interface.
 	 */
 	public ViewHandler(Stage stage) {
 		this.stage = stage;
@@ -237,7 +237,7 @@ public class ViewHandler implements IGUI{
 
 	/**
 	 * Forwards controller to another classes
-	 * @return IKontrolleri which all the graphic user interface classes are using.
+	 * @return IKontrolleri which all the graphical user interface classes are using.
 	 */
 	public IKontrolleri getKontrolleri() {
 		return kontrolleri;

@@ -90,7 +90,7 @@ public class EtusivuController implements ViewController{
 	}
 	
 	/**
-	 * A method for changing the language of the graphic user interface.
+	 * A method for changing the language of the graphical user interface.
 	 */
 	public void asetaKieli() {
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
