@@ -148,7 +148,7 @@ public class KulutController implements ViewController{
 		paivamaara.setText(english.getString("päivämäärä"));
 		kategoria.setText(english.getString("kategoria"));
 		kuvaus.setText(english.getString("kuvaus"));
-		luo.setText(english.getString("luoKategoria"));
+		luo.setText(english.getString("luo"));
 		tallennaKulu.setText(english.getString("tallennaOstos"));
 		tallennaKategoria.setText(english.getString("luoKategoria"));
 		kategoriaSuodatus.setText(english.getString("kategoriaSuodatus"));
