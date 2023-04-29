@@ -9,6 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * This class holds the data of a user profile.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 @Entity
 @Table(name="kayttajat")
 public class Kayttaja {
@@ -30,18 +34,23 @@ public class Kayttaja {
 	public int getKayttajaID() {
 		return kayttajaID;
 	}
+	
 	public void setKayttajaID(int kayttajaID) {
 		this.kayttajaID = kayttajaID;
 	}
+	
 	public String getNimimerkki() {
 		return nimimerkki;
 	}
+	
 	public void setNimimerkki(String nimimerkki) {
 		this.nimimerkki = nimimerkki;
 	}
+	
 	public double getMaksimibudjetti() {
 		return maksimibudjetti;
 	}
+	
 	public void setMaksimibudjetti(double maksimibudjetti) {
 		this.maksimibudjetti = maksimibudjetti;
 	}
@@ -70,6 +79,4 @@ public class Kayttaja {
 	public int hashCode() {
 	    return Objects.hash(kayttajaID, nimimerkki, maksimibudjetti);
 	}
-    
-	
 }

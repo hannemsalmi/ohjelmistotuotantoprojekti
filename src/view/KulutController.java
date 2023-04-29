@@ -160,7 +160,7 @@ public class KulutController implements ViewController{
 	/**
 	 * A method used for adding the expense to the expense listing and the database.
 	 * There are checks to see that the values inserted are in correct format.
-	 * All the fields are resetted after saving the expense.
+	 * All the fields are reseted after saving the expense.
 	 */
 	public void lisaaKulu() {
 		kayttaja = kayttajanhallinta.getKirjautunutKayttaja();
@@ -443,10 +443,17 @@ public class KulutController implements ViewController{
 	 * A method which opens the view (KulunMuokkaus.fxml) where it is possible to modify the expense.
 	 */
 	public void avaaMuokkausnakymaKulu() {
-		Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
-		int kuluId = kulu.getKuluID();
-	    
-		vh.avaaKulunMuokkaus(kuluId);
+		try {
+			Kulu kulu = kulutListView.getSelectionModel().getSelectedItem();
+			int kuluId = kulu.getKuluID();
+		    
+			vh.avaaKulunMuokkaus(kuluId);
+		} catch (NullPointerException e) {
+			System.out.println("Ei kulua tässä kohtaa. Mahtoiko olla vahinkopainallus?");
+		} catch (Exception e) {
+			System.out.println("Jokin ei toiminut");
+		}
+		kulutListView.getSelectionModel().clearSelection();
 	}
 	
 	/**
@@ -464,6 +471,7 @@ public class KulutController implements ViewController{
 		} else {
 			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 		}
+		
 	}
 	
 	/**

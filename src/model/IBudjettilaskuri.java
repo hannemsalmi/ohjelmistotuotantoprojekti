@@ -1,8 +1,12 @@
 package model;
 
-import java.util.List;
-
+/**
+ * Interface for class Budjettilaskuri. Calculates the remaining budget for a month.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 public interface IBudjettilaskuri {
-	public abstract List<Kulu> getKulut();
+	/**
+	 * Calculates the remaining budget for a month.
+	 */
 	public abstract double laskeBudjetti(double budjetti, double kulutettu);
 }

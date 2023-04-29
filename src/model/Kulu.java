@@ -12,6 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+/**
+ * This class holds the data of an expense.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 @Entity
 @Table(name="kulut")
 public class Kulu {
@@ -144,5 +149,4 @@ public class Kulu {
 	public int hashCode() {
 	    return Objects.hash(nimi, summa, paivamaara, kategoria, kayttaja, kuvaus, kuluID);
 	}
-    
 }

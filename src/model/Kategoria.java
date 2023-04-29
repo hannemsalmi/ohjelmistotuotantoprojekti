@@ -1,13 +1,17 @@
 package model;
 
 import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+/**
+ * This class holds the data of a category.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ */
 @Entity
 @Table(name="kategoriat")
 public class Kategoria{
@@ -22,8 +26,10 @@ public class Kategoria{
 		this.nimi = nimi;
 		this.omistaja = omistaja;
 	}
+	
 	public Kategoria() {
 	}
+	
 	public int getKategoriaID() {
 		return kategoriaID;
 	}

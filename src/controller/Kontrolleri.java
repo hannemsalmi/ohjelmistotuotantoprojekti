@@ -18,7 +18,6 @@ import model.IBudjettilaskuri;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
-import model.Kulut;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleri {
@@ -30,7 +29,6 @@ public class Kontrolleri implements IKontrolleri {
 	private Kategoria kategoria;
 	private Kayttaja kayttaja;
 	private Kulu kulu;
-	private Kulut kulut = new Kulut();
 	
 	public Kontrolleri(IGUI gui) {
 		this.gui = gui;
@@ -59,8 +57,6 @@ public class Kontrolleri implements IKontrolleri {
 	@Override
 	public void lisaaKulu(String nimi, double hinta, LocalDate paivamaara, Kategoria kategoria, Kayttaja kayttaja, String kuvaus) {
 		kulu = new Kulu(nimi, hinta, paivamaara, kategoria, kayttaja, kuvaus);
-		kulut.lisaaKulu(kulu);
-		System.out.println(kulu);
 		kuluDao.lisaaKulu(kulu);
 	}
 	
