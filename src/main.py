@@ -1,6 +1,6 @@
 
 #The call to the chatgpt api found on the /src/controller/Kontrolleri sendOstoslistaRequest() method is implemented with this backend server python code hosted at pythonanywhere.com
-#This file is included in the Budjettisovellus package for reference and context in case other members of the project group want or need to implement their own servers.
+#This file is included in the Budjettisovellus package for reference and context in case other members of the project group want or need to implement their own servers and also for review purposes for the teachers.
 
 import openai
 from flask import Flask, request, jsonify, abort

@@ -128,6 +128,32 @@ public class ViewHandler implements IGUI{
 	}
 	
 	/**
+	 * Refreshes the content of the AnchorPane based on the current active controller.
+	 * This method should be called whenever the language is changed to make the change
+	 * immediately visible on the AnchorPane.
+	 */
+	public void paivitaSisalto() {
+	    if (aktiivinen != null) {
+	        String fxmlPath = null;
+	        if (aktiivinen instanceof EtusivuController) {
+	            fxmlPath = "../view/Etusivu.fxml";
+	        } else if (aktiivinen instanceof KulutController) {
+	            fxmlPath = "../view/Kulut.fxml";
+	        } else if (aktiivinen instanceof DiagrammiController) {
+	            fxmlPath = "../view/Diagrammi.fxml";
+	        } else if (aktiivinen instanceof EnnusteController) {
+	            fxmlPath = "../view/Ennuste.fxml";
+	        } else if (aktiivinen instanceof AsetuksetController) {
+	            fxmlPath = "../view/Asetukset.fxml";
+	        }
+	        if (fxmlPath != null) {
+	            avaaSisalto(fxmlPath);
+	        }
+	    }
+	}
+
+	
+	/**
 	 * Checks if the language is Finnish.
 	 * @return A boolean value which is true if the language is Finnish and false if it is English.
 	 */
@@ -151,6 +177,7 @@ public class ViewHandler implements IGUI{
 			kulu.setKieli(kieli);
 		}
 		suomi = kieli;
+		paivitaSisalto();
 	}
 	
 	/**

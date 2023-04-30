@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
+import model.ListModel;
 
 /**
  * Interface for the controller class of a budget/expense tracking application.
  * This interface defines the main methods required to manage expenses, users, and categories.
+ * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public interface IKontrolleri {
 	
@@ -146,5 +148,12 @@ public interface IKontrolleri {
      * @throws Exception If there is an issue with the request.
      */
 	public abstract String sendOstoslistaRequest()throws Exception;
+	/**
+	 * Retrieves the instance of ListModel associated with the controller.
+	 * The ListModel contains shopping and reminder lists.
+	 *
+	 * @return the ListModel instance containing shopping and reminder lists
+	 */
+	public abstract ListModel getListModel();
 	
 }

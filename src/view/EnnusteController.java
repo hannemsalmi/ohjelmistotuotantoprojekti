@@ -110,17 +110,33 @@ public class EnnusteController implements ViewController{
 		int count = 0;
 		
 		// käy läpi kulut-lista
+		int prevDay = -1;
+		int prevCount = -1;
+
+		// Iterate through the expenses
 		for (int i = 0; i < kulut.size(); i++) {
-			// tietyn kulun päivämäärä
-			LocalDate date = kulut.get(i).getPaivamaara();
-		
-			// lisää data x- ja y-taulukoihin, jos kulu on tässä kuussa
-			if (date.getMonthValue() == currentMonth) {
-				xValues[count] = date.getDayOfMonth();
-				kulutSumma += kulut.get(i).getSumma();
-				yValues[count] = kulutSumma;
-				count++;
-			}
+		    // Current expense's date
+		    LocalDate date = kulut.get(i).getPaivamaara();
+
+		    // Add data to x- and y-arrays if the expense is in the current month
+		    if (date.getMonthValue() == currentMonth) {
+		        int dayOfMonth = date.getDayOfMonth();
+
+		        if (dayOfMonth == prevDay) {
+		            // If the current day is the same as the previous day,
+		            // update the existing data point instead of creating a new one
+		            kulutSumma += kulut.get(i).getSumma();
+		            yValues[prevCount] = kulutSumma;
+		        } else {
+		            // If the current day is different, create a new data point
+		            xValues[count] = dayOfMonth;
+		            kulutSumma += kulut.get(i).getSumma();
+		            yValues[count] = kulutSumma;
+		            prevDay = dayOfMonth;
+		            prevCount = count;
+		            count++;
+		        }
+		    }
 		}
 			  
 		// luodaan ennusteregressio loppukuun kuluille

@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -114,11 +115,12 @@ public class Kulu {
 	public String toString() {
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 		ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		if(kieli) {
-			return finnish.getString("tkNimi") + nimi + finnish.getString("tkArvo") + 
-					String.format("%.2f",summa) + finnish.getString("tkPvm") + paivamaara + 
-					finnish.getString("tkKategoria") + kategoria.getNimi() + finnish.getString("tkKuvaus") + 
-					kuvaus;
+			return finnish.getString("tkNimi") + nimi + finnish.getString("tkArvo") +
+		            String.format("%.2f", summa) + finnish.getString("tkPvm") +
+		            paivamaara.format(dateFormatter) + finnish.getString("tkKategoria") +
+		            kategoria.getNimi() + finnish.getString("tkKuvaus") + kuvaus;
 		} else {
 			return english.getString("tkNimi") + nimi + english.getString("tkArvo") + 
 					String.format("%.2f",summa) + english.getString("tkPvm") + paivamaara + 

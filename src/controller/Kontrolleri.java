@@ -18,6 +18,7 @@ import model.IBudjettilaskuri;
 import model.Kategoria;
 import model.Kayttaja;
 import model.Kulu;
+import model.ListModel;
 import view.IGUI;
 
 public class Kontrolleri implements IKontrolleri {
@@ -29,9 +30,11 @@ public class Kontrolleri implements IKontrolleri {
 	private Kategoria kategoria;
 	private Kayttaja kayttaja;
 	private Kulu kulu;
+	private ListModel listModel;
 	
 	public Kontrolleri(IGUI gui) {
 		this.gui = gui;
+		listModel =  new ListModel();
 	}
 	
 	public List<Kulu> getKulut(int kayttajaid) {
@@ -168,7 +171,7 @@ public class Kontrolleri implements IKontrolleri {
 	            + "And a second list which is a reminder list that helps the user to remember their regular bills before their due date and the due date should be included in the reminder list along with the price. "
 	            + "Only put items to the reminder list that are in the provided expenses and are repeating static expences."
 	            + "No need to include the categories for any of the expenses. "
-	            + "Please provide me the shopping and reminder lists in exactly this format with no other symbols: (shopping list: item=itemName, item=itemName2),(reminder list: (item=itemName, price=price1, duedate=days.months.years),(item=itemName2, price=price2, duedate=days.months.years))"
+	            + "Please provide me the shopping and reminder lists in exactly this format with no other symbols: (shopping list: item=itemName, item=itemName2),(reminder list: (item=itemName, price=price1, duedate=days.months.years),\n(item=itemName2, price=price2, duedate=days.months.years))"
 	            + "You must only use these expenses to create the lists, if no expenses are available you can leave empty values to the provided format. Here are the expenses: "
 	            + getKulut(KayttajanHallinta.getInstance().getKirjautunutKayttaja().getKayttajaID()).toString() + "}";
 	    // Set up the connection properties
@@ -197,6 +200,11 @@ public class Kontrolleri implements IKontrolleri {
 	    System.out.println(response);
 	    return response.toString();
 	}
+	
+	public ListModel getListModel() {
+        return listModel;
+    }
+
 
 	public void setKategoriaDao(KategoriaDao kategoriaDao) {
 		this.kategoriaDao = kategoriaDao;

@@ -1,5 +1,10 @@
 package view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.json.JSONObject;
@@ -59,7 +64,6 @@ public class EtusivuController implements ViewController{
 	@FXML
 	private VBox reminderListVBox;
 	
-	
 	private ViewHandler vh;
 	private IKontrolleri kontrolleri;
 	
@@ -102,14 +106,23 @@ public class EtusivuController implements ViewController{
 	}
 	
 	/**
-	 * A method which is used to creating a shopping list and a reminder list based on the expences of the user.
-	 * AI api is used for generating the lists.
+	 * A method which is used to create a shopping list and a reminder list based on the expenses of the user.
+	 * AI api is used for generating the lists. The API is not called if the shopping and reminder lists
+	 * are already loaded to ListModel.
 	 */
 	public void displayOstoslista() {
+	    List<String> shoppingList = kontrolleri.getListModel().getShoppingList();
+	    List<String> reminderList = kontrolleri.getListModel().getReminderList();
+
+	    if (shoppingList != null || reminderList != null) {
+	        displayLists(shoppingList, reminderList);
+	        return;
+	    }
+
 	    Task<Void> task = new Task<Void>() {
 	        @Override
 	        protected Void call() throws Exception {
-	        	String responseJson = kontrolleri.sendOstoslistaRequest();
+	            String responseJson = kontrolleri.sendOstoslistaRequest();
 	            JSONObject response = new JSONObject(responseJson);
 	            String messageContent = response.getJSONObject("message").getString("content");
 
@@ -119,34 +132,33 @@ public class EtusivuController implements ViewController{
 
 	            // Split the shopping list string into items
 	            String[] shoppingListItems = shoppingListStr.split(", item=");
+	            List<String> shoppingList = new ArrayList<>();
+
+	            for (String item : shoppingListItems) {
+	                item = item.replace("item=", "").replace(")", "").trim();
+	                shoppingList.add(item);
+	            }
+
+	            // Split the reminder list string into items
+	            String[] reminderListItems = reminderListStr.trim().split("\\),\n\\(");
+
+	            List<String> reminderList = new ArrayList<>();
+
+	            for (String item : reminderListItems) {
+	                item = item.replace("(", "").replace(")", "");
+	                String[] parts = item.split(", ");
+	                String task = parts[0].replace("item=", "").trim();
+	                String price = parts[1].replace("price=", "").replace("e", "").trim() + "€";
+	                String dueDate = parts[2].replace("duedate=", "").trim();
+
+	                reminderList.add("- " + task + " (" + price + ", " + dueDate + ")");
+	            }
+
+	            kontrolleri.getListModel().setShoppingList(shoppingList);
+	            kontrolleri.getListModel().setReminderList(reminderList);
 
 	            Platform.runLater(() -> {
-	                shoppingListVBox.getChildren().clear();
-	                reminderListVBox.getChildren().clear();
-
-	                // Display the shopping list items
-	                System.out.println("Shopping List:");
-	                for (String item : shoppingListItems) {
-	                    item = item.replace("item=", "").replace(")", "").trim();
-	                    System.out.println("- " + item);
-	                    shoppingListVBox.getChildren().add(new Label("- " + item));
-	                }
-
-	                // Split the reminder list string into items
-	                String[] reminderListItems = reminderListStr.split("\\), \\(");
-
-	                // Display the reminder list items
-	                System.out.println("\nReminder List:");
-	                for (String item : reminderListItems) {
-	                    item = item.replace("(", "").replace(")", "");
-	                    String[] parts = item.split(", ");
-	                    String task = parts[0].replace("item=", "").trim();
-	                    String price = parts[1].replace("price=", "").replace(" e", "").trim() + "€";
-	                    String dueDate = parts[2].replace("duedate=", "").trim();
-
-	                    System.out.println("- " + task + " (" + price + ", " + dueDate + ")");
-	                    reminderListVBox.getChildren().add(new Label("- " + task + " (" + price + ", " + dueDate + ")"));
-	                }
+	                displayLists(shoppingList, reminderList);
 	            });
 
 	            return null;
@@ -157,6 +169,51 @@ public class EtusivuController implements ViewController{
 	    thread.setDaemon(true);
 	    thread.start();
 	}
+	/**
+	 * Displays the given shopping and reminder lists by adding their items
+	 * to the shoppingListVbox and reminderListVbox UI elements.
+	 *
+	 * @param shoppingList The list of shopping items to be displayed. Can be null or empty.
+	 * @param reminderList The list of reminder items to be displayed. Can be null or empty.
+	 */
+	private void displayLists(List<String> shoppingList, List<String> reminderList) {
+	    shoppingListVBox.getChildren().clear();
+	    reminderListVBox.getChildren().clear();
+
+	    for (String item : shoppingList) {
+	        shoppingListVBox.getChildren().add(new Label("- " + item));
+	    }
+
+	    for (String item : reminderList) {
+	        String[] parts = item.split(", ");
+	        String taskAndPrice = parts[0];
+	        String dueDate = parts[1].replace(")", ""); // Remove closing parentheses
+
+	        // Format the date based on the chosen language
+	        String formattedDate;
+	        try {
+	            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	            LocalDate date = LocalDate.parse(dueDate, inputFormatter);
+
+	            if (vh.getKieli()) {
+	            	// Default format (Finnish)
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	                formattedDate = date.format(formatter);
+	            } else {
+	            	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+	                formattedDate = date.format(formatter);
+	            }
+	        } catch (DateTimeParseException e) {
+	            formattedDate = dueDate;
+	        }
+
+	        reminderListVBox.getChildren().add(new Label(taskAndPrice + ", " + formattedDate + ")"));
+	    }
+	}
+
+
+
+
 	
 	/**
 	 * A method for selecting the active profile.
@@ -167,6 +224,9 @@ public class EtusivuController implements ViewController{
         kayttajanhallinta.setKirjautunutKayttaja(kontrolleri.getKayttaja(valittuKayttaja));
         System.out.println("Logging in user: " + valittuKayttaja);
         paivitaTervehdys();
+        kontrolleri.getListModel().setReminderList(null);
+        kontrolleri.getListModel().setShoppingList(null);
+        vh.paivitaSisalto();
 	}
 	
 	/**

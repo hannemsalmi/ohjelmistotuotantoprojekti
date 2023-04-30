@@ -2,6 +2,7 @@ package view;
 
 import java.util.ResourceBundle;
 
+import controller.IKontrolleri;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,6 +38,8 @@ public class UlkoasuController implements ViewController{
 	private Button asetukset;
 	
 	private ViewHandler vh;
+	
+	private IKontrolleri kontrolleri;
 
 	/**
 	 * Initiates UlkoasuController when it is opened.
@@ -45,6 +48,7 @@ public class UlkoasuController implements ViewController{
 	@Override
 	public void init(ViewHandler viewHandler) {
 		vh = viewHandler;
+		kontrolleri = vh.getKontrolleri();
 	}
 	
 	/**
