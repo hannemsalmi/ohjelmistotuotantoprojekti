@@ -17,7 +17,7 @@ import model.Kulu;
 
 /**
  * A class that includes the methods which are used to control the views, their alternation and their cooperation.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class ViewHandler implements IGUI{
 	private IKontrolleri kontrolleri;

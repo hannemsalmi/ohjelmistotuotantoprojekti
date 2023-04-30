@@ -2,7 +2,7 @@ package model;
 
 /**
  * 	This class handles the calculation of the remaining budget.
- *	@authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ *	@author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class Budjettilaskuri implements IBudjettilaskuri {
 	

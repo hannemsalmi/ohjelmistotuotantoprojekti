@@ -8,7 +8,7 @@ import model.Kategoria;
 
 /**
  * A class which is responsible for getting category data from database and saving category data into database.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KategoriaDao {
 	

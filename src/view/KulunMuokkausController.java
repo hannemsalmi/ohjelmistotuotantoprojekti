@@ -21,7 +21,7 @@ import model.Kayttaja;
 
 /**
  * KulunMuokkausController implements a controller class for KulunMuokkaus.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KulunMuokkausController implements ViewController{
 	

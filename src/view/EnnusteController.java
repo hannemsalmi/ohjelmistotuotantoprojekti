@@ -23,7 +23,7 @@ import model.Kulu;
 
 /**
  * EnnusteController implements a controller class for Ennuste.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class EnnusteController implements ViewController{
 	@FXML

@@ -10,7 +10,7 @@ import model.Kayttaja;
 
 /**
  * This class is responsible for handling the user profiles and their changes.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KayttajanHallinta {
 	private static  KayttajanHallinta INSTANCE = null;

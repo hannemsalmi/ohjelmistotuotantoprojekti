@@ -9,7 +9,7 @@ import model.Kulu;
 
 /**
  * A class which is responsible for getting expense data from database and saving expense data into database.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KuluDao {
 	

@@ -20,7 +20,7 @@ import model.Kayttaja;
 
 /**
  * AsetuksetController implements a controller class for Asetukset.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class AsetuksetController implements ViewController{
 	@FXML

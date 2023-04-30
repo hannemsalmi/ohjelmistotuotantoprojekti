@@ -24,7 +24,7 @@ import kayttajanHallinta.KayttajanHallinta;
 
 /**
  * EtusivuController implements a controller class for Etusivu.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class EtusivuController implements ViewController{
 	@FXML
