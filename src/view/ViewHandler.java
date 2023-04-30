@@ -160,9 +160,7 @@ public class ViewHandler implements IGUI{
 	public boolean getKieli() {
 		List<Kulu> kulut = kontrolleri.getKulut((kayttajanhallinta.lueKayttajaID()));
 		for(Kulu kulu: kulut) {
-			if(kulu.getKieli() == !suomi) {
-				suomi = !suomi;
-			}
+			suomi = kulu.getKieli();
 		}
 		return suomi;
 	}

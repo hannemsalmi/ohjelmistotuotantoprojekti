@@ -185,7 +185,6 @@ public class KulutController implements ViewController{
 					JOptionPane.showConfirmDialog(null, english.getString("budjettiVaroitus"), english.getString("summaVirhe"), JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			
 		} catch (NumberFormatException nfe) {
 			System.out.println("Numeroarvojen sijasta yritettiin syöttää muuta...");
 			if(vh.getKieli()) {
@@ -201,20 +200,19 @@ public class KulutController implements ViewController{
 				JOptionPane.showConfirmDialog(null, english.getString("tyyppiVirhe"), english.getString("syöttöVirhe"), JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		// vh.getKieli() palauttaa tässä vaiheessa true, koska uuden kulun default arvo kielelle on true, muokattava
 		
 		kaikkiKulut = vh.getKontrolleri().getKulut(kayttaja.getKayttajaID());
 		setKulut(kaikkiKulut);
-		if(vh.getKieli()) {
-			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
-		} else {
-			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
-		}
+		
 		syotaOstos.clear();
 		syotaHinta.clear();
 		syotaKuvaus.clear();
 		if(vh.getKieli()) {
+			budjetti.setText(finnish.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 			syotaKategoria.getSelectionModel().select(finnish.getString("yleinen"));
 		} else {
+			budjetti.setText(english.getString("jäljellä") + String.format("%.2f",budjettiaJaljellaLaskuri()) + " €");
 			syotaKategoria.getSelectionModel().select(english.getString("yleinen"));
 		}
 		LocalDate paiva = LocalDate.now();
@@ -280,163 +278,90 @@ public class KulutController implements ViewController{
 	    ResourceBundle english = ResourceBundle.getBundle("Bundle_English");
 		ResourceBundle finnish = ResourceBundle.getBundle("Bundle_Finnish");
 	    
-		if(vh.getKieli()) {
-			//vain kategoriaa on muutettu
-		    if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
-		    	suodatetutKulut = kaikkiKulut.stream()
-		            .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-		            .collect(Collectors.toList());
-		    	setKulut(suodatetutKulut);
-		    //vain kuukautta muutettu
-		    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			  suodatetutKulut.add(kulu);
-		    		}
-		    	}
-			    setKulut(suodatetutKulut);
-		    //vain vuotta muutettu
-		    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			  suodatetutKulut.add(kulu);
-		    		}
-		    	}
-			    setKulut(suodatetutKulut);
-			//kategoriaa ja kuukautta muutettu
-		    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-			        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-			        .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    // kategoriaa ja vuotta muutettu
-		    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-				    .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-				    .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    // kuukautta ja vuotta muutettu
-		    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			valiaikaisetKulut.add(kulu);
-		    		}
-		    	}
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    //kategoriaa, kuukautta ja vuotta muutettu
-		    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-			        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-			        .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			  toisetValiaikaisetKulut.add(kulu);
-		    		}
-		    	}
-		    	for (Kulu kulu : toisetValiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    } else {
-			    //näytetään defaultilla kaikki
-			    setKulut(kaikkiKulut);
-		    }
-		} else {
-			//vain kategoriaa on muutettu
-		    if (!valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
-		    	suodatetutKulut = kaikkiKulut.stream()
-		            .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-		            .collect(Collectors.toList());
-		    	setKulut(suodatetutKulut);
-		    //vain kuukautta muutettu
-		    } else if (valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			  suodatetutKulut.add(kulu);
-		    		}
-		    	}
-			    setKulut(suodatetutKulut);
-		    //vain vuotta muutettu
-		    } else if (valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			  suodatetutKulut.add(kulu);
-		    		}
-		    	}
-			    setKulut(suodatetutKulut);
-			//kategoriaa ja kuukautta muutettu
-		    } else if (!valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-			        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-			        .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    // kategoriaa ja vuotta muutettu
-		    } else if (!valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-				    .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-				    .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    // kuukautta ja vuotta muutettu
-		    } else if (valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
-		    	for (Kulu kulu : kaikkiKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			valiaikaisetKulut.add(kulu);
-		    		}
-		    	}
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    //kategoriaa, kuukautta ja vuotta muutettu
-		    } else if (!valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
-		    	valiaikaisetKulut = kaikkiKulut.stream()
-			        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
-			        .collect(Collectors.toList());
-		    	for (Kulu kulu : valiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
-		    			  toisetValiaikaisetKulut.add(kulu);
-		    		}
-		    	}
-		    	for (Kulu kulu : toisetValiaikaisetKulut) {
-		    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
-		    			suodatetutKulut.add(kulu);
-		    		}
-		    	}
-		    	setKulut(suodatetutKulut);
-		    } else {
-			    //näytetään defaultilla kaikki
-			    setKulut(kaikkiKulut);
-		    }
-		}
+		//vain kategoriaa on muutettu
+	    if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0
+	    		|| !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi == 0) {
+	    	suodatetutKulut = kaikkiKulut.stream()
+	            .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+	            .collect(Collectors.toList());
+	    	setKulut(suodatetutKulut);
+	    //vain kuukautta muutettu
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0 
+	    		|| valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			  suodatetutKulut.add(kulu);
+	    		}
+	    	}
+		    setKulut(suodatetutKulut);
+	    //vain vuotta muutettu
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0 
+	    		|| valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			  suodatetutKulut.add(kulu);
+	    		}
+	    	}
+		    setKulut(suodatetutKulut);
+		//kategoriaa ja kuukautta muutettu
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0 
+	    		|| !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi == 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+		        .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    // kategoriaa ja vuotta muutettu
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0 
+	    		|| !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi == 0 && valittuVuosiIndeksi != 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+			    .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+			    .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    // kuukautta ja vuotta muutettu
+	    } else if (valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0
+	    		|| valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    	for (Kulu kulu : kaikkiKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			valiaikaisetKulut.add(kulu);
+	    		}
+	    	}
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    //kategoriaa, kuukautta ja vuotta muutettu
+	    } else if (!valittuKategoria.equals(finnish.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0 
+	    		|| !valittuKategoria.equals(english.getString("kaikki")) && valittuKuukausi != 0 && valittuVuosiIndeksi != 0) {
+	    	valiaikaisetKulut = kaikkiKulut.stream()
+		        .filter(kulu -> kulu.getKategoria().getNimi().equals(valittuKategoria))
+		        .collect(Collectors.toList());
+	    	for (Kulu kulu : valiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getMonthValue() == valittuKuukausi)) {
+	    			  toisetValiaikaisetKulut.add(kulu);
+	    		}
+	    	}
+	    	for (Kulu kulu : toisetValiaikaisetKulut) {
+	    		if ((kulu.getPaivamaara().getYear() == valittuVuosi)) {
+	    			suodatetutKulut.add(kulu);
+	    		}
+	    	}
+	    	setKulut(suodatetutKulut);
+	    } else {
+		    //näytetään defaultilla kaikki
+		    setKulut(kaikkiKulut);
+	    }
 	}
 	
 	/**
