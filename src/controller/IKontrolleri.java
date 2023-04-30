@@ -10,7 +10,7 @@ import model.ListModel;
 /**
  * Interface for the controller class of a budget/expense tracking application.
  * This interface defines the main methods required to manage expenses, users, and categories.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public interface IKontrolleri {
 	

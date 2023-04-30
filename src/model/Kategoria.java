@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 /**
  * This class holds the data of a category.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 @Entity
 @Table(name="kategoriat")

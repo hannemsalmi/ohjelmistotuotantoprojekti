@@ -24,7 +24,7 @@ import model.Kulu;
 
 /**
  * DiagrammiController implements a controller class for Diagrammi.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class DiagrammiController implements ViewController {
 	@FXML

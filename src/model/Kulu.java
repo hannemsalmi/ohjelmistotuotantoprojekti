@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 /**
  * This class holds the data of an expense.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 @Entity
 @Table(name="kulut")

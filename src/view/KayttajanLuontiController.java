@@ -15,7 +15,7 @@ import kayttajanHallinta.KayttajanHallinta;
 
 /**
  * KayttajanLuontiController implements a controller class for KayttajanLuonti.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KayttajanLuontiController implements ViewController {
 

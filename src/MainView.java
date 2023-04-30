@@ -4,7 +4,7 @@ import view.ViewHandler;
 
 /**
  * A main class used for launching the new graphical user interface built with SceneBuilder.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class MainView extends Application{
 

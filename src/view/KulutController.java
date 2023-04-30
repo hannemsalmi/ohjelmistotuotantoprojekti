@@ -29,7 +29,7 @@ import model.Kulu;
 
 /**
  * KulutController implements a controller class for Kulut.fxml.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class KulutController implements ViewController{
 	@FXML

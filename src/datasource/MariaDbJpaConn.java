@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 /**
  * A class that creates a JPA connector for database purposes.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class MariaDbJpaConn {
 

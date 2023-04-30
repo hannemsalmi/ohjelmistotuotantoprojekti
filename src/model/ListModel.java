@@ -6,7 +6,7 @@ import java.util.List;
  * ListModel is a class that represents a model for storing shopping and
  * reminder lists. This class contains getter and setter methods for
  * accessing and modifying the lists.
- * @authors hannemsalmi, willeKoodaus, Katanpe, MinaSofi
+ * @author hannemsalmi, willeKoodaus, Katanpe, MinaSofi
  */
 public class ListModel {
     private List<String> shoppingList;
