@@ -122,9 +122,15 @@ public class Kulu {
 		            paivamaara.format(dateFormatter) + finnish.getString("tkKategoria") +
 		            kategoria.getNimi() + finnish.getString("tkKuvaus") + kuvaus;
 		} else {
+			String kategoriaNimi;
+			if(kategoria.getNimi().equalsIgnoreCase("Yleinen")) {
+				kategoriaNimi = "default";
+			}else {
+				kategoriaNimi = kategoria.getNimi();
+			}
 			return english.getString("tkNimi") + nimi + english.getString("tkArvo") + 
 					String.format("%.2f",summa) + english.getString("tkPvm") + paivamaara + 
-					english.getString("tkKategoria") + kategoria.getNimi() + english.getString("tkKuvaus") + 
+					english.getString("tkKategoria") + kategoriaNimi + english.getString("tkKuvaus") + 
 					kuvaus;
 		}
 	}
